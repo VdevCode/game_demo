@@ -128,12 +128,12 @@ function Play() {
     // Vẽ điểm
     context.fillStyle = 'white';
     context.font = '45px sans-serif';
-    context.fillText(score.toString(), SCREEN_W * 0.47, 50);
+    context.fillText(score.toString(), SCREEN_W * 0.35, 50);
     // Vẽ Over
     if (gameOver) {
       context.fillStyle = 'white';
-      context.font = '45px sans-serif';
-      context.fillText('Game Over', SCREEN_W * 0.4, SCREEN_H * 0.5);
+      context.font = '30px sans-serif';
+      context.fillText('Game Over', SCREEN_W * 0.2, SCREEN_H * 0.5);
     }
   };
 
