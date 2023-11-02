@@ -1,10 +1,15 @@
+import { useEffect} from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-
+import { useFullScreenHandle } from "react-full-screen";
 import Default from './layouts';
 import { publicRoutes } from './routes';
 
 
 function App() {
+  const handle = useFullScreenHandle();
+  useEffect(() => {
+    handle.enter()
+  }, [])
   return (
     <>
       <Router>
