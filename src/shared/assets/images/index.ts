@@ -2,6 +2,7 @@ import bg from './background.png';
 import bgVer from './background_ver.jpg';
 import pipe from './pipe.png';
 import bird from './bird.png';
+import heart from './heart.png';
 import spaceship from './spaceship.png';
 import barries1 from './barries1.png';
 import barries2 from './barries2.png';
@@ -19,6 +20,7 @@ const images = {
   bgVer,
   pipe,
   bird,
+  heart,
   spaceship,
   barries1,
   barries2,

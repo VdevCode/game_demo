@@ -11,18 +11,28 @@ import getRamdom from '@shared/utils/getRamdom';
 
 function Play() {
   const [running, setRunning] = useState<boolean>(false);
+  const [started, setStated] = useState<boolean>(false);
   const canvas = useRef<HTMLCanvasElement>(null);
+  const startRef = useRef<HTMLDivElement>(null);
+  const scoreRef = useRef<HTMLParagraphElement>(null);
+  const overRef = useRef<HTMLDivElement>(null);
+  const damageRef = useRef<HTMLDivElement>(null);
+  const goalRef = useRef<HTMLParagraphElement>(null);
 
   let score: number = 0;
   let gameOver: boolean = false;
+  let goal: number = 0;
 
   const SCREEN_W = window.innerWidth;
   const SCREEN_H = window.innerHeight;
   const GRAVITY = 0.08;
 
   // BIRD
+  const GOAL_TARGET = 300;
   const BIRD_W = 120;
   const BIRD_H = 70;
+  const BIRD_HP = 250;
+  let birdDamage = 0;
   let verticalX = -3;
   let verticalY = 0;
   const bird: IBird = {
@@ -38,36 +48,43 @@ function Play() {
       w: 50,
       h: 50,
       img: images.barries1,
+      damage: 10,
     },
     {
       w: 80,
       h: 80,
       img: images.barries2,
+      damage: 20,
     },
     {
       w: 90,
       h: 90,
       img: images.barries3,
+      damage: 30,
     },
     {
       w: 120,
       h: 120,
       img: images.barries4,
+      damage: 40,
     },
     {
       w: 120,
       h: 120,
       img: images.barries5,
+      damage: 50,
     },
     {
       w: 140,
       h: 140,
       img: images.barries6,
+      damage: 60,
     },
     {
       w: 180,
       h: 160,
       img: images.barries7,
+      damage: 70,
     },
   ];
   const barries: IBarries[] = [];
@@ -97,7 +114,6 @@ function Play() {
 
   const draw = (context: CanvasRenderingContext2D) => {
     context.clearRect(0, 0, SCREEN_W, SCREEN_H);
-
     // Vẽ barries
     for (let i = 0; i < barries.length; i++) {
       let barry: IBarries = barries[i];
@@ -106,7 +122,9 @@ function Play() {
       barryImage.src = barry.img;
       context.drawImage(barryImage, barry.x, barry.y, barry.w, barry.h);
       if (detectCollision(bird, barry)) {
-        gameOver = true;
+        birdDamage += barry.damage;
+        barries[i].damage = 0;
+        if (birdDamage >= BIRD_HP) gameOver = true;
       }
     }
     // Vẽ quà
@@ -125,16 +143,6 @@ function Play() {
     const birdImg = new Image();
     birdImg.src = images.spaceship;
     context.drawImage(birdImg, bird.x, bird.y, BIRD_W, BIRD_H);
-    // Vẽ điểm
-    context.fillStyle = 'white';
-    context.font = '45px sans-serif';
-    context.fillText(score.toString(), SCREEN_W * 0.35, 50);
-    // Vẽ Over
-    if (gameOver) {
-      context.fillStyle = 'white';
-      context.font = '30px sans-serif';
-      context.fillText('Game Over', SCREEN_W * 0.2, SCREEN_H * 0.5);
-    }
   };
 
   // Create
@@ -171,11 +179,44 @@ function Play() {
       gifts.shift();
     }
   };
+  const createSometingElse = () => {
+    if (scoreRef.current) {
+      scoreRef.current.innerHTML = score.toString();
+    }
+    if (gameOver) {
+      if (overRef.current) {
+        overRef.current.style.visibility = 'visible';
+      }
+    }
+    if (damageRef.current) {
+      damageRef.current.style.width =
+        (((BIRD_HP - birdDamage) / BIRD_HP) * 100).toString() + '%';
+    }
+    if (goalRef.current) {
+      goalRef.current.innerHTML = goal.toString();
+    }
+  };
 
-  // BirdFlying
+  // Handle
   const handleFlying = () => {
     if (gameOver) return;
     verticalY = -2;
+  };
+  const handleStart = () => {
+    const startLogs = ['Ready', '3', '2', '1', 'Go...'];
+    let i = 0;
+    const logger = document.querySelector('#logger');
+    logger?.classList.add('animate-ping');
+    if (logger) {
+      const updateLogger = () => {
+        if (i < startLogs.length) {
+          logger.innerHTML = startLogs[i];
+          setTimeout(updateLogger, 1000);
+        } else setStated(true);
+        i++;
+      };
+      updateLogger();
+    }
   };
 
   // Check collision
@@ -188,40 +229,96 @@ function Play() {
   // Run game
   const gameLoop = () => {
     if (canvas.current) {
-      requestAnimationFrame(gameLoop);
       const context: CanvasRenderingContext2D | null =
         canvas.current.getContext('2d');
       if (context) {
         draw(context);
         moveBird();
+        createSometingElse();
       }
+      requestAnimationFrame(gameLoop);
     }
   };
+
   useEffect(() => {
-    gameLoop();
-    setRunning(true);
-    if (running) {
-      setInterval(() => {
-        verticalX = verticalX < -8 ? -8 : verticalX - 0.15;
-      }, 10000);
-      setInterval(createBarries, 3500);
-      setInterval(createGifts, 2000);
+    if (started) {
+      gameLoop();
+      setRunning(true);
+      if (running) {
+        setInterval(() => {
+          verticalX = verticalX < -8 ? -8 : verticalX - 0.15;
+        }, 10000);
+        setInterval(createBarries, 3500);
+        setInterval(createGifts, 2000);
+        setInterval(() => {
+          goal += 1;
+        }, 1000);
+      }
     }
-  }, [running]);
+  }, [running, canvas, started]);
 
   return (
     <div
-      className="relative bg-no-repeat "
       style={{
         width: `${SCREEN_W}px`,
         height: `${SCREEN_H}px`,
-        backgroundImage: `url(${images.bgVer})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'bottom',
       }}
-      onClick={handleFlying}
+      className="relative"
     >
-      <canvas ref={canvas} width={SCREEN_W} height={SCREEN_H}></canvas>
+      <div className="absolute p-2 z-10 left-0 right-0 h-fit flex items-center justify-center text-white">
+        <div className="flex gap-1 items-center">
+          <img className="h-8 w-8 object-contain" src={images.heart} alt="" />
+          <div className="w-20 h-2 border border-gray-500">
+            <div className="w-full h-full bg-red-500" ref={damageRef} />
+          </div>
+        </div>
+        <div className="flex-1 flex items-center justify-center">
+          <p ref={goalRef} className="text-5xl text-center">
+            0
+          </p>
+          <p>/{GOAL_TARGET}</p>
+        </div>
+        <div className="w-28 flex items-center justify-end gap-1">
+          <p ref={scoreRef} className="flex-1 text-3xl text-right">
+            0
+          </p>
+          <img className="h-8 w-8 object-contain" src={images.gift1} alt="" />
+        </div>
+      </div>
+      <div
+        className="absolute inset-0 z-50 flex items-center justify-center w-full h-full bg-black/80 text-white "
+        ref={overRef}
+        style={{
+          visibility: 'hidden',
+        }}
+      >
+        <div className="text-5xl animate-bounce">Game Over</div>
+      </div>
+      <div
+        className="absolute inset-0 z-50 flex items-center justify-center w-full h-full bg-black/50 text-white"
+        ref={startRef}
+        style={{
+          visibility: started ? 'hidden' : 'visible',
+        }}
+        onClick={handleStart}
+      >
+        <div id="logger" className="text-5xl">
+          Click to start
+        </div>
+      </div>
+      <div
+        className="absolute inset-0 bg-no-repeat "
+        style={{
+          width: `${SCREEN_W}px`,
+          height: `${SCREEN_H}px`,
+          backgroundImage: `url(${images.bgVer})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'bottom',
+        }}
+        onClick={handleFlying}
+      >
+        <canvas ref={canvas} width={SCREEN_W} height={SCREEN_H}></canvas>
+      </div>
     </div>
   );
 }

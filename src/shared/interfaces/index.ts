@@ -8,6 +8,7 @@ export interface IBarryDefalt {
   w: number;
   h: number;
   img: string;
+  damage: number;
 }
 export interface IBarries extends IBarryDefalt {
   x: number;
