@@ -1,17 +1,10 @@
-import { useEffect} from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import { useFullScreenHandle } from "react-full-screen";
 import Default from './layouts';
 import { publicRoutes } from './routes';
 
-
 function App() {
-  const handle = useFullScreenHandle();
-  useEffect(() => {
-    handle.enter()
-  }, [])
   return (
-    <>
+    <div className='w-screen h-screen overflow-hidden'>
       <Router>
         <>
           <Routes>
@@ -37,7 +30,7 @@ function App() {
           </Routes>
         </>
       </Router>
-    </>
+    </div>
   );
 }
 

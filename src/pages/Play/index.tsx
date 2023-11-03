@@ -1,13 +1,18 @@
-import { useRef, useEffect, useState } from 'react';
 import images from '@shared/assets/images';
+import getRamdom from '@shared/utils/getRamdom';
 import {
   IBarries,
   IBarryDefalt,
   IBird,
   IGift,
   IGiftDefalt,
+  IHelp,
+  IHelpDefalt,
 } from '@src/shared/interfaces';
-import getRamdom from '@shared/utils/getRamdom';
+import { BARRIES } from '@shared/resources/Barries';
+import { GIFTIT } from '@shared/resources/Gifts';
+import { HELPS, typeHepls } from '@shared/resources/Helps';
+import { useEffect, useRef, useState } from 'react';
 
 function Play() {
   const [running, setRunning] = useState<boolean>(false);
@@ -18,6 +23,7 @@ function Play() {
   const overRef = useRef<HTMLDivElement>(null);
   const damageRef = useRef<HTMLDivElement>(null);
   const goalRef = useRef<HTMLParagraphElement>(null);
+  const helpRef = useRef<HTMLDivElement>(null);
 
   let score: number = 0;
   let gameOver: boolean = false;
@@ -28,102 +34,64 @@ function Play() {
   const GRAVITY = 0.08;
 
   // BIRD
-  const GOAL_TARGET = 300;
-  const BIRD_W = 120;
-  const BIRD_H = 70;
-  const BIRD_HP = 250;
-  let birdDamage = 0;
+  const GOAL_TARGET: number = 300;
+  const BIRD_W: number = 120;
+  const BIRD_H: number = 70;
+  const BIRD_HP: number = 250;
+  let birdDamage: number = 0;
   let verticalX = -3;
   let verticalY = 0;
   const bird: IBird = {
-    x: SCREEN_W / 8,
+    x: SCREEN_W / 7,
     y: SCREEN_H / 2,
     w: BIRD_W,
     h: BIRD_H,
   };
 
   // BARRIER
-  const barryDefaults: IBarryDefalt[] = [
-    {
-      w: 50,
-      h: 50,
-      img: images.barries1,
-      damage: 10,
-    },
-    {
-      w: 80,
-      h: 80,
-      img: images.barries2,
-      damage: 20,
-    },
-    {
-      w: 90,
-      h: 90,
-      img: images.barries3,
-      damage: 30,
-    },
-    {
-      w: 120,
-      h: 120,
-      img: images.barries4,
-      damage: 40,
-    },
-    {
-      w: 120,
-      h: 120,
-      img: images.barries5,
-      damage: 50,
-    },
-    {
-      w: 140,
-      h: 140,
-      img: images.barries6,
-      damage: 60,
-    },
-    {
-      w: 180,
-      h: 160,
-      img: images.barries7,
-      damage: 70,
-    },
-  ];
+  const barryDefaults: IBarryDefalt[] = BARRIES;
   const barries: IBarries[] = [];
+  let speedBarry: number = -3;
 
   // GIFT
-  const giftDefaults: IGiftDefalt[] = [
-    {
-      w: 35,
-      h: 35,
-      img: images.gift1,
-      mark: 1,
-    },
-    {
-      w: 35,
-      h: 35,
-      img: images.gift2,
-      mark: 2,
-    },
-    {
-      w: 35,
-      h: 35,
-      img: images.gift3,
-      mark: 3,
-    },
-  ];
+  const giftDefaults: IGiftDefalt[] = GIFTIT;
   const gifts: IGift[] = [];
 
+  // Help
+  const helpDefaults: IHelpDefalt[] = HELPS;
+  const helps: IHelp[] = [];
+
+  // Draw Canvas
   const draw = (context: CanvasRenderingContext2D) => {
     context.clearRect(0, 0, SCREEN_W, SCREEN_H);
     // Vẽ barries
     for (let i = 0; i < barries.length; i++) {
       let barry: IBarries = barries[i];
-      barry.x += verticalX;
+      if (barry.ellipsed) {
+        barry.x += verticalX;
+        barry.y =
+          barry.y + 2 < SCREEN_H - barry.h ? barry.y + 2 : SCREEN_H - barry.h;
+        barry.img =
+          barry.isDetroying && barry.ellipsed ? images.boom : barry.imgDie;
+        const timer = setTimeout(() => {
+          barries[i].isDetroying = false;
+          clearTimeout(timer);
+        }, 500);
+        const deleted = setTimeout(() => {
+          barries.slice(i, 1);
+          clearTimeout(deleted);
+        }, 1000);
+      } else {
+        barry.x += speedBarry;
+      }
       const barryImage = new Image();
       barryImage.src = barry.img;
       context.drawImage(barryImage, barry.x, barry.y, barry.w, barry.h);
       if (detectCollision(bird, barry)) {
         birdDamage += barry.damage;
         barries[i].damage = 0;
+        barries[i].ellipsed = true;
+        barries[i].isDetroying = true;
         if (birdDamage >= BIRD_HP) gameOver = true;
       }
     }
@@ -131,12 +99,66 @@ function Play() {
     for (let i = 0; i < gifts.length; i++) {
       let gift: IGift = gifts[i];
       gift.x += verticalX;
+      gift.y = gift.active ? gift.y - 2 : gift.y;
       const giftImage = new Image();
-      giftImage.src = gift.img;
+      giftImage.src = gift.active ? images.gift_active : gift.img;
       context.drawImage(giftImage, gift.x, gift.y, gift.w, gift.h);
       if (detectCollision(bird, gift)) {
         score += gift.mark;
         gifts[i].mark = 0;
+        gifts[i].active = true;
+        const timer = setTimeout(() => {
+          gifts.slice(i, 1);
+          clearTimeout(timer);
+        }, 1000);
+      }
+    }
+    // Vẽ Help
+    for (let i = 0; i < helps.length; i++) {
+      let help: IHelp = helps[i];
+      help.x = help.isActive ? help.x - 5 : help.x + verticalX;
+      help.y = help.isActive ? help.y - 2 : help.y;
+      const helpImage = new Image();
+      helpImage.src = help.img;
+      context.drawImage(helpImage, help.x, help.y, help.w, help.h);
+      if (detectCollision(bird, help) && !help.isActive) {
+        helps[i].isActive = true;
+
+        // Render
+        if (helpRef.current) {
+          helpRef.current.style.visibility = 'visible';
+          const timer = setTimeout(() => {
+            if (helpRef.current) {
+              helpRef.current.style.visibility = 'hidden';
+              clearTimeout(timer);
+            }
+          }, 2000);
+        }
+        const img: HTMLImageElement | null =
+          document.querySelector('#img-help');
+        const name: HTMLParagraphElement | null =
+          document.querySelector('#name-help');
+        if (img) img.src = help.img;
+        if (name) name.innerHTML = help.type;
+        // Logic
+        switch (help.type) {
+          case typeHepls.BOOTS:
+            let oldSpeed = verticalX;
+            verticalX = -5;
+            const timer = setTimeout(() => {
+              verticalX = oldSpeed;
+              clearTimeout(timer);
+            }, 3000);
+            break;
+          case typeHepls.HP:
+            birdDamage = birdDamage === 0 ? 0 : birdDamage - 10;
+            break;
+          default:
+            break;
+        }
+        setTimeout(() => {
+          helps.slice(i, 1);
+        }, 500);
       }
     }
     // Vẽ chim
@@ -154,7 +176,7 @@ function Play() {
   const createBarries = () => {
     if (gameOver) return;
     const target: IBarryDefalt =
-      barryDefaults[getRamdom(barryDefaults.length) - 1];
+      barryDefaults[getRamdom(barryDefaults.length - 1)];
     const barry: IBarries = {
       ...target,
       x: SCREEN_W + getRamdom(100),
@@ -168,7 +190,7 @@ function Play() {
   const createGifts = () => {
     if (gameOver) return;
     const target: IGiftDefalt =
-      giftDefaults[getRamdom(giftDefaults.length) - 1];
+      giftDefaults[getRamdom(giftDefaults.length - 1)];
     const gift: IGift = {
       ...target,
       x: SCREEN_W,
@@ -177,6 +199,20 @@ function Play() {
     gifts.push(gift);
     if (gifts[0].x < 0) {
       gifts.shift();
+    }
+  };
+  const createHelps = () => {
+    if (gameOver) return;
+    const target: IHelpDefalt =
+      helpDefaults[getRamdom(giftDefaults.length - 1)];
+    const help: IHelp = {
+      ...target,
+      x: SCREEN_W,
+      y: Math.random() * (SCREEN_H - target.h),
+    };
+    helps.push(help);
+    if (helps[0].x < 0) {
+      helps.shift();
     }
   };
   const createSometingElse = () => {
@@ -205,6 +241,7 @@ function Play() {
   const handleStart = () => {
     const startLogs = ['Ready', '3', '2', '1', 'Go...'];
     let i = 0;
+    if (i > 0) return;
     const logger = document.querySelector('#logger');
     logger?.classList.add('animate-ping');
     if (logger) {
@@ -220,7 +257,7 @@ function Play() {
   };
 
   // Check collision
-  function detectCollision(a: IBird, b: IGift | IBarries) {
+  function detectCollision(a: IBird, b: IGift | IBarries | IHelp) {
     return (
       a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y
     );
@@ -248,14 +285,23 @@ function Play() {
         setInterval(() => {
           verticalX = verticalX < -8 ? -8 : verticalX - 0.15;
         }, 10000);
-        setInterval(createBarries, 3500);
+        setInterval(createBarries, 2500);
         setInterval(createGifts, 2000);
+        setInterval(createHelps, 10000);
         setInterval(() => {
+          speedBarry = speedBarry - 0.75 === -14 ? -14 : speedBarry - 0.5;
+        }, 3500);
+        setInterval(() => {
+          if (gameOver) return;
           goal += 1;
         }, 1000);
       }
     }
   }, [running, canvas, started]);
+
+  useEffect(() => {
+    console.log(verticalX);
+  }, [verticalX]);
 
   return (
     <div
@@ -265,7 +311,8 @@ function Play() {
       }}
       className="relative"
     >
-      <div className="absolute p-2 z-10 left-0 right-0 h-fit flex items-center justify-center text-white">
+      {/* Header */}
+      <div className="absolute p-2 z-10 top-5 left-0 right-0 h-16 flex items-center justify-center text-white">
         <div className="flex gap-1 items-center">
           <img className="h-8 w-8 object-contain" src={images.heart} alt="" />
           <div className="w-20 h-2 border border-gray-500">
@@ -285,6 +332,7 @@ function Play() {
           <img className="h-8 w-8 object-contain" src={images.gift1} alt="" />
         </div>
       </div>
+      {/* Welcome */}
       <div
         className="absolute inset-0 z-50 flex items-center justify-center w-full h-full bg-black/80 text-white "
         ref={overRef}
@@ -294,6 +342,7 @@ function Play() {
       >
         <div className="text-5xl animate-bounce">Game Over</div>
       </div>
+      {/* Over */}
       <div
         className="absolute inset-0 z-50 flex items-center justify-center w-full h-full bg-black/50 text-white"
         ref={startRef}
@@ -305,6 +354,24 @@ function Play() {
         <div id="logger" className="text-5xl">
           Click to start
         </div>
+      </div>
+      {/* Boost */}
+      <div
+        ref={helpRef}
+        style={{
+          visibility: 'hidden',
+        }}
+        className="p-1 absolute z-10 top-32 right-1 w-fit h-14 flex items-center bg-black/50 border-[3px] border-yellow-300 rounded-xl animate-ping"
+      >
+        <img
+          id="img-help"
+          className="w-10 h-10 object-contain"
+          src={images.help2}
+          alt=""
+        />
+        <p id="name-help" className="text-4xl text-white">
+          BOOST!!!
+        </p>
       </div>
       <div
         className="absolute inset-0 bg-no-repeat "

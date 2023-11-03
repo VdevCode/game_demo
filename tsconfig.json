@@ -47,6 +47,9 @@
       ],
       "@/*": [
         "src/*"
+      ],
+      "@resources/*": [
+        "src/shared/resources/*"
       ]
     }
   },
