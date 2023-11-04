@@ -1,3 +1,4 @@
+import images from '@shared/assets/images';
 import { ReactNode } from 'react';
 
 interface DefaultProps {
@@ -6,7 +7,15 @@ interface DefaultProps {
 
 function Default({ children }: DefaultProps) {
   return (
-    <div className="w-screen h-screen flex justify-center items-center">
+    <div
+      style={{
+        backgroundImage: `url(${images.bg})`,
+        backgroundPosition: 'center',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+      }}
+      className="h-screen w-screen flex items-center justify-center"
+    >
       {children}
     </div>
   );

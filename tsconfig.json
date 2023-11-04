@@ -50,6 +50,18 @@
       ],
       "@resources/*": [
         "src/shared/resources/*"
+      ],
+      "@components/*": [
+        "src/shared/components/*"
+      ],
+      "@Home/*": [
+        "src/pages/Home/*"
+      ],
+      "@ChoiceJob/*": [
+        "src/pages/ChoiceJob/*"
+      ],
+      "@Caculate/*": [
+        "src/pages/Caculate/*"
       ]
     }
   },

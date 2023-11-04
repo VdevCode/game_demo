@@ -2,9 +2,9 @@ import images from '../assets/images';
 import { IHelpDefalt } from '../interfaces';
 
 export enum typeHepls {
-  BOOTS = 'boots',
+  BOOTS = 'Speeding',
   SLOW = 'slow',
-  HP = 'hp',
+  HP = 'Healing',
   MANA = 'mana',
 }
 export const HELPS: IHelpDefalt[] = [

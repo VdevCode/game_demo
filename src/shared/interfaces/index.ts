@@ -39,3 +39,8 @@ export interface IHelp extends IHelpDefalt {
   x: number;
   y: number;
 }
+export interface IBackGround {
+  x: number;
+  y: number;
+  img: string;
+}
