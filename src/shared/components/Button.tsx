@@ -1,4 +1,4 @@
-import { MouseEvent, ReactNode } from 'react';
+import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import images from '../assets/images';
 
@@ -17,7 +17,6 @@ function Button({
   disabled,
   ...passProps
 }: ButtonProps) {
-  
   // Props
   const props: any = {
     onClick,
@@ -44,8 +43,12 @@ function Button({
   }
 
   return (
-    <Comp {...passProps} className='h-14'>
-      <img className='w-full h-full object-contain' src={images.nextBtn} alt="" />
+    <Comp {...passProps} className="h-14">
+      <img
+        className="w-full h-full object-contain"
+        src={images.nextBtn}
+        alt=""
+      />
     </Comp>
   );
 }

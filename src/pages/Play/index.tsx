@@ -1,11 +1,10 @@
+import configs from '@configs/index';
 import images from '@shared/assets/images';
 import { BARRIES } from '@shared/resources/Barries';
 import { GIFTIT } from '@shared/resources/Gifts';
 import { HELPS, typeHepls } from '@shared/resources/Helps';
 import getRamdom from '@shared/utils/getRamdom';
-import configs from '@configs/index';
 import {
-  IBackGround,
   IBarries,
   IBarryDefalt,
   IBird,
