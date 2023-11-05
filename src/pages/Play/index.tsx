@@ -5,6 +5,8 @@ import { GIFTIT } from '@shared/resources/Gifts';
 import { HELPS, typeHepls } from '@shared/resources/Helps';
 import getRamdom from '@shared/utils/getRamdom';
 import {
+  IBackGround,
+  IBackGroundDefault,
   IBarries,
   IBarryDefalt,
   IBird,
@@ -39,13 +41,13 @@ function Play() {
 
   const SCREEN_W = window.innerWidth;
   const SCREEN_H = window.innerHeight;
-  const GRAVITY = 0.15;
+  const GRAVITY = 0.3;
 
   // BIRD
   const GOAL_TARGET: number = 10;
-  const BIRD_W: number = 120;
-  const BIRD_H: number = 70;
-  const BIRD_HP: number = 50;
+  const BIRD_W: number = 60;
+  const BIRD_H: number = 40;
+  const BIRD_HP: number = 100;
   let birdDamage: number = 0;
   let verticalX = -3;
   let verticalY = 0;
@@ -54,7 +56,22 @@ function Play() {
     y: SCREEN_H / 2,
     w: BIRD_W,
     h: BIRD_H,
+    isUpping: false,
+    imgDefault: images.TEST_NORMAL,
+    imgUpping: images.TEST_UP,
+    imgDown: images.TEST_DOWN,
+    imgDie: images.TEST_DIE,
+    imgWin: images.TEST_WIN,
   };
+
+  // BACKGROUND
+  const bgDefauls: IBackGround[] = [
+    { x: 0, y: 0, img: images.BG_IMG, using: false },
+    { x: SCREEN_W, y: 0, img: images.BG_IMG, using: false },
+    { x: SCREEN_W * 2, y: 0, img: images.BG_IMG, using: false },
+  ];
+  const backgrounds: IBackGround[] = [...bgDefauls.slice(0, 3)];
+  let indexNowBg: number = backgrounds.length - 1;
 
   // BARRIER
   const barryDefaults: IBarryDefalt[] = BARRIES;
@@ -72,6 +89,24 @@ function Play() {
   // Draw Canvas
   const draw = (context: CanvasRenderingContext2D) => {
     context.clearRect(0, 0, SCREEN_W, SCREEN_H);
+    // Vẽ background
+    for (let i = 0; i < backgrounds.length; i++) {
+      const bg: IBackGround = backgrounds[i];
+      bg.x -= 2;
+      context.drawImage(bg.img, bg.x, bg.y, SCREEN_W, SCREEN_H);
+      if (bg.x < 0 && !bg.using) {
+        indexNowBg =
+          indexNowBg + 1 >= bgDefauls.length - 1 ? 0 : indexNowBg + 1;
+        backgrounds[i].using = true;
+        backgrounds.push({
+          x: SCREEN_W * 2,
+          y: 0,
+          img: bgDefauls[indexNowBg].img,
+          using: false,
+        });
+        backgrounds.unshift();
+      }
+    }
     // Vẽ barries
     for (let i = 0; i < barries.length; i++) {
       let barry: IBarries = barries[i];
@@ -80,7 +115,9 @@ function Play() {
         barry.y =
           barry.y + 4 < SCREEN_H - barry.h ? barry.y + 4 : SCREEN_H - barry.h;
         barry.img =
-          barry.isDetroying && barry.ellipsed ? images.boom : barry.imgDie;
+          barry.isDetroying && barry.ellipsed
+            ? images.ENEMY_EXPLOSION
+            : barry.imgDie;
         const timer = setTimeout(() => {
           barries[i].isDetroying = false;
           clearTimeout(timer);
@@ -92,9 +129,7 @@ function Play() {
       } else {
         barry.x += speedBarry;
       }
-      const barryImage = new Image();
-      barryImage.src = barry.img;
-      context.drawImage(barryImage, barry.x, barry.y, barry.w, barry.h);
+      context.drawImage(barry.img, barry.x, barry.y, barry.w, barry.h);
       if (detectCollision(bird, barry)) {
         birdDamage =
           birdDamage + barry.damage >= BIRD_HP
@@ -111,8 +146,7 @@ function Play() {
       let gift: IGift = gifts[i];
       gift.x += verticalX;
       gift.y = gift.active ? gift.y - 4 : gift.y;
-      const giftImage = new Image();
-      giftImage.src = gift.active ? images.gift_active : gift.img;
+      const giftImage = gift.active ? images.ITEM_ACTIVE : gift.img;
       context.drawImage(giftImage, gift.x, gift.y, gift.w, gift.h);
       if (detectCollision(bird, gift)) {
         score += gift.mark;
@@ -129,12 +163,9 @@ function Play() {
       let help: IHelp = helps[i];
       help.x = help.isActive ? help.x - 5 : help.x + verticalX;
       help.y = help.isActive ? help.y - 2 : help.y;
-      const helpImage = new Image();
-      helpImage.src = help.img;
-      context.drawImage(helpImage, help.x, help.y, help.w, help.h);
+      context.drawImage(help.img, help.x, help.y, help.w, help.h);
       if (detectCollision(bird, help) && !help.isActive) {
         helps[i].isActive = true;
-
         // Render
         if (helpRef.current) {
           helpRef.current.style.visibility = 'visible';
@@ -147,10 +178,10 @@ function Play() {
         }
         const img: HTMLImageElement | null =
           document.querySelector('#img-help');
-        if (img) img.src = help.img;
+        if (img) img.src = help.imgNotify;
         // Logic
         switch (help.type) {
-          case typeHepls.BOOTS:
+          case typeHepls.BOOTS: {
             let oldSpeed = verticalX;
             verticalX = -5;
             const timer = setTimeout(() => {
@@ -158,9 +189,22 @@ function Play() {
               clearTimeout(timer);
             }, 3000);
             break;
+          }
           case typeHepls.HP:
             birdDamage = birdDamage === 0 ? 0 : birdDamage - 10;
             break;
+          case typeHepls.SLOW: {
+            let oldSpeed = verticalX;
+            let oldSpeedBarry = speedBarry;
+            verticalX = -2;
+            speedBarry += 0.5;
+            const timer = setTimeout(() => {
+              verticalX = oldSpeed;
+              speedBarry = oldSpeedBarry;
+              clearTimeout(timer);
+            }, 3000);
+            break;
+          }
           default:
             break;
         }
@@ -170,28 +214,38 @@ function Play() {
       }
     }
     // Vẽ chim
-    const birdImg = new Image();
-    birdImg.src = images.spaceship;
-    context.drawImage(birdImg, bird.x, bird.y, BIRD_W, BIRD_H);
+    let imgBird: any = bird.imgDefault;
+    if (!gameOver && !gameWin) {
+      if (bird.isUpping) imgBird = bird.imgUpping;
+      else imgBird = bird.imgDown;
+    } else if (gameOver && !gameWin) {
+      imgBird = bird.imgDie;
+    }
+    if (gameWin) imgBird = bird.imgWin;
+    context.drawImage(imgBird, bird.x, bird.y, BIRD_W, BIRD_H);
   };
 
   // Create
   const moveBird = () => {
-    verticalY += GRAVITY;
+    // Đã thắng
     if (gameWin) {
       bird.x += 5;
       if (bird.x > SCREEN_W + 10) navigate(configs.routes.caculate);
-    } else {
-      bird.y = Math.max(bird.y + verticalY, 0);
-      console.log(bird.y);
-      if (gameOver) {
-        const timer = setTimeout(() => {
+    }
+    // Đang chơi
+    else {
+      if (!gameOver) {
+        verticalY =
+          bird.isUpping && !gameOver ? verticalY - 0.5 : verticalY + GRAVITY;
+        bird.y = Math.min(Math.max(bird.y + verticalY, 0), SCREEN_H - BIRD_H);
+      } else {
+        verticalY += GRAVITY;
+        bird.y += verticalY;
+        if (bird.y >= SCREEN_H) {
           navigate(configs.routes.caculate);
-          clearTimeout(timer);
-        }, 300);
+        }
       }
     }
-    if (bird.y > SCREEN_H - BIRD_H) bird.y = SCREEN_H - BIRD_H;
   };
   const createBarries = () => {
     if (gameOver || gameWin) return;
@@ -257,9 +311,13 @@ function Play() {
   };
 
   // Handle
-  const handleFlying = () => {
+  const handleFlyingStart = () => {
     if (gameOver && !gameWin) return;
-    verticalY = -3;
+    bird.isUpping = true;
+  };
+  const handleFlyingEnd = () => {
+    if (gameOver && !gameWin) return;
+    bird.isUpping = false;
   };
   const handleStart = () => {
     let i: number = 0;
@@ -311,7 +369,7 @@ function Play() {
         setInterval(createGifts, 2000);
         setInterval(createHelps, 10000);
         setInterval(() => {
-          speedBarry = speedBarry - 0.75 === -14 ? -14 : speedBarry - 0.5;
+          speedBarry = speedBarry - 0.5 === -14 ? -14 : speedBarry - 0.5;
         }, 3500);
         setInterval(() => {
           if (gameOver || gameWin) return;
@@ -331,7 +389,11 @@ function Play() {
         ref={headerRef}
         className="absolute z-10 top-1 left-0 right-0 overflow-hidden hidden items-center flex-col"
       >
-        <img className="h-20 lg:h-28 object-contain" src={images.name} alt="" />
+        <img
+          className="h-20 lg:h-28 object-contain"
+          src={images.nameImage}
+          alt=""
+        />
         <div className="my-2 pr-4 w-full flex items-center justify-between">
           <div className="flex items-center w-fit">
             <img
@@ -352,7 +414,7 @@ function Play() {
           <div className="flex-1 flex items-center justify-center gap-1">
             <img
               className="w-6 h-6 lg:h-10 lg:w-10 object-contain"
-              src={images.coins}
+              src={images.coinIcon}
               alt=""
             />
             <p ref={scoreRef} className="text-2xl lg:text-5xl">
@@ -380,25 +442,8 @@ function Play() {
           ref={helpRef}
           className="invisible flex items-center justify-center w-14 h-14 bg-white/20 animate-bounce rounded-full"
         >
-          <img id="img-help" src={images.help2} className="w-8 h-8" alt="" />
+          <img id="img-help" src={images.help1} className="w-8 h-8" alt="" />
         </div>
-      </div>
-      {/* Over */}
-      <div
-        className="absolute inset-0 z-50 pt-24 hidden items-center justify-center flex-col w-full h-full bg-black/10 text-white"
-        ref={overRef}
-        style={{
-          visibility: 'visible',
-        }}
-      >
-        <div className="win_over flex flex-col justify-center items-center">
-          <img className="h-24 object-contain" src={images.name} alt="" />
-          <div className="my-10 flex gap-1 flex-col items-center justify-center">
-            <img className="w-3/4" src={images.winLog} alt="" />
-            <p>Đang tổng hợp...</p>
-          </div>
-        </div>
-        <div className="h-[80vh] w-28"></div>
       </div>
       {/* Welcome */}
       <div
@@ -409,7 +454,7 @@ function Play() {
         }}
         onClick={handleStart}
       >
-        <div className="relative w-[70%] lg:w-72">
+        <div className="relative w-[60%] lg:w-72">
           <img
             className="w-full h-full object-cover"
             src={images.loadingBox}
@@ -417,7 +462,7 @@ function Play() {
           />
           <div className="absolute bottom-2 left-0 right-0 w-full h-8 flex items-end justify-center">
             <div className="px-1 w-[90%] h-full flex items-center justify-between bg-[#552E0F] rounded-md">
-              <div className="w-full flex items-center justify-between gap-1">
+              <div className="w-full flex items-center justify-between">
                 {loadingBar.map((item, idx) => (
                   <img key={idx} className="w-5 h-6" src={item} alt="" />
                 ))}
@@ -432,16 +477,18 @@ function Play() {
           READY...GO
         </p>
       </div>
+      {/* Screen */}
       <div
         className="absolute inset-0 bg-no-repeat "
         style={{
           width: `${SCREEN_W}px`,
           height: `${SCREEN_H}px`,
-          backgroundImage: `url(${images.bg})`,
+          backgroundImage: `url(${images.BG})`,
           backgroundSize: 'cover',
           backgroundPosition: 'bottom',
         }}
-        onClick={handleFlying}
+        onTouchStart={handleFlyingStart}
+        onTouchEnd={handleFlyingEnd}
       >
         <canvas ref={canvas} width={SCREEN_W} height={SCREEN_H}></canvas>
       </div>

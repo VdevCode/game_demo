@@ -43,7 +43,7 @@ function Button({
   }
 
   return (
-    <Comp {...passProps} className="h-14">
+    <Comp {...passProps} className="h-16">
       <img
         className="w-full h-full object-contain"
         src={images.nextBtn}

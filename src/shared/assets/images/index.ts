@@ -1,101 +1,155 @@
-import name from './src/name.png';
-import bg from './src/bg.png';
-import bgDefault from './src/bg_default.png';
-import bgTest from './src/bg-test.jpg';
-import hpIcon from './src/hpIcon.png';
-import processIcon from './src/processItem.png';
-import boxIcon from './src/boxIcon.png';
-import heart from './src/heart.png';
-import spaceship from './src/spaceship.png';
-import boom from './src/boom.png';
-import coins from './src/coins.png';
-import bee1 from './src/bee1.png';
-import bee2 from './src/bee2.png';
-import barries1 from './src/barries1.png';
-import barries2 from './src/barries2.png';
-import barries3 from './src/barries3.png';
-import barries4 from './src/barries4.png';
-import barries1_down from './src/barries1_down.png';
-import barries3_down from './src/barries3_down.png';
-import barries4_down from './src/barries4_down.png';
-import help2 from './src/help2.png';
-import gift_active from './src/gift_active.png';
-import giftIt1 from './src/giftIt1.png';
-import giftIt2 from './src/giftIt2.png';
-import giftIt3 from './src/giftIt3.png';
-import giftIt4 from './src/giftIt4.png';
-import giftIt5 from './src/giftIt5.png';
-import giftIt6 from './src/giftIt6.png';
-import loadingBox from './src/loading_box.png';
-import loadingLog from './src/loading_log.png';
-import loadingMark from './src/loading_mark.png';
-import loadingProcess from './src/loadingprocess.png';
-import winLog from './src/win_log.png';
-import nextBtn from './src/nextbtn.png';
-import ong1 from './src/ong1.png';
-import ong2 from './src/ong2.png';
-import ong3 from './src/ong3.png';
-import ong4 from './src/ong4.png';
-import ong5 from './src/ong5.png';
-import ong6 from './src/ong6.png';
-import ong7 from './src/ong7.png';
-import boxCharactor from './src/box_ong.png';
-import jobIt from './src/jobIT.png';
-import jobTravel from './src/jobTravel.png';
-import jobGame from './src/jobGame.png';
-import jobGra from './src/jobGra.png';
-import jobElec from './src/jobElec.png';
-import formBox from './src/forrmbox.png';
+import nameImage from './src/text/name.png';
+import bg from './src/background/bg.png';
+import charactor1 from './src/bee/ong3.png';
+import enemy1 from './src/enemy/barries1.png';
+import enemy2 from './src/enemy/barries2.png';
+import enemy3 from './src/enemy/barries3.png';
+import enemy4 from './src/enemy/barries4.png';
+import enemy1_down from './src/enemy/barries1_down.png';
+import enemy2_down from './src/enemy/barries1_down.png';
+import enemy3_down from './src/enemy/barries3_down.png';
+import enemy4_down from './src/enemy/barries4_down.png';
+import enemy_explosion from './src/enemy/explosion.png';
+import itemActive from './src/item/item_active.png';
+import it1 from './src/item/it/it1.png';
+import it2 from './src/item/it/it2.png';
+import it3 from './src/item/it/it3.png';
+import it4 from './src/item/it/it4.png';
+import it5 from './src/item/it/it5.png';
+import help1 from './src/help/help1.png';
+import help2 from './src/help/help2.png';
+import help3 from './src/help/help3.png';
+import boxIcon from './src/play/boxIcon.png';
+import hpIcon from './src/play/hpIcon.png';
+import processIcon from './src/play/processIcon.png';
+import coinIcon from './src/play/coins.png';
+import loadingBox from './src/loading/loading_box.png';
+import loadingMark from './src/loading/loading_mark.png';
+import loadingProcess from './src/loading/loading_process.png';
+import test_normal from './src/bee/test_normal.png';
+import test_win from './src/bee/text_win.png';
+import test_up from './src/bee/test_up.png';
+import test_down from './src/bee/test_down.png';
+import test_die from './src/bee/test_die.png';
+
+const NAME = new Image();
+NAME.src = nameImage;
+
+// TEST
+const TEST_NORMAL = new Image();
+TEST_NORMAL.src = test_normal;
+const TEST_WIN = new Image();
+TEST_WIN.src = test_win;
+const TEST_UP = new Image();
+TEST_UP.src = test_up;
+const TEST_DOWN = new Image();
+TEST_DOWN.src = test_down;
+const TEST_DIE = new Image();
+TEST_DIE.src = test_die;
+
+// BACKGROUND
+const BG = bg;
+const BG_IMG = new Image();
+BG_IMG.src = bg;
+// BEE
+const CHARACTOR_1 = new Image();
+CHARACTOR_1.src = charactor1;
+
+// ENEMY
+const ENEMY_1 = new Image();
+ENEMY_1.src = enemy1;
+const ENEMY_1_DOWN = new Image();
+ENEMY_1_DOWN.src = enemy1_down;
+const ENEMY_2 = new Image();
+ENEMY_2.src = enemy2;
+const ENEMY_2_DOWN = new Image();
+ENEMY_2_DOWN.src = enemy2_down;
+const ENEMY_3 = new Image();
+ENEMY_3.src = enemy3;
+const ENEMY_3_DOWN = new Image();
+ENEMY_3_DOWN.src = enemy3_down;
+const ENEMY_4 = new Image();
+ENEMY_4.src = enemy4;
+const ENEMY_4_DOWN = new Image();
+ENEMY_4_DOWN.src = enemy4_down;
+const ENEMY_EXPLOSION = new Image();
+ENEMY_EXPLOSION.src = enemy_explosion;
+
+// HELP
+const HELP_1 = new Image();
+HELP_1.src = help1;
+const HELP_2 = new Image();
+HELP_2.src = help2;
+const HELP_3 = new Image();
+HELP_3.src = help3;
+
+// ITEM
+const ITEM_ACTIVE = new Image();
+ITEM_ACTIVE.src = itemActive;
+const IT_1 = new Image();
+IT_1.src = it1;
+const IT_2 = new Image();
+IT_2.src = it2;
+const IT_3 = new Image();
+IT_3.src = it3;
+const IT_4 = new Image();
+IT_4.src = it4;
+const IT_5 = new Image();
+IT_5.src = it5;
+
+// PLAY
+const HP_ICON = new Image();
+HP_ICON.src = hpIcon;
+const PROCESS_ICON = new Image();
+PROCESS_ICON.src = processIcon;
+const COIN_ICON = new Image();
+COIN_ICON.src = coinIcon;
+const BOX_ICON = new Image();
+BOX_ICON.src = boxIcon;
 
 const images = {
-  name,
-  bgTest,
-  bg,
-  bgDefault,
-  heart,
-  hpIcon,
-  processIcon,
-  boxIcon,
-  boom,
-  spaceship,
-  coins,
+  TEST_NORMAL,
+  TEST_WIN,
+  TEST_UP,
+  TEST_DOWN,
+  TEST_DIE,
+  nameImage,
+  NAME,
+  BG,
+  BG_IMG,
+  CHARACTOR_1,
+  ENEMY_1,
+  ENEMY_1_DOWN,
+  ENEMY_2,
+  ENEMY_2_DOWN,
+  ENEMY_3,
+  ENEMY_3_DOWN,
+  ENEMY_4,
+  ENEMY_4_DOWN,
+  ENEMY_EXPLOSION,
+  HELP_1,
+  help1,
+  HELP_2,
   help2,
-  bee1,
-  bee2,
-  barries1,
-  barries2,
-  barries3,
-  barries4,
-  barries1_down,
-  barries3_down,
-  barries4_down,
-  gift_active,
-  giftIt1,
-  giftIt2,
-  giftIt3,
-  giftIt4,
-  giftIt5,
-  giftIt6,
+  HELP_3,
+  help3,
+  ITEM_ACTIVE,
+  IT_1,
+  IT_2,
+  IT_3,
+  IT_4,
+  IT_5,
+  hpIcon,
+  HP_ICON,
+  processIcon,
+  PROCESS_ICON,
+  coinIcon,
+  COIN_ICON,
+  boxIcon,
+  BOX_ICON,
   loadingBox,
-  loadingLog,
   loadingMark,
   loadingProcess,
-  winLog,
-  nextBtn,
-  ong1,
-  ong2,
-  ong3,
-  ong4,
-  ong5,
-  ong6,
-  ong7,
-  formBox,
-  boxCharactor,
-  jobIt,
-  jobTravel,
-  jobGame,
-  jobGra,
-  jobElec,
 };
 
 export default images;
