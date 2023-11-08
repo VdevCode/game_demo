@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import images from '@shared/assets/images';
-import { gameChangeBee } from '../../../redux/gameSlice.js';
+import { gameChangeBee } from '../../../redux/gameSlice';
 
 interface IChoice {
   default: string;

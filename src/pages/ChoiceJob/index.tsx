@@ -1,7 +1,7 @@
 import images from '@shared/assets/images';
 import { Major } from '@shared/interfaces/enum';
 import { useDispatch } from 'react-redux';
-import { gameChangeMajor } from '../../redux/gameSlice.js';
+import { gameChangeMajor } from '../../redux/gameSlice';
 import { useNavigate } from 'react-router-dom';
 import configs from '@configs/index.js';
 
