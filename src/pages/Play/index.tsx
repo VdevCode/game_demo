@@ -6,7 +6,6 @@ import { HELPS, typeHepls } from '@shared/resources/Helps';
 import getRamdom from '@shared/utils/getRamdom';
 import {
   IBackGround,
-  IBackGroundDefault,
   IBarries,
   IBarryDefalt,
   IBird,

@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import images from '@shared/assets/images';
 import Win from './components/Win';
 import Lose from './components/Lose';
 
 function Caculate() {
   const [isWin, setWin] = useState<boolean>(true);
+  useEffect(() => {
+    setWin(false);
+  }, []);
   return (
     <div className="pt-12 flex flex-col h-screen w-screen items-center justify-center">
       <header className="relative h-[25vh] w-full flex items-center justify-center">

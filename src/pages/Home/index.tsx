@@ -2,7 +2,7 @@ import Button from '@shared/components/Button';
 import { useForm } from 'react-hook-form';
 
 function Home() {
-  const { register, handleSubmit } = useForm();
+  const { register } = useForm();
 
   const data = [
     {
@@ -29,11 +29,15 @@ function Home() {
 
   return (
     <div>
-      <div className="mb-3 flex items-center justify-centers flex-col">
+      <form className="mb-3 flex items-center justify-centers flex-col">
         {data.map((item, idx) => (
-          <input className="px-1 my-1 h-10" placeholder={item.lable} />
+          <input
+            key={idx}
+            className="px-1 my-1 h-10"
+            placeholder={item.lable}
+          />
         ))}
-      </div>
+      </form>
       <Button />
     </div>
   );
