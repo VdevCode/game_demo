@@ -51,7 +51,6 @@ export interface IBackGroundDefault {
   y: number;
   img: any;
 }
-
 export interface IBackGround extends IBackGroundDefault {
   using: boolean;
 }

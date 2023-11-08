@@ -319,22 +319,28 @@ function Play() {
     if (gameOver && !gameWin) return;
     bird.isUpping = false;
   };
+  let readyStart: boolean = false;
   const handleStart = () => {
-    let i: number = 0;
-    const timer = setInterval(() => {
-      const loading: string[] = [...loadingBar];
-      loading.splice(0, i);
-      loading.unshift(...Array(i).fill(images.loadingProcess));
-      setLoadingBar(loading);
-      i += 1;
-      if (i === 10) {
-        if (headerRef.current) {
-          headerRef.current.style.display = 'flex';
+    if (!readyStart) {
+      readyStart = true;
+      let i: number = 0;
+      const timer = setInterval(() => {
+        const loading: string[] = [...loadingBar];
+        loading.splice(0, i);
+        loading.unshift(...Array(i).fill(images.loadingProcess));
+        setLoadingBar(loading);
+        i += 1;
+        if (i === 10) {
+          if (headerRef.current) {
+            headerRef.current.style.display = 'flex';
+          }
+          setStated(true);
+          clearInterval(timer);
         }
-        setStated(true);
-        clearInterval(timer);
-      }
-    }, 500);
+      }, 500);
+    } else {
+      return;
+    }
   };
 
   // Check collision
@@ -394,24 +400,23 @@ function Play() {
           src={images.nameImage}
           alt=""
         />
-        <div className="my-2 pr-4 w-full flex items-center justify-between">
-          <div className="flex items-center w-fit">
-            <img
-              className="w-12 h-12 lg:w-20 lg:h-20 object-contain"
-              src={images.hpIcon}
-              alt=""
-            />
-            <div className="relative flex items-center w-20 lg:w-56 h-4 lg:h-10">
-              <img className="w-full h-full" src={images.boxIcon} alt="" />
-              <div className="absolute inset-0 w-full h-full p-[3.3px] lg:p-2">
-                <div
-                  ref={damageRef}
-                  className="w-full h-full bg-hpColor rounded-sm transition-all duration-500"
-                />
+        <div className="my-2 px-1 w-full flex items-center justify-between">
+          <div className="flex items-center justify-center flex-1 h-10">
+            <div className="relative z-10 w-7">
+              <img src={images.hpIcon} className="w-full scale-150" alt="" />
+            </div>
+            <div className="relative flex-1 translate-x-[-5%]">
+              <img
+                src={images.boxIcon}
+                className="relative z-0 w-full"
+                alt=""
+              />
+              <div className="absolute z-10 inset-0 py-[4.5px] pr-1 w-full h-full">
+                <div ref={damageRef} className="w-full h-full bg-hpColor"></div>
               </div>
             </div>
           </div>
-          <div className="flex-1 flex items-center justify-center gap-1">
+          <div className="w-32 flex items-center justify-center gap-1">
             <img
               className="w-6 h-6 lg:h-10 lg:w-10 object-contain"
               src={images.coinIcon}
@@ -421,19 +426,25 @@ function Play() {
               0
             </p>
           </div>
-          <div className="flex items-center w-fit">
-            <img
-              className="w-12 h-12 lg:w-20 lg:h-20 object-contain"
-              src={images.processIcon}
-              alt=""
-            />
-            <div className="relative flex items-center w-20 lg:w-56 h-4 lg:h-10">
-              <img className="w-full h-full" src={images.boxIcon} alt="" />
-              <div className="absolute inset-0 w-full h-full p-[3.3px] lg:p-2">
+          <div className="flex items-center justify-center flex-1 h-10">
+            <div className="relative z-10 w-7">
+              <img
+                src={images.processIcon}
+                className="w-full scale-150"
+                alt=""
+              />
+            </div>
+            <div className="relative flex-1 translate-x-[-5%]">
+              <img
+                src={images.boxIcon}
+                className="relative z-0 w-full"
+                alt=""
+              />
+              <div className="absolute z-10 inset-0 py-[4.5px] pr-1 w-full h-full">
                 <div
                   ref={goalRef}
-                  className="w-full h-full bg-processColor rounded-sm transition-all duration-500"
-                />
+                  className="w-1/2 h-full bg-processColor"
+                ></div>
               </div>
             </div>
           </div>

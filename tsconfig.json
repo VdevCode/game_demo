@@ -62,6 +62,9 @@
       ],
       "@Caculate/*": [
         "src/pages/Caculate/*"
+      ],
+      "@redux/*": [
+        "src/redux/*"
       ]
     }
   },

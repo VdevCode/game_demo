@@ -14,3 +14,27 @@
         font-family: 'Pixelify Sans', sans-serif;
     }
 }
+
+.bee {
+    &-1{
+        animation: flyfromLeft 1 3s forwards;
+    }
+}
+
+// Animation
+@keyframes flyfromLeft {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    25%{
+        opacity: 1;
+        transform: translateX(0%);
+    }
+    50% {
+        transform: translateY(5%);
+    }
+    100%{
+        transform: translateY(0%);
+    }
+}

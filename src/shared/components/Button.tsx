@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import images from '../assets/images';
 
 interface ButtonProps {
-  type?: 'primary' | 'secondary' | 'third' | 'four' | 'danger';
+  type?: 'ingame' | 'play' | 'playback' | 'next';
   to?: string;
   href?: string;
   onClick?: (event: MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
@@ -42,13 +42,24 @@ function Button({
     Comp = 'a';
   }
 
+  // Image
+  let image = images.btn_ingame;
+  switch (type) {
+    case 'next':
+      image = images.btn_next;
+      break;
+    case 'play':
+      image = images.btn_play;
+      break;
+    case 'playback':
+      image = images.btn_playback;
+      break;
+    default:
+      break;
+  }
   return (
-    <Comp {...passProps} className="h-16">
-      <img
-        className="w-full h-full object-contain"
-        src={images.nextBtn}
-        alt=""
-      />
+    <Comp {...props} className="h-20">
+      <img className="w-full h-full object-contain" src={image} alt="" />
     </Comp>
   );
 }

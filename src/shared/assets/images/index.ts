@@ -1,6 +1,12 @@
 import nameImage from './src/text/name.png';
 import bg from './src/background/bg.png';
-import charactor1 from './src/bee/ong3.png';
+import charactor1 from './src/charactor/charactor_1.png';
+import charactor1_choiced from './src/charactor/charactor_1.png';
+import charactor2 from './src/charactor/charactor_2.png';
+import charactor2_choiced from './src/charactor/charactor_2.png';
+import charactor3 from './src/charactor/charactor_3.png';
+import charactor3_choiced from './src/charactor/charactor_3.png';
+import charactor_box from './src/charactor/box_charactor.png';
 import enemy1 from './src/enemy/barries1.png';
 import enemy2 from './src/enemy/barries2.png';
 import enemy3 from './src/enemy/barries3.png';
@@ -27,10 +33,29 @@ import loadingBox from './src/loading/loading_box.png';
 import loadingMark from './src/loading/loading_mark.png';
 import loadingProcess from './src/loading/loading_process.png';
 import test_normal from './src/bee/test_normal.png';
+import bee1 from './src/bee/bee1.png';
+import bee2 from './src/bee/bee2.png';
+import bee3 from './src/bee/bee3.png';
+import bee4 from './src/bee/bee4.png';
+import bee5 from './src/bee/bee5.png';
+import bee6 from './src/bee/bee6.png';
+import bee7 from './src/bee/bee7.png';
+import logger_win from './src/text/win_log.png';
+import logger_lose from './src/text/text.png';
+import logger_over from './src/text/gameover.png';
+import btn_ingame from './src/button/btn_ingame.png';
+import btn_play from './src/button/btn_play.png';
+import btn_next from './src/button/btn_next.png';
+import btn_playback from './src/button/btn_playback.png';
 import test_win from './src/bee/text_win.png';
 import test_up from './src/bee/test_up.png';
 import test_down from './src/bee/test_down.png';
 import test_die from './src/bee/test_die.png';
+import JOBIT from './src/major/jobIT.png';
+import JOBGAME from './src/major/jobGame.png';
+import JOBGRA from './src/major/jobGra.png';
+import JOBELEC from './src/major/jobElec.png';
+import JOBTRAVEL from './src/major/jobTravel.png';
 
 const NAME = new Image();
 NAME.src = nameImage;
@@ -51,9 +76,15 @@ TEST_DIE.src = test_die;
 const BG = bg;
 const BG_IMG = new Image();
 BG_IMG.src = bg;
+
 // BEE
-const CHARACTOR_1 = new Image();
-CHARACTOR_1.src = charactor1;
+const BEE_1 = bee1;
+const BEE_2 = bee2;
+const BEE_3 = bee3;
+const BEE_4 = bee4;
+const BEE_5 = bee5;
+const BEE_6 = bee6;
+const BEE_7 = bee7;
 
 // ENEMY
 const ENEMY_1 = new Image();
@@ -107,6 +138,13 @@ COIN_ICON.src = coinIcon;
 const BOX_ICON = new Image();
 BOX_ICON.src = boxIcon;
 
+// Logger
+const LOGGER_WIN = logger_win;
+const LOGGER_LOSE = logger_lose;
+const LOGGER_OVER = logger_over;
+
+// Job
+
 const images = {
   TEST_NORMAL,
   TEST_WIN,
@@ -117,7 +155,20 @@ const images = {
   NAME,
   BG,
   BG_IMG,
-  CHARACTOR_1,
+  charactor1,
+  charactor1_choiced,
+  charactor2,
+  charactor2_choiced,
+  charactor3,
+  charactor3_choiced,
+  charactor_box,
+  BEE_1,
+  BEE_2,
+  BEE_3,
+  BEE_4,
+  BEE_5,
+  BEE_6,
+  BEE_7,
   ENEMY_1,
   ENEMY_1_DOWN,
   ENEMY_2,
@@ -150,6 +201,18 @@ const images = {
   loadingBox,
   loadingMark,
   loadingProcess,
+  LOGGER_WIN,
+  LOGGER_LOSE,
+  LOGGER_OVER,
+  btn_ingame,
+  btn_play,
+  btn_next,
+  btn_playback,
+  JOBIT,
+  JOBGAME,
+  JOBGRA,
+  JOBELEC,
+  JOBTRAVEL,
 };
 
 export default images;
