@@ -58,7 +58,7 @@ function Button({
       break;
   }
   return (
-    <Comp {...props} className="h-20">
+    <Comp {...props} className="h-14">
       <img className="w-full h-full object-contain" src={image} alt="" />
     </Comp>
   );

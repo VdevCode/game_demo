@@ -6,11 +6,16 @@ import ChoiceSelector from '@pages/ChoiceSelector';
 import ChoiceJob from '@pages/ChoiceJob';
 import Home from '@pages/Home';
 import Caculate from '@pages/Caculate';
+import AddData from '@pages/AddData';
 
 const publicRoutes: any[] = [
   {
     path: configs.routes.home,
     component: Home,
+  },
+  {
+    path: configs.routes.addData,
+    component: AddData,
   },
   {
     path: configs.routes.choiceJob,

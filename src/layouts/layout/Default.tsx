@@ -9,8 +9,8 @@ function Default({ children }: DefaultProps) {
   return (
     <div
       style={{
-        backgroundImage: `url(${images.BG})`,
-        backgroundPosition: 'center',
+        backgroundImage: `url(${images.bg_main})`,
+        backgroundPosition: 'bottom',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
       }}

@@ -1,18 +1,24 @@
-import Button from '@shared/components/Button';
-import Charactors from './components/Charactors';
-import { useNavigate } from 'react-router-dom';
-import configs from '@configs/index';
+import { useState } from 'react';
+import Info from './components/Info';
+import Selecters from './components/Selecters';
+import { IBirdDefault } from '@shared/interfaces';
+import { CHARACTORS } from '@shared/constant';
 
 function ChoiceCharactor() {
-  const navigate = useNavigate();
-  const handleClick = () => {
-    navigate(configs.routes.play);
-  };
+  const charactors: IBirdDefault[] = CHARACTORS;
+  const [selected, setSelected] = useState<number>(0);
   return (
-    <div className="w-full h-full flex flex-col gap-10 items-center justify-center">
-      <p className="text-xl uppercase">Chọn một bạn ong để bắt đầu</p>
-      <Charactors />
-      <Button onClick={handleClick} />
+    <div className="w-full h-full flex flex-col items-center justify-center">
+      <div className="aprrearance p-2 w-3/4 h-[90%] bg-[#3A3D5F] rounded-lg">
+        <div className="w-full h-full flex items-center justify-center bg-[#F0E7DD] rounded-lg">
+          <Selecters
+            data={charactors}
+            selected={selected}
+            setSelected={setSelected}
+          />
+          <Info item={charactors[selected]} />
+        </div>
+      </div>
     </div>
   );
 }

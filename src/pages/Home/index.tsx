@@ -1,44 +1,36 @@
-import Button from '@shared/components/Button';
-import { useForm } from 'react-hook-form';
+import images from '@shared/assets/images';
+import { signInWithPopup } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import configs from '@configs/index';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { IUserLogin } from '@src/shared/interfaces';
+import { userLoginSucess } from '@redux/userSlice';
 
 function Home() {
-  const { register } = useForm();
-
-  const data = [
-    {
-      lable: 'Họ và Tên',
-      register: register('name', { required: true, min: '1' }),
-    },
-    {
-      lable: 'Email',
-      register: register('email', { required: true, min: '1' }),
-    },
-    {
-      lable: 'Số điện thoại',
-      register: register('phone', { required: true, min: '1' }),
-    },
-    {
-      lable: 'Tên trường',
-      register: register('school', { required: true, min: '1' }),
-    },
-    {
-      lable: 'Tỉnh',
-      register: register('province', { required: true, min: '1' }),
-    },
-  ];
-
+  const navigate = useNavigate();
+  const dispath = useDispatch();
+  const handelSignIn = async () => {
+    const res = await signInWithPopup(
+      configs.firebase.auth,
+      configs.firebase.provider,
+    );
+    const data = {
+      email: res.user.email,
+      avatar: res.user.photoURL,
+    };
+    const response = await axios.post(configs.api.signin, data);
+    const dataResponse: IUserLogin = response.data;
+    dispath(userLoginSucess(dataResponse.data));
+    if (!dataResponse.data.isValidAccount) navigate(configs.routes.addData);
+    else navigate(configs.routes.choiceJob);
+  };
   return (
-    <div>
-      <form className="mb-3 flex items-center justify-centers flex-col">
-        {data.map((item, idx) => (
-          <input
-            key={idx}
-            className="px-1 my-1 h-10"
-            placeholder={item.lable}
-          />
-        ))}
-      </form>
-      <Button />
+    <div className="sm:py-5 py-[20%] flex flex-col h-full items-center justify-between">
+      <img className="w-4/5 sm:w-1/2" src={images.text_name} alt="" />
+      <div className="flex-1 flex flex-col items-center justify-center">
+        <button onClick={handelSignIn}>Click any where to play</button>
+      </div>
     </div>
   );
 }

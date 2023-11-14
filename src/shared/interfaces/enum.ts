@@ -5,3 +5,10 @@ export enum Major {
   GAME = 'game',
   TRAVEL = 'travel',
 }
+
+export enum typeHepls {
+  BOOTS = 'Speeding',
+  SLOW = 'slow',
+  HP = 'Healing',
+  MANA = 'mana',
+}

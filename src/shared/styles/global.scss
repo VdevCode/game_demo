@@ -3,6 +3,7 @@
 @use './reset';
 
 @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap');
+@import url('../assets/vendors/fontawesome/css/all.css');
 
 @tailwind base;
 @tailwind components;
@@ -20,21 +21,44 @@
         animation: flyfromLeft 1 3s forwards;
     }
 }
+.newMajor{
+    animation: majorAnimated 1 300ms forwards ;
+}
+.aprrearance {
+    animation: apperanceAnimated 1 0.5s forwards ;
+}
+.report {
+    clip-path: polygon(20% 0%, 80% 0%, 100% 10%, 100% 80%, 100% 100%, 0 100%, 0% 80%, 0 10%);
+}
+.newCharactor {
+    animation: charactorAnimated 1 500ms forwards;
+}
 
 // Animation
-@keyframes flyfromLeft {
-    0% {
-        transform: translateX(-100%);
+@keyframes majorAnimated {
+    from {
+        transform: scale(0.5) translateX(20%) rotate(10deg);
         opacity: 0;
     }
-    25%{
-        opacity: 1;
-        transform: translateX(0%);
+    to{
+        transform: scale(1) translateX(0) rotate(-10deg);
     }
-    50% {
-        transform: translateY(5%);
+    
+}
+@keyframes apperanceAnimated {
+    from {
+        transform: scale(0.5);
     }
-    100%{
-        transform: translateY(0%);
+    to{
+        transform: scale(1);
+    }
+}
+@keyframes charactorAnimated {
+    from {
+        transform: scale(0.5) translateX(20%);
+        opacity: 0;
+    }
+    to{
+        transform: scale(1.1) translateX(0) rotate(12deg);
     }
 }

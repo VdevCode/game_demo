@@ -1,29 +1,32 @@
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import configs from '@configs/index';
 import images from '@shared/assets/images';
-import { BARRIES } from '@shared/resources/Barries';
-import { GIFTIT } from '@shared/resources/Gifts';
-import { HELPS, typeHepls } from '@shared/resources/Helps';
+import { BARRIES, GIFTS, HELPS } from '@shared/constant';
 import getRamdom from '@shared/utils/getRamdom';
 import {
   IBackGround,
   IBarries,
   IBarryDefalt,
   IBird,
+  IBirdDefault,
+  IGameStore,
   IGift,
   IGiftDefalt,
   IHelp,
   IHelpDefalt,
 } from '@src/shared/interfaces';
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { gameChangeOver } from '@redux/gameSlice';
+import { CHARACTORS } from '@shared/constant';
+import { typeHepls } from '@shared/interfaces/enum';
 
 function Play() {
   const [running, setRunning] = useState<boolean>(false);
   const [started, setStated] = useState<boolean>(false);
-  const [loadingBar, setLoadingBar] = useState<string[]>(
-    Array(8).fill(images.loadingMark),
-  );
+  const gameStore: IGameStore = useSelector((state: any) => state.game);
   const navigate = useNavigate();
+  const dispath = useDispatch();
   const canvas = useRef<HTMLCanvasElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const startRef = useRef<HTMLDivElement>(null);
@@ -37,48 +40,44 @@ function Play() {
   let gameOver: boolean = false;
   let gameWin: boolean = false;
   let goal: number = 0;
+  let readyStart: boolean = false;
 
   const SCREEN_W = window.innerWidth;
   const SCREEN_H = window.innerHeight;
-  const GRAVITY = 0.3;
+  const GRAVITY = 0.2;
 
   // BIRD
-  const GOAL_TARGET: number = 10;
-  const BIRD_W: number = 60;
-  const BIRD_H: number = 40;
-  const BIRD_HP: number = 100;
+  const birdSelected: IBirdDefault = CHARACTORS[gameStore.bee];
+  const GOAL_TARGET: number = 30;
   let birdDamage: number = 0;
   let verticalX = -3;
   let verticalY = 0;
-  const bird: IBird = {
-    x: SCREEN_W / 7,
-    y: SCREEN_H / 2,
-    w: BIRD_W,
-    h: BIRD_H,
-    isUpping: false,
-    imgDefault: images.TEST_NORMAL,
-    imgUpping: images.TEST_UP,
-    imgDown: images.TEST_DOWN,
-    imgDie: images.TEST_DIE,
-    imgWin: images.TEST_WIN,
-  };
+  const bird: IBird = Object.assign(
+    {
+      x: -(SCREEN_W / 7),
+      y: SCREEN_H / 2,
+      isUpping: false,
+    },
+    birdSelected,
+  );
 
   // BACKGROUND
   const bgDefauls: IBackGround[] = [
-    { x: 0, y: 0, img: images.BG_IMG, using: false },
-    { x: SCREEN_W, y: 0, img: images.BG_IMG, using: false },
-    { x: SCREEN_W * 2, y: 0, img: images.BG_IMG, using: false },
+    { x: 0, y: 0, img: images.BG_MAIN, using: false },
+    { x: SCREEN_W, y: 0, img: images.BG_MAIN, using: false },
+    { x: SCREEN_W * 2, y: 0, img: images.BG_MAIN, using: false },
   ];
   const backgrounds: IBackGround[] = [...bgDefauls.slice(0, 3)];
   let indexNowBg: number = backgrounds.length - 1;
 
   // BARRIER
+  let totalBarries: number = 0;
   const barryDefaults: IBarryDefalt[] = BARRIES;
   const barries: IBarries[] = [];
   let speedBarry: number = -3;
 
   // GIFT
-  const giftDefaults: IGiftDefalt[] = GIFTIT;
+  const giftDefaults: IGiftDefalt[] = GIFTS[gameStore.major];
   const gifts: IGift[] = [];
 
   // Help
@@ -131,13 +130,13 @@ function Play() {
       context.drawImage(barry.img, barry.x, barry.y, barry.w, barry.h);
       if (detectCollision(bird, barry)) {
         birdDamage =
-          birdDamage + barry.damage >= BIRD_HP
-            ? BIRD_HP
+          birdDamage + barry.damage >= bird.hp
+            ? bird.hp
             : birdDamage + barry.damage;
         barries[i].damage = 0;
         barries[i].ellipsed = true;
         barries[i].isDetroying = true;
-        if (birdDamage >= BIRD_HP) gameOver = true;
+        if (birdDamage >= bird.hp) gameOver = true;
       }
     }
     // Vẽ quà
@@ -221,26 +220,44 @@ function Play() {
       imgBird = bird.imgDie;
     }
     if (gameWin) imgBird = bird.imgWin;
-    context.drawImage(imgBird, bird.x, bird.y, BIRD_W, BIRD_H);
+    context.drawImage(imgBird, bird.x, bird.y, bird.w, bird.h);
   };
 
   // Create
   const moveBird = () => {
+    if (bird.x <= SCREEN_W / 6) {
+      bird.x += 2;
+      return;
+    }
     // Đã thắng
     if (gameWin) {
       bird.x += 5;
-      if (bird.x > SCREEN_W + 10) navigate(configs.routes.caculate);
+      if (bird.x > SCREEN_W + 10) {
+        handleEndGame();
+        navigate(configs.routes.caculate);
+      }
     }
     // Đang chơi
     else {
       if (!gameOver) {
         verticalY =
-          bird.isUpping && !gameOver ? verticalY - 0.5 : verticalY + GRAVITY;
-        bird.y = Math.min(Math.max(bird.y + verticalY, 0), SCREEN_H - BIRD_H);
+          bird.isUpping && !gameOver
+            ? verticalY - bird.speed
+            : verticalY + GRAVITY;
+        bird.y += verticalY;
+        if (bird.y < 0) {
+          bird.y = 0;
+          verticalY = 0;
+        }
+        if (bird.y > SCREEN_H - bird.h) {
+          bird.y = SCREEN_H - bird.h;
+          verticalY = 0;
+        }
       } else {
         verticalY += GRAVITY;
         bird.y += verticalY;
         if (bird.y >= SCREEN_H) {
+          handleEndGame();
           navigate(configs.routes.caculate);
         }
       }
@@ -256,6 +273,7 @@ function Play() {
       y: Math.random() * (SCREEN_H - target.h),
     };
     barries.push(barry);
+    totalBarries += 1;
     if (barries[0].x < 0) {
       barries.shift();
     }
@@ -300,7 +318,7 @@ function Play() {
       }
       if (damageRef.current) {
         damageRef.current.style.width =
-          (((BIRD_HP - birdDamage) / BIRD_HP) * 100).toString() + '%';
+          (((bird.hp - birdDamage) / bird.hp) * 100).toString() + '%';
       }
       if (goalRef.current) {
         goalRef.current.style.width =
@@ -318,28 +336,26 @@ function Play() {
     if (gameOver && !gameWin) return;
     bird.isUpping = false;
   };
-  let readyStart: boolean = false;
+  const handleEndGame = () => {
+    dispath(
+      gameChangeOver({
+        win: gameWin,
+        hp: bird.hp - birdDamage,
+        defaultHp: bird.hp,
+        barriesDefault: totalBarries,
+        coins: score,
+      }),
+    );
+  };
+
   const handleStart = () => {
     if (!readyStart) {
       readyStart = true;
-      let i: number = 0;
-      const timer = setInterval(() => {
-        const loading: string[] = [...loadingBar];
-        loading.splice(0, i);
-        loading.unshift(...Array(i).fill(images.loadingProcess));
-        setLoadingBar(loading);
-        i += 1;
-        if (i === 10) {
-          if (headerRef.current) {
-            headerRef.current.style.display = 'flex';
-          }
-          setStated(true);
-          clearInterval(timer);
-        }
-      }, 500);
-    } else {
-      return;
-    }
+      if (headerRef.current) {
+        headerRef.current.style.display = 'flex';
+      }
+      setStated(true);
+    } else return;
   };
 
   // Check collision
@@ -392,67 +408,65 @@ function Play() {
       {/* Header */}
       <div
         ref={headerRef}
-        className="absolute z-10 top-1 left-0 right-0 overflow-hidden hidden items-center flex-col"
+        className="absolute z-10 top-1 left-0 right-0 flex h-fit items-center justify-between"
       >
-        <img
-          className="h-20 lg:h-28 object-contain"
-          src={images.nameImage}
-          alt=""
-        />
-        <div className="my-2 px-1 w-full flex items-center justify-between">
-          <div className="flex items-center justify-center flex-1 h-10">
-            <div className="relative z-10 w-7">
-              <img src={images.hpIcon} className="w-full scale-150" alt="" />
-            </div>
-            <div className="relative flex-1 translate-x-[-5%]">
-              <img
-                src={images.boxIcon}
-                className="relative z-0 w-full"
-                alt=""
-              />
-              <div className="absolute z-10 inset-0 py-[4.5px] pr-1 w-full h-full">
-                <div ref={damageRef} className="w-full h-full bg-hpColor"></div>
-              </div>
-            </div>
-          </div>
-          <div className="w-32 flex items-center justify-center gap-1">
+        <div className="flex-1">
+          <div className="my-2 flex items-center w-52">
             <img
-              className="w-6 h-6 lg:h-10 lg:w-10 object-contain"
-              src={images.coinIcon}
+              className="relative z-10 w-12 scale-125"
+              src={images.play_hp}
               alt=""
             />
-            <p ref={scoreRef} className="text-2xl lg:text-5xl">
-              0
-            </p>
-          </div>
-          <div className="flex items-center justify-center flex-1 h-10">
-            <div className="relative z-10 w-7">
-              <img
-                src={images.processIcon}
-                className="w-full scale-150"
-                alt=""
-              />
-            </div>
-            <div className="relative flex-1 translate-x-[-5%]">
-              <img
-                src={images.boxIcon}
-                className="relative z-0 w-full"
-                alt=""
-              />
-              <div className="absolute z-10 inset-0 py-[4.5px] pr-1 w-full h-full">
+            <div className="translate-x-[-4%] flex-1 h-6">
+              <div className="relative z-0 flex items-center h-full w-full bg-black/60 border-[3.5px] border-[#AE6326] rounded-full overflow-hidden">
                 <div
-                  ref={goalRef}
-                  className="w-1/2 h-full bg-processColor"
-                ></div>
+                  className="w-full h-full bg-hpColor transition-all duration-500"
+                  ref={damageRef}
+                />
+                <p className="absolute left-5 text-white text-sm">
+                  Máu còn lại
+                </p>
               </div>
             </div>
           </div>
         </div>
-        <div
-          ref={helpRef}
-          className="invisible flex items-center justify-center w-14 h-14 bg-white/20 animate-bounce rounded-full"
-        >
-          <img id="img-help" src={images.help1} className="w-8 h-8" alt="" />
+        <div className="w-10 h-10 animate-bounce" ref={helpRef}>
+          <img id="img-help" className="w-full object-contain" src="" alt="" />
+        </div>
+        <div className="flex-1 flex justify-end">
+          <div className="flex flex-col gap-3 items-center justify-end">
+            <div className="flex w-fit items-center">
+              <img
+                className="relative z-10 w-12 scale-125"
+                src={images.play_process}
+                alt=""
+              />
+              <div className="translate-x-[-4%] w-28 h-6">
+                <div className="relative z-0 flex items-center h-full w-full bg-black/60 border-[3.5px] border-[#AE6326] rounded-full overflow-hidden">
+                  <div
+                    className="w-0 h-full bg-processColor transition-all duration-500"
+                    ref={goalRef}
+                  />
+                  <p className="absolute left-5 text-white text-sm">32m</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex w-fit items-center">
+              <img
+                className="relative z-10 w-6 scale-125"
+                src={images.play_coins}
+                alt=""
+              />
+              <div className="translate-x-[-4%] w-28 h-6">
+                <div className="relative z-0 flex items-center h-full w-full bg-black/60 border-[3.5px] border-[#AE6326] rounded-full overflow-hidden">
+                  <div className="w-full h-full bg-hpColor" />
+                  <p className="absolute left-5 text-white text-sm">
+                    Máu còn lại
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       {/* Welcome */}
@@ -464,22 +478,6 @@ function Play() {
         }}
         onClick={handleStart}
       >
-        <div className="relative w-[60%] lg:w-72">
-          <img
-            className="w-full h-full object-cover"
-            src={images.loadingBox}
-            alt=""
-          />
-          <div className="absolute bottom-2 left-0 right-0 w-full h-8 flex items-end justify-center">
-            <div className="px-1 w-[90%] h-full flex items-center justify-between bg-[#552E0F] rounded-md">
-              <div className="w-full flex items-center justify-between">
-                {loadingBar.map((item, idx) => (
-                  <img key={idx} className="w-5 h-6" src={item} alt="" />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
         <p
           id="logger"
           className="mt-2 text-[#F1541F] text-lg lg:text-4xl font-bold animate-bounce"
@@ -493,7 +491,7 @@ function Play() {
         style={{
           width: `${SCREEN_W}px`,
           height: `${SCREEN_H}px`,
-          backgroundImage: `url(${images.BG})`,
+          backgroundImage: `url(${images.bg_main})`,
           backgroundSize: 'cover',
           backgroundPosition: 'bottom',
         }}

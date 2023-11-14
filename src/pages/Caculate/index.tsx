@@ -1,35 +1,43 @@
-import { useState, useEffect } from 'react';
-import images from '@shared/assets/images';
-import Win from './components/Win';
-import Lose from './components/Lose';
+import configs from '@configs/index';
+import LoadingScreen from '@shared/components/LoadingScreen';
+import { IGameStore, IUser } from '@shared/interfaces';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import MainScreen from './components/MainScreen';
+import { userLoginSucess } from '@redux/userSlice';
 
 function Caculate() {
-  const [isWin, setWin] = useState<boolean>(true);
+  const game: IGameStore = useSelector((state: any) => state.game);
+  const user: IUser = useSelector((state: any) => state.user.user);
+  const dispath = useDispatch();
+  const [loader, setLoader] = useState<boolean>(true);
+  const [maxturn, setMaxturn] = useState<boolean>(true);
   useEffect(() => {
-    setWin(false);
+    const saveData = async () => {
+      setLoader(true);
+      await handelSaveResult();
+      setLoader(false);
+    };
+    if (user.history.length < 3) {
+      saveData();
+    } else {
+      setMaxturn(true);
+      setLoader(false);
+    }
   }, []);
-  return (
-    <div className="pt-12 flex flex-col h-screen w-screen items-center justify-center">
-      <header className="relative h-[25vh] w-full flex items-center justify-center">
-        <img
-          className="relative z-10 h-[60%] object-contain"
-          src={images.nameImage}
-          alt=""
-        />
-        <img
-          className="absolute z-0 right-10 bottom-0 w-16 object-contain"
-          src={images.BEE_1}
-          alt=""
-        />
-        <img
-          className="absolute z-0 left-3 bottom-0 w-[72px] object-contain"
-          src={images.BEE_2}
-          alt=""
-        />
-      </header>
-      <main className="flex-1">{isWin ? <Win /> : <Lose />}</main>
-    </div>
-  );
+  const handelSaveResult = async () => {
+    try {
+      const response = await axios.post(
+        configs.api.saveGame + user.email,
+        game,
+      );
+      dispath(userLoginSucess(response.data.data));
+    } catch (error) {
+      setMaxturn(true);
+    }
+  };
+  return <>{loader ? <LoadingScreen /> : <MainScreen />}</>;
 }
 
 export default Caculate;

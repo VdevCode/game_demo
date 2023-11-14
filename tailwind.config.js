@@ -5,6 +5,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        mainColor: '#E65B03',
         hpColor : '#EA5362',
         processColor: '#8CC640',
       },
