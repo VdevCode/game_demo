@@ -1,4 +1,8 @@
 import images from '@shared/assets/images';
+import { IGameStore } from '@shared/interfaces';
+import configs from '@configs/index';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 interface IParameter {
   img: string;
@@ -6,23 +10,23 @@ interface IParameter {
   value: string | number;
 }
 function MainScreen() {
+  const navigate = useNavigate();
+  const game: IGameStore = useSelector((state: any) => state.game);
   const parameters: IParameter[] = [
     {
       img: images.play_hp,
       lable: 'Số máu còn lại',
-      value: 234,
+      value: game.hp,
     },
     {
       img: images.play_coins,
       lable: 'Kiến thức thu thập',
-      value: 234,
-    },
-    {
-      img: images.play_process,
-      lable: 'Kẻ địch đã chạm',
-      value: 234,
+      value: game.coins,
     },
   ];
+  const handelPlayback = () => {
+    navigate(configs.routes.play);
+  };
   return (
     <div className="h-full w-full flex flex-col gap-5 items-center justify-center bg-black/50">
       <header className="w-full flex flex-col items-center justify-center">
@@ -54,8 +58,10 @@ function MainScreen() {
         </main>
       </main>
       <footer className="flex items-center justify-between w-[40%]">
-        <button className="w-fit px-2 h-10 bg-black">CHƠI LẠI</button>
-        <button>TIẾP TỤC</button>
+        <button className="w-fit px-2 h-10 text-white" onClick={handelPlayback}>
+          CHƠI LẠI
+        </button>
+        <button className="w-fit px-2 h-10 text-white">TIẾP TỤC</button>
       </footer>
     </div>
   );

@@ -60,7 +60,7 @@ function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
         address,
       };
       const error: boolean = validateData(data);
-      if (error) {
+      if (!error) {
         await axios.patch(
           configs.api.addData + '/' + userStore.user.email,
           data,
@@ -75,26 +75,28 @@ function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
   function validateData(data: any): boolean {
     let error = false;
     const phoneRegex = /^(0[1-9])+([0-9]{8})\b/;
-    if (data.name.length === 0) {
+
+    if (data.address.length === 0) {
       error = true;
       setError(true);
-      setErrorMsg('Tên của bạn không được để trống');
-    }
-    if (!phoneRegex.test(data.phone)) {
-      error = true;
-      setError(true);
-      setErrorMsg('Số điện thoại không hợp lệ');
+      setErrorMsg('Địa chỉ không được để trống');
     }
     if (data.school.length === 0) {
       error = true;
       setError(true);
       setErrorMsg('Tên trường học không được để trống');
     }
-    if (data.address.length === 0) {
+    if (!phoneRegex.test(data.phone)) {
       error = true;
       setError(true);
-      setErrorMsg('Địa chỉ không được để trống');
+      setErrorMsg('Số điện thoại không hợp lệ');
     }
+    if (data.name.length === 0) {
+      error = true;
+      setError(true);
+      setErrorMsg('Tên của bạn không được để trống');
+    }
+
     return error;
   }
 
