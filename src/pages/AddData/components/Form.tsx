@@ -61,7 +61,7 @@ function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
       };
       const error: boolean = validateData(data);
       if (error) {
-        const res = await axios.patch(
+        await axios.patch(
           configs.api.addData + '/' + userStore.user.email,
           data,
         );

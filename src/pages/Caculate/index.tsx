@@ -12,7 +12,6 @@ function Caculate() {
   const user: IUser = useSelector((state: any) => state.user.user);
   const dispath = useDispatch();
   const [loader, setLoader] = useState<boolean>(true);
-  const [maxturn, setMaxturn] = useState<boolean>(true);
   useEffect(() => {
     const saveData = async () => {
       setLoader(true);
@@ -22,7 +21,6 @@ function Caculate() {
     if (user.history.length < 3) {
       saveData();
     } else {
-      setMaxturn(true);
       setLoader(false);
     }
   }, []);
@@ -33,9 +31,7 @@ function Caculate() {
         game,
       );
       dispath(userLoginSucess(response.data.data));
-    } catch (error) {
-      setMaxturn(true);
-    }
+    } catch (error) {}
   };
   return <>{loader ? <LoadingScreen /> : <MainScreen />}</>;
 }
