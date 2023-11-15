@@ -4,7 +4,6 @@ import images from '@shared/assets/images';
 import { BARRIES, CHARACTORS, GIFTS } from '@shared/constant';
 import getRamdom from '@shared/utils/getRamdom';
 import {
-  IBackGround,
   IBarries,
   IBarryDefalt,
   IBird,
@@ -13,7 +12,6 @@ import {
   IGift,
   IGiftDefalt,
   IHelp,
-  IHelpDefalt,
 } from '@src/shared/interfaces';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
