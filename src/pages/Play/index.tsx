@@ -308,6 +308,7 @@ function Play() {
   function handleInteraction() {
     // Cập nhật thời gian tương tác
     let lastInteractionTime = performance.now();
+    console.log(lastInteractionTime);
 
     // Phát ra một âm thanh ngắn (có thể là âm thanh không nghe thấy)
     var oscillator = audioContext.createOscillator();
