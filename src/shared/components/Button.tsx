@@ -50,7 +50,7 @@ function Button({
         alt=""
       />
       <div className="absolute z-10 inset-0 flex items-center justify-start text-xs lg:text-base">
-        <p className='ml-10 lg:ml-12 uppercase'>{children}</p>
+        <p className="ml-10 lg:ml-14 uppercase">{children}</p>
       </div>
     </Comp>
   );
