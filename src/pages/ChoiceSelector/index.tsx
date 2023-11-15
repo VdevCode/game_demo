@@ -28,7 +28,7 @@ function ChoiceCharactor() {
           src={images.bee8}
           alt=""
         />
-        <div className="aprrearance relative h-[98%] w-[55%] flex flex-col items-center justify-center">
+        <div className="aprrearance relative h-[98%] lg:h-[80%] w-[55%] flex flex-col items-center justify-center">
           <header className="relative z-10 w-[65%] h-1/5 -translate-y-1/4">
             <img
               className="w-full object-contain"
@@ -61,33 +61,37 @@ function ChoiceCharactor() {
                   <div className="flex flex-col">
                     {charactors.map((item, idx) => (
                       <div
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-2 cursor-pointer"
                         key={idx}
                         onClick={() => handelChangeBee(idx)}
                       >
-                        <img className="w-14" src={item.imgAvatar} alt="" />
-                        <p>{item.name}</p>
+                        <img
+                          className="w-12 lg:w-20"
+                          src={item.imgAvatar}
+                          alt=""
+                        />
+                        <p className="line-clamp-2 lg:text-lg">{item.name}</p>
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="flex-1 px-2">
-                  <div>
-                    <h1 className="font-bold text-xl">
+                <div className="relative flex-1 p-5">
+                  <div className="">
+                    <h1 className="font-bold text-xl lg:text-2xl">
                       <span className="font-normal text-base">Nhân vật: </span>
                       {charactors[selected].name}
                     </h1>
                     <p>{charactors[selected].introl}</p>
-                    <div className="my-1 flex items-center gap-2">
+                    <div className="my-1 flex items-center gap-2 text-lg">
                       <p>Máu tối đa:</p>
                       <p className="font-bold">{charactors[selected].hp}</p>
                     </div>
-                    <div className="my-1 flex items-center gap-2">
+                    <div className="my-1 flex items-center gap-2 text-lg">
                       <p>Tốc độ bay:</p>
                       <p className="font-bold">{charactors[selected].speed}</p>
                     </div>
                   </div>
-                  <div className="flex items-center justify-center">
+                  <div className="absolute bottom-0 right-0 left-0  w-full flex items-center justify-center">
                     <Button onClick={handelNext}>Tiếp tục</Button>
                   </div>
                 </div>

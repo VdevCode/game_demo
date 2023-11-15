@@ -43,14 +43,14 @@ function Button({
   }
 
   return (
-    <Comp {...props} className="relative h-14">
+    <Comp {...props} className="relative h-14 lg:h-20">
       <img
         className="w-full h-full object-contain"
         src={images.btn_default}
         alt=""
       />
-      <div className="absolute z-10 inset-0 flex items-center justify-start text-xs">
-        <p className='ml-10 uppercase'>{children}</p>
+      <div className="absolute z-10 inset-0 flex items-center justify-start text-xs lg:text-base">
+        <p className='ml-10 lg:ml-12 uppercase'>{children}</p>
       </div>
     </Comp>
   );

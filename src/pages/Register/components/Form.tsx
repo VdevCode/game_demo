@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Button from '@shared/components/Button';
 
 function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
   const dispath = useDispatch();
@@ -14,22 +15,21 @@ function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [school, setSchool] = useState<string>('');
-  const [address, setAddress] = useState<string>('');
   const forms = [
-    {
-      placeholder: 'Địa chỉ email',
-      img: images.form_input,
-      handelChange: (e: any) => {
-        const value = checkInput(e);
-        setEmail(value);
-      },
-    },
     {
       placeholder: 'Số điện thoại',
       img: images.form_input,
       handelChange: (e: any) => {
         const value = checkInput(e);
         setPhone(value);
+      },
+    },
+    {
+      placeholder: 'Địa chỉ email',
+      img: images.form_input,
+      handelChange: (e: any) => {
+        const value = checkInput(e);
+        setEmail(value);
       },
     },
     {
@@ -48,14 +48,6 @@ function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
         setSchool(value);
       },
     },
-    {
-      placeholder: 'Địa chỉ',
-      img: images.form_input,
-      handelChange: (e: any) => {
-        const value = checkInput(e);
-        setAddress(value);
-      },
-    },
   ];
   const checkInput = (e: any) => {
     let value: string = e.target.value;
@@ -69,11 +61,11 @@ function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
         phone,
         name,
         school,
-        address,
       };
       const error: boolean = validateData(data);
       if (!error) {
         const response = await axios.post(configs.api.register, data);
+        console.log(response);
         const user: IUser = response.data.data;
         dispath(userLoginSucess(user));
         navigate(configs.routes.choiceJob);
@@ -86,18 +78,6 @@ function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
   function validateData(data: any): boolean {
     let error = false;
     const phoneRegex = /^(0[1-9])+([0-9]{8})\b/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (data.address.length === 0) {
-      error = true;
-      setError(true);
-      setErrorMsg('Địa chỉ không được để trống');
-    }
-    if (data.school.length === 0) {
-      error = true;
-      setError(true);
-      setErrorMsg('Tên trường học không được để trống');
-    }
     if (data.name.length === 0) {
       error = true;
       setError(true);
@@ -108,38 +88,29 @@ function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
       setError(true);
       setErrorMsg('Số điện thoại không hợp lệ');
     }
-    if (!emailRegex.test(data.email)) {
-      error = true;
-      setError(true);
-      setErrorMsg('Địa chỉ email không hợp lệ');
-    }
     return error;
   }
 
   return (
-    // w-[25%]
-    <div className="w-[25%] flex flex-col items-center justify-center aprrearance">
+    <div className="relative w-1/2 h-[90%] lg:w-1/3 lg:h-fit">
+      <div className="relative z-10 w-full h-20">
+        <img className="w-full" src={images.text_name} alt="" />
+      </div>
       <header className="relative w-full">
         <img
-          className="w-full object-contain"
+          className="w-full h-20 lg:h-full"
           src={images.form_header}
           alt=""
         />
-        <img
-          className="absolute top-0 right-0 left-0 translate-y-[-50%] scale-125"
-          src={images.text_name}
-          alt=""
-        />
       </header>
-      {/* flex flex-col items-center justify-center */}
-      <main className="w-full flex-1 flex flex-col items-center justify-center">
+      <main className="grid grid-cols-2">
         {forms.map((item, idx) => (
-          <div key={idx} className="relative w-full flex-1 object-contain">
-            <img className="h-full object-contain" src={item.img} alt="" />
-            <div className="absolute inset-0 w-full h-full flex items-center justify-center">
+          <div key={idx} className="relative h-12 lg:h-full">
+            <img src={images.form_input} alt="" />
+            <div className="absolute z-10 inset-0 flex items-center justify-center">
               <input
                 type="text"
-                className="px-2 w-3/4 bg-transparent text-sm text-white"
+                className="px-3 text-sm bg-transparent w-3/4 text-white"
                 placeholder={item.placeholder}
                 onChange={(e) => item.handelChange(e)}
               />
@@ -147,9 +118,47 @@ function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
           </div>
         ))}
       </main>
-      <footer className="relative" onClick={handelRegister}>
-        <img src={images.form_footer} alt="" />
+      <footer className="relative flex items-center justify-center w-full">
+        <img
+          src={images.form_header}
+          className="h-20 lg:h-full w-full rotate-180 object-cover"
+          alt=""
+        />
+        <div className="absolute bottom-0 right-0 left-0 flex items-center justify-center scale-125">
+          <Button onClick={handelRegister}>Đăng nhập</Button>
+        </div>
       </footer>
+      {/* Decord */}
+      <img
+        className="absolute z-10 top-0 w-14 translate-y-full"
+        src={images.bee}
+        alt=""
+      />
+      <img
+        className="absolute z-10 top-1/2 left-0 -translate-x-3/4 w-14"
+        src={images.bee6}
+        alt=""
+      />
+      <img
+        className="absolute z-10 top-1/4 left-0 -translate-x-full w-12"
+        src={images.bee4}
+        alt=""
+      />
+      <img
+        className="absolute z-10 top-3/4 left-0 -translate-x-3/4 w-16"
+        src={images.bee2}
+        alt=""
+      />
+      <img
+        className="absolute z-10 top-1/4 right-0 translate-x-3/4 w-20"
+        src={images.bee1}
+        alt=""
+      />
+      <img
+        className="absolute z-10 bottom-0 right-0 translate-x-3/4 w-20"
+        src={images.bee3}
+        alt=""
+      />
     </div>
   );
 }

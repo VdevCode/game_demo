@@ -20,16 +20,16 @@ function Ranking() {
   const [getDownload, setDownload] = useState<boolean>(false);
 
   useEffect(() => {
-    if (userStore.user) {
-      setLoading(true);
+    if (userStore.status) {
       saveResult();
-      getData();
-      setLoading(false);
     }
+    setLoading(true);
+    getData();
+    setLoading(false);
   }, []);
   const saveResult = async () => {
     const response = await axios.post(
-      configs.api.saveGame + userStore.user.email,
+      configs.api.saveGame + userStore.user.phone,
       {
         ...gameStore,
       },
@@ -42,7 +42,7 @@ function Ranking() {
   };
 
   const handelPlayAgain = () => {
-    if (userStore.user) navigate(configs.routes.play);
+    if (userStore.status) navigate(configs.routes.choiceJob);
     else navigate(configs.routes.register);
   };
   const handelDownload = () => {
@@ -88,23 +88,26 @@ function Ranking() {
               {getDownload ? (
                 <CheckPass setDownload={setDownload} />
               ) : (
-                <main className="py-[2%] px-[5%] flex-1 w-full flex flex-col">
+                <main className="relative py-[2%] px-[10%] flex-1 w-full flex flex-col">
                   {loading ? (
                     'Đang tải'
                   ) : (
                     <>
-                      <div className="flex-1 grid grid-cols-2 gap-2 max-h-[50vh] overflow-y-auto">
+                      <div className="h-fit grid grid-cols-2 gap-5 max-h-[50vh] overflow-y-auto">
                         {ranking.map((item, idx) => (
-                          <div className="flex gap-2 h-fit" key={idx}>
+                          <div
+                            className="flex gap-4 lg:gap-10 h-fit lg:text-xl "
+                            key={idx}
+                          >
                             <p>
                               <i className="fa-sharp fa-solid fa-circle"></i>
                             </p>
-                            <p>{item.name}</p>
+                            <p className="flex-1 line-clamp-1">{item.name}</p>
                             <p>{item.highestScore}</p>
                           </div>
                         ))}
                       </div>
-                      <footer className="flex w-full items-center justify-between">
+                      <footer className="absolute z-10 bottom-0 right-0 left-0 flex w-full items-center justify-between">
                         <Button onClick={handelDownload}>Tải xuống</Button>
                         {userStore && (
                           <Button onClick={handelPlayAgain}>Chơi lại</Button>
