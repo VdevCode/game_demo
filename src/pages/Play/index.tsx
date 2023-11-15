@@ -1,9 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import configs from '@configs/index';
+import { gameChangeOver } from '@redux/gameSlice';
 import images from '@shared/assets/images';
-import { BARRIES, GIFTS, HELPS } from '@shared/constant';
+import { BARRIES, CHARACTORS, GIFTS } from '@shared/constant';
 import getRamdom from '@shared/utils/getRamdom';
 import {
   IBackGround,
@@ -17,9 +15,13 @@ import {
   IHelp,
   IHelpDefalt,
 } from '@src/shared/interfaces';
-import { gameChangeOver } from '@redux/gameSlice';
-import { CHARACTORS } from '@shared/constant';
-import { typeHepls } from '@shared/interfaces/enum';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+const SCREEN_W = window.innerWidth;
+const SCREEN_H = window.screen.height;
+const GRAVITY = 0.2;
 
 function Play() {
   const [running, setRunning] = useState<boolean>(false);
@@ -34,17 +36,12 @@ function Play() {
   const overRef = useRef<HTMLDivElement>(null);
   const damageRef = useRef<HTMLDivElement>(null);
   const goalRef = useRef<HTMLParagraphElement>(null);
-  const helpRef = useRef<HTMLDivElement>(null);
 
   let score: number = 0;
   let gameOver: boolean = false;
   let gameWin: boolean = false;
   let goal: number = 0;
   let readyStart: boolean = false;
-
-  const SCREEN_W = window.innerWidth;
-  const SCREEN_H = window.innerHeight;
-  const GRAVITY = 0.2;
 
   // BIRD
   const birdSelected: IBirdDefault = CHARACTORS[gameStore.bee];
@@ -60,15 +57,16 @@ function Play() {
     },
     birdSelected,
   );
+  const spaceBottomWithBird = SCREEN_H - bird.h;
 
   // BACKGROUND
-  const bgDefauls: IBackGround[] = [
-    { x: 0, y: 0, img: images.BG_MAIN, using: false },
-    { x: SCREEN_W, y: 0, img: images.BG_MAIN, using: false },
-    { x: SCREEN_W * 2, y: 0, img: images.BG_MAIN, using: false },
-  ];
-  const backgrounds: IBackGround[] = [...bgDefauls.slice(0, 3)];
-  let indexNowBg: number = backgrounds.length - 1;
+  // const bgDefauls: IBackGround[] = [
+  //   { x: 0, y: 0, img: images.BG_MAIN, using: false },
+  //   { x: SCREEN_W, y: 0, img: images.BG_MAIN, using: false },
+  //   { x: SCREEN_W * 2, y: 0, img: images.BG_MAIN, using: false },
+  // ];
+  // const backgrounds: IBackGround[] = [...bgDefauls.slice(0, 3)];
+  // let indexNowBg: number = backgrounds.length - 1;
 
   // BARRIER
   let totalBarries: number = 0;
@@ -80,31 +78,27 @@ function Play() {
   const giftDefaults: IGiftDefalt[] = GIFTS[gameStore.major];
   const gifts: IGift[] = [];
 
-  // Help
-  const helpDefaults: IHelpDefalt[] = HELPS;
-  const helps: IHelp[] = [];
-
   // Draw Canvas
   const draw = (context: CanvasRenderingContext2D) => {
     context.clearRect(0, 0, SCREEN_W, SCREEN_H);
     // Vẽ background
-    for (let i = 0; i < backgrounds.length; i++) {
-      const bg: IBackGround = backgrounds[i];
-      bg.x -= 2;
-      context.drawImage(bg.img, bg.x, bg.y, SCREEN_W, SCREEN_H);
-      if (bg.x < 0 && !bg.using) {
-        indexNowBg =
-          indexNowBg + 1 >= bgDefauls.length - 1 ? 0 : indexNowBg + 1;
-        backgrounds[i].using = true;
-        backgrounds.push({
-          x: SCREEN_W * 2,
-          y: 0,
-          img: bgDefauls[indexNowBg].img,
-          using: false,
-        });
-        backgrounds.unshift();
-      }
-    }
+    // for (let i = 0; i < backgrounds.length; i++) {
+    //   const bg: IBackGround = backgrounds[i];
+    //   bg.x -= 2;
+    //   if (bg.x < SCREEN_W) {
+    //     context.drawImage(bg.img, bg.x, bg.y, SCREEN_W, SCREEN_H);
+    //   }
+    //   if (bg.x < 0 && !bg.using) {
+    //     backgrounds[i].using = true;
+    //     backgrounds.push({
+    //       x: SCREEN_W * 2,
+    //       y: 0,
+    //       img: bgDefauls[indexNowBg].img,
+    //       using: false,
+    //     });
+    //     backgrounds.unshift();
+    //   }
+    // }
     // Vẽ barries
     for (let i = 0; i < barries.length; i++) {
       let barry: IBarries = barries[i];
@@ -156,61 +150,6 @@ function Play() {
         }, 1000);
       }
     }
-    // Vẽ Help
-    for (let i = 0; i < helps.length; i++) {
-      let help: IHelp = helps[i];
-      help.x = help.isActive ? help.x - 5 : help.x + verticalX;
-      help.y = help.isActive ? help.y - 2 : help.y;
-      context.drawImage(help.img, help.x, help.y, help.w, help.h);
-      if (detectCollision(bird, help) && !help.isActive) {
-        helps[i].isActive = true;
-        // Render
-        if (helpRef.current) {
-          helpRef.current.style.visibility = 'visible';
-          const timer = setTimeout(() => {
-            if (helpRef.current) {
-              helpRef.current.style.visibility = 'hidden';
-              clearTimeout(timer);
-            }
-          }, 2000);
-        }
-        const img: HTMLImageElement | null =
-          document.querySelector('#img-help');
-        if (img) img.src = help.imgNotify;
-        // Logic
-        switch (help.type) {
-          case typeHepls.BOOTS: {
-            let oldSpeed = verticalX;
-            verticalX = -5;
-            const timer = setTimeout(() => {
-              verticalX = oldSpeed;
-              clearTimeout(timer);
-            }, 3000);
-            break;
-          }
-          case typeHepls.HP:
-            birdDamage = birdDamage === 0 ? 0 : birdDamage - 10;
-            break;
-          case typeHepls.SLOW: {
-            let oldSpeed = verticalX;
-            let oldSpeedBarry = speedBarry;
-            verticalX = -2;
-            speedBarry += 0.5;
-            const timer = setTimeout(() => {
-              verticalX = oldSpeed;
-              speedBarry = oldSpeedBarry;
-              clearTimeout(timer);
-            }, 3000);
-            break;
-          }
-          default:
-            break;
-        }
-        setTimeout(() => {
-          helps.slice(i, 1);
-        }, 500);
-      }
-    }
     // Vẽ chim
     let imgBird: any = bird.imgDefault;
     if (!gameOver && !gameWin) {
@@ -249,14 +188,14 @@ function Play() {
           bird.y = 0;
           verticalY = 0;
         }
-        if (bird.y > SCREEN_H - bird.h) {
-          bird.y = SCREEN_H - bird.h;
+        if (bird.y > spaceBottomWithBird) {
+          bird.y = spaceBottomWithBird;
           verticalY = 0;
         }
       } else {
         verticalY += GRAVITY;
         bird.y += verticalY;
-        if (bird.y >= SCREEN_H) {
+        if (bird.y >= SCREEN_H + SCREEN_H * 0.5) {
           handleEndGame();
           navigate(configs.routes.ranking);
         }
@@ -292,20 +231,6 @@ function Play() {
       gifts.shift();
     }
   };
-  const createHelps = () => {
-    if (gameOver || gameWin) return;
-    const target: IHelpDefalt =
-      helpDefaults[getRamdom(giftDefaults.length - 1)];
-    const help: IHelp = {
-      ...target,
-      x: SCREEN_W,
-      y: Math.random() * (SCREEN_H - target.h),
-    };
-    helps.push(help);
-    if (helps[0].x < 0) {
-      helps.shift();
-    }
-  };
   const createSometingElse = () => {
     if (running) {
       if (scoreRef.current) {
@@ -329,6 +254,7 @@ function Play() {
   const handleFlyingStart = () => {
     if (gameOver && !gameWin) return;
     bird.isUpping = true;
+    handleInteraction();
   };
   const handleFlyingEnd = () => {
     if (gameOver && !gameWin) return;
@@ -376,27 +302,39 @@ function Play() {
       requestAnimationFrame(gameLoop);
     }
   };
+
+  // Kích hoạt màn hình
+  let audioContext = new (window.AudioContext || window.AudioContext)();
+  let gainNode = audioContext.createGain();
+
+  function handleInteraction() {
+    // Cập nhật thời gian tương tác
+    let lastInteractionTime = performance.now();
+
+    // Phát ra một âm thanh ngắn (có thể là âm thanh không nghe thấy)
+    var oscillator = audioContext.createOscillator();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.001);
+  }
+
   useEffect(() => {
     if (started) {
       gameLoop();
       setRunning(true);
       if (running) {
         setInterval(() => {
-          verticalX = verticalX < -8 ? -8 : verticalX - 0.15;
-        }, 10000);
-        setInterval(createBarries, 2500);
-        setInterval(createGifts, 2000);
-        setInterval(createHelps, 10000);
-        setInterval(() => {
-          speedBarry = speedBarry - 0.5 === -14 ? -14 : speedBarry - 0.5;
-        }, 3500);
-        setInterval(() => {
+          createBarries();
+          createGifts();
+          speedBarry = speedBarry - 0.2 === -10 ? -10 : speedBarry - 0.2;
           if (gameOver || gameWin) return;
-          goal += 1;
+          goal += 2;
           if (goal >= GOAL_TARGET) {
             gameWin = true;
           }
-        }, 1000);
+          verticalX = verticalX < -8 ? -8 : verticalX - 0.05;
+        }, 2000);
       }
     }
   }, [running, canvas, started]);
@@ -415,7 +353,7 @@ function Play() {
             <div className="flex items-center gap-2">
               <img className="h-5" src={images.play_hp} alt="" />
               <div className="flex items-end">
-                <p ref={damageRef} className="text-sm">
+                <p ref={damageRef} className="text-lg font-bold">
                   0
                 </p>
                 <p className="text-xs">/{bird.hp}</p>
@@ -424,7 +362,7 @@ function Play() {
             <div className="flex items-center gap-2">
               <img className="h-5" src={images.play_process} alt="" />
               <div className="flex items-end">
-                <p ref={goalRef} className="text-sm">
+                <p ref={goalRef} className="text-lg font-bold">
                   345
                 </p>
                 <p className="text-xs">/{GOAL_TARGET}</p>
@@ -433,7 +371,7 @@ function Play() {
             <div className="flex items-center gap-2">
               <img className="h-5" src={images.play_coins} alt="" />
               <div className="flex items-end">
-                <p ref={scoreRef} className="text-sm">
+                <p ref={scoreRef} className="text-lg font-bold">
                   345
                 </p>
               </div>

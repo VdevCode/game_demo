@@ -4,8 +4,8 @@ import { typeHepls } from '../interfaces/enum';
 
 export const CHARACTORS: IBirdDefault[] = [
   {
-    h: 40,
-    w: 60,
+    h: 50,
+    w: 70,
     hp: 100,
     speed: 0.35,
     imgAvatar: images.charactor1_avatar,
@@ -106,8 +106,8 @@ export const GIFTS: any = [
       active: false,
     },
     {
-      w: 55,
-      h: 55,
+      w: 25,
+      h: 25,
       img: images.ITEM_IT3,
       mark: 3,
       active: false,
@@ -171,8 +171,8 @@ export const GIFTS: any = [
       active: false,
     },
     {
-      w: 60,
-      h: 50,
+      w: 50,
+      h: 40,
       img: images.ITEM_GAME6,
       mark: 3,
       active: false,
@@ -209,7 +209,7 @@ export const GIFTS: any = [
     },
     {
       w: 60,
-      h: 50,
+      h: 40,
       img: images.ITEM_GRAFIC5,
       mark: 3,
       active: false,

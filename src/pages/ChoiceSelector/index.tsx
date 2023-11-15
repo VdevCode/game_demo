@@ -58,7 +58,7 @@ function ChoiceCharactor() {
               </header>
               <main className="py-[2%] px-[5%] flex-1 w-full flex">
                 <div className="p-2 w-2/5 h-fit ">
-                  <div className="flex flex-col">
+                  <div className="flex flex-col gap-5">
                     {charactors.map((item, idx) => (
                       <div
                         className="flex items-center gap-2 cursor-pointer"

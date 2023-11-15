@@ -76,13 +76,13 @@ function ChoiceJob() {
               alt=""
             />
           </header>
-          <main className="relative flex-1 w-[100%] translate-y-[-5%] scale-90">
+          <main className="relative flex-1 w-[100%] translate-y-[-5%] scale-90 p-2 ">
             <img
               className="absolute z-0 w-full h-full"
               src={images.more_box}
               alt=""
             />
-            <div className="relative z-10 p-1 flex flex-col w-full h-full items-center justify-center">
+            <div className="relative z-10 my-2 p-1 flex flex-col w-full h-full items-center justify-center">
               <header className="h-[18%] flex items-center justify-center">
                 CHỌN NGÀNH NGHỀ
               </header>

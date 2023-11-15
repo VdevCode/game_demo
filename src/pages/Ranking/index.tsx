@@ -1,13 +1,12 @@
-import images from '@shared/assets/images';
 import configs from '@configs/index';
+import { userLoginSucess } from '@redux/userSlice';
+import images from '@shared/assets/images';
+import Button from '@shared/components/Button';
 import { IUser } from '@src/shared/interfaces';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { userLoginSucess } from '@redux/userSlice';
-import Button from '@shared/components/Button';
-import CheckPass from './components/CheckPass';
 
 function Ranking() {
   const dispath = useDispatch();
@@ -16,8 +15,6 @@ function Ranking() {
   const userStore = useSelector((state: any) => state.user);
   const [loading, setLoading] = useState<boolean>(true);
   const [ranking, setRanking] = useState<IUser[]>([]);
-
-  const [getDownload, setDownload] = useState<boolean>(false);
 
   useEffect(() => {
     if (userStore.status) {
@@ -44,9 +41,6 @@ function Ranking() {
   const handelPlayAgain = () => {
     if (userStore.status) navigate(configs.routes.choiceJob);
     else navigate(configs.routes.register);
-  };
-  const handelDownload = () => {
-    setDownload(true);
   };
 
   return (
@@ -85,38 +79,36 @@ function Ranking() {
               <header className="h-[18%] flex items-center justify-center">
                 BẢNG XẾP HẠNG
               </header>
-              {getDownload ? (
-                <CheckPass setDownload={setDownload} />
-              ) : (
-                <main className="relative py-[2%] px-[10%] flex-1 w-full flex flex-col">
-                  {loading ? (
-                    'Đang tải'
-                  ) : (
-                    <>
-                      <div className="h-fit grid grid-cols-2 gap-5 max-h-[50vh] overflow-y-auto">
-                        {ranking.map((item, idx) => (
-                          <div
-                            className="flex gap-4 lg:gap-10 h-fit lg:text-xl "
-                            key={idx}
-                          >
-                            <p>
-                              <i className="fa-sharp fa-solid fa-circle"></i>
-                            </p>
-                            <p className="flex-1 line-clamp-1">{item.name}</p>
-                            <p>{item.highestScore}</p>
-                          </div>
-                        ))}
-                      </div>
-                      <footer className="absolute z-10 bottom-0 right-0 left-0 flex w-full items-center justify-between">
-                        <Button onClick={handelDownload}>Tải xuống</Button>
-                        {userStore && (
-                          <Button onClick={handelPlayAgain}>Chơi lại</Button>
-                        )}
-                      </footer>
-                    </>
-                  )}
-                </main>
-              )}
+              <main className="relative py-[2%] px-[10%] flex-1 w-full flex flex-col">
+                {loading ? (
+                  'Đang tải'
+                ) : (
+                  <>
+                    <div className="h-fit grid grid-cols-2 gap-5 max-h-[45vh] overflow-y-auto">
+                      {ranking.map((item, idx) => (
+                        <div
+                          className="flex gap-4 lg:gap-10 h-fit lg:text-xl "
+                          key={idx}
+                        >
+                          <p>
+                            <i className="fa-sharp fa-solid fa-circle"></i>
+                          </p>
+                          <p className="flex-1 line-clamp-1">{item.name}</p>
+                          <p>{item.highestScore}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <footer className="absolute z-10 bottom-0 right-0 left-0 flex w-full items-center justify-between">
+                      <Button onClick={() => navigate(configs.routes.home)}>
+                        Thoát
+                      </Button>
+                      {userStore && (
+                        <Button onClick={handelPlayAgain}>Chơi lại</Button>
+                      )}
+                    </footer>
+                  </>
+                )}
+              </main>
             </div>
           </main>
         </div>
