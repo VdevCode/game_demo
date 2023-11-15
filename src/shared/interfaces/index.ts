@@ -18,7 +18,6 @@ export interface IUserStore {
 }
 export interface IUser {
   address: number;
-  avatar: string;
   counter: number;
   createdAt: string;
   email: string;
@@ -26,9 +25,9 @@ export interface IUser {
   isValidAccount: boolean;
   name: string;
   phone: string;
-  role: 0 | 1;
   schools: string;
   _id: string;
+  highestScore: number;
 }
 export interface IGameStore {
   major: number;

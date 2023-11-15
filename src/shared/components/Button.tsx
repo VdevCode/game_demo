@@ -1,67 +1,59 @@
-// import { MouseEvent } from 'react';
-// import { Link } from 'react-router-dom';
-// import images from '../assets/images';
+import { MouseEvent } from 'react';
+import { Link } from 'react-router-dom';
+import images from '@shared/assets/images';
 
-// interface ButtonProps {
-//   type?: 'ingame' | 'play' | 'playback' | 'next';
-//   to?: string;
-//   href?: string;
-//   onClick?: (event: MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
-//   disabled?: boolean;
-// }
-// function Button({
-//   type,
-//   to,
-//   href,
-//   onClick,
-//   disabled,
-//   ...passProps
-// }: ButtonProps) {
-//   // Props
-//   const props: any = {
-//     onClick,
-//     ...passProps,
-//   };
+interface ButtonProps {
+  to?: string;
+  href?: string;
+  onClick?: (event: MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
+  disabled?: boolean;
+  children: any;
+}
+function Button({
+  children,
+  to,
+  href,
+  onClick,
+  disabled,
+  ...passProps
+}: ButtonProps) {
+  // Props
+  const props: any = {
+    onClick,
+    ...passProps,
+  };
 
-//   // Remove event listener when btn is disabled
-//   if (disabled) {
-//     Object.keys(props).forEach((key) => {
-//       if (key.startsWith('on') && typeof props[key] === 'function') {
-//         delete props[key];
-//       }
-//     });
-//   }
+  // Remove event listener when btn is disabled
+  if (disabled) {
+    Object.keys(props).forEach((key) => {
+      if (key.startsWith('on') && typeof props[key] === 'function') {
+        delete props[key];
+      }
+    });
+  }
 
-//   // Element
-//   let Comp: React.ElementType = 'button';
-//   if (to) {
-//     props.to = to;
-//     Comp = Link;
-//   } else if (href) {
-//     props.href = href;
-//     Comp = 'a';
-//   }
+  // Element
+  let Comp: React.ElementType = 'button';
+  if (to) {
+    props.to = to;
+    Comp = Link;
+  } else if (href) {
+    props.href = href;
+    Comp = 'a';
+  }
 
-//   // Image
-//   let image = images.btn_ingame;
-//   switch (type) {
-//     case 'next':
-//       image = images.btn_next;
-//       break;
-//     case 'play':
-//       image = images.btn_play;
-//       break;
-//     case 'playback':
-//       image = images.btn_playback;
-//       break;
-//     default:
-//       break;
-//   }
-//   return (
-//     <Comp {...props} className="h-14">
-//       <img className="w-full h-full object-contain" src={image} alt="" />
-//     </Comp>
-//   );
-// }
+  return (
+    <Comp {...props} className="relative h-14">
+      <img
+        className="w-full h-full object-contain"
+        src={images.btn_default}
+        alt=""
+      />
+      <div className="absolute z-10 inset-0 flex items-center justify-start text-xs">
+        <p className='ml-10 uppercase'>{children}</p>
+      </div>
+    </Comp>
+  );
+}
 
-// export default Button;
+export default Button;

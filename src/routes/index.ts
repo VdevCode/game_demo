@@ -1,12 +1,12 @@
 import configs from '../configs';
 
 // Component
-import Play from '@pages/Play';
-import ChoiceSelector from '@pages/ChoiceSelector';
 import ChoiceJob from '@pages/ChoiceJob';
+import ChoiceSelector from '@pages/ChoiceSelector';
 import Home from '@pages/Home';
-import Caculate from '@pages/Caculate';
-import AddData from '@pages/AddData';
+import Play from '@pages/Play';
+import Ranking from '@pages/Ranking';
+import Register from '@pages/Register';
 
 const publicRoutes: any[] = [
   {
@@ -14,8 +14,8 @@ const publicRoutes: any[] = [
     component: Home,
   },
   {
-    path: configs.routes.addData,
-    component: AddData,
+    path: configs.routes.register,
+    component: Register,
   },
   {
     path: configs.routes.choiceJob,
@@ -30,8 +30,8 @@ const publicRoutes: any[] = [
     component: Play,
   },
   {
-    path: configs.routes.caculate,
-    component: Caculate,
+    path: configs.routes.ranking,
+    component: Ranking,
   },
 ];
 

@@ -1,24 +1,27 @@
-import images from '@shared/assets/images';
 import configs from '@configs/index';
+import images from '@shared/assets/images';
+import { IUser } from '@shared/interfaces';
+import { userLoginSucess } from '@redux/userSlice';
 import axios from 'axios';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
-  const userStore = useSelector((state: any) => state.user);
+  const dispath = useDispatch();
   const navigate = useNavigate();
   const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [school, setSchool] = useState<string>('');
   const [address, setAddress] = useState<string>('');
   const forms = [
     {
-      placeholder: 'Tên của bạn',
+      placeholder: 'Địa chỉ email',
       img: images.form_input,
       handelChange: (e: any) => {
         const value = checkInput(e);
-        setName(value);
+        setEmail(value);
       },
     },
     {
@@ -27,6 +30,14 @@ function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
       handelChange: (e: any) => {
         const value = checkInput(e);
         setPhone(value);
+      },
+    },
+    {
+      placeholder: 'Tên của bạn',
+      img: images.form_input,
+      handelChange: (e: any) => {
+        const value = checkInput(e);
+        setName(value);
       },
     },
     {
@@ -51,30 +62,31 @@ function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
     if (value.startsWith(' ')) value = '';
     return value;
   };
-  const handelUpdate = async () => {
+  const handelRegister = async () => {
     try {
       const data = {
-        name,
+        email,
         phone,
+        name,
         school,
         address,
       };
       const error: boolean = validateData(data);
       if (!error) {
-        await axios.patch(
-          configs.api.addData + '/' + userStore.user.email,
-          data,
-        );
+        const response = await axios.post(configs.api.register, data);
+        const user: IUser = response.data.data;
+        dispath(userLoginSucess(user));
         navigate(configs.routes.choiceJob);
       }
     } catch (error) {
       setError(true);
-      setErrorMsg('Số điện thoại đã được sử dụng. Vui lòng thử lại');
+      setErrorMsg('Số điện thoại hoặc email đã được sử dụng. Vui lòng thử lại');
     }
   };
   function validateData(data: any): boolean {
     let error = false;
     const phoneRegex = /^(0[1-9])+([0-9]{8})\b/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (data.address.length === 0) {
       error = true;
@@ -86,17 +98,21 @@ function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
       setError(true);
       setErrorMsg('Tên trường học không được để trống');
     }
-    if (!phoneRegex.test(data.phone)) {
-      error = true;
-      setError(true);
-      setErrorMsg('Số điện thoại không hợp lệ');
-    }
     if (data.name.length === 0) {
       error = true;
       setError(true);
       setErrorMsg('Tên của bạn không được để trống');
     }
-
+    if (!phoneRegex.test(data.phone)) {
+      error = true;
+      setError(true);
+      setErrorMsg('Số điện thoại không hợp lệ');
+    }
+    if (!emailRegex.test(data.email)) {
+      error = true;
+      setError(true);
+      setErrorMsg('Địa chỉ email không hợp lệ');
+    }
     return error;
   }
 
@@ -131,14 +147,8 @@ function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
           </div>
         ))}
       </main>
-      <footer className="relative">
-        <img src={images.form_input} alt="" />
-        <button
-          className="absolute inset-0 flex items-end justify-center"
-          onClick={handelUpdate}
-        >
-          <img className="h-10 translate-y-1/3" src={images.btn_play} alt="" />
-        </button>
+      <footer className="relative" onClick={handelRegister}>
+        <img src={images.form_footer} alt="" />
       </footer>
     </div>
   );

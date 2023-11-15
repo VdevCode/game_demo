@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Error from './components/Error';
 import Form from './components/Form';
 
-function AddData() {
+function Register() {
   const [error, setError] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
   useEffect(() => {
@@ -19,4 +19,4 @@ function AddData() {
   );
 }
 
-export default AddData;
+export default Register;

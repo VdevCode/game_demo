@@ -1,7 +1,8 @@
-const endpoint = 'http://localhost:8080/api';
+const endpoint = 'https://game-demo-be.vercel.app/api';
 
 export default {
-  signin: endpoint + '/auth/google',
-  addData: endpoint + '/user/info',
+  register: endpoint + '/auth/register',
+  ranking: endpoint + '/user/ranking',
+  download: endpoint + '/user/download',
   saveGame: endpoint + '/user/saveHistory/',
 };

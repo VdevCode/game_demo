@@ -1,10 +1,10 @@
 const routes: { [key: string]: string } = {
   home: '/',
-  addData: '/addData',
+  register: '/register',
   choiceJob: '/choiceJob',
   choiceCharactor: '/choiceCharactor',
   play: '/play',
-  caculate: '/caculate',
+  ranking: '/ranking',
 };
 
 export default routes;

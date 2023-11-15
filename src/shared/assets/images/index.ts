@@ -1,11 +1,13 @@
 // Background
-import bg_main from '@shared/assets/images/src/background/main/bg_main.jpg';
+import bg_main from '@shared/assets/images/src/background/main/bg_main.png';
 // Major
-import majorIt from '@shared/assets/images/src/major/IT.jpg';
-import majorGrafic from '@shared/assets/images/src/major/IT.jpg';
-import majorGame from '@shared/assets/images/src/major/IT.jpg';
-import majorTravel from '@shared/assets/images/src/major/IT.jpg';
-import majorElectric from '@shared/assets/images/src/major/IT.jpg';
+import majorIt from '@shared/assets/images/src/major/IT.png';
+import majorGrafic from '@shared/assets/images/src/major/IT.png';
+import majorGame from '@shared/assets/images/src/major/IT.png';
+import majorTravel from '@shared/assets/images/src/major/IT.png';
+import majorElectric from '@shared/assets/images/src/major/IT.png';
+import majorBox from '@shared/assets/images/src/major/box.png';
+import majorSelected from '@shared/assets/images/src/major/box_selected.png';
 // Charactors
 import charactor1_avatar from '@shared/assets/images/src/charactor/charactor1/charactor_avt.png';
 import charactor1_default from '@shared/assets/images/src/charactor/charactor1/charactor_defaut.png';
@@ -93,6 +95,7 @@ import help_slow from '@shared/assets/images/src/help/help3.png';
 import play_hp from '@shared/assets/images/src/play/hp.png';
 import play_process from '@shared/assets/images/src/play/process.png';
 import play_coins from '@shared/assets/images/src/play/coins.png';
+import play_bar from '@shared/assets/images/src/play/bgStatuư.png';
 // Bee
 import bee1 from '@shared/assets/images/src/bee/1.png';
 import bee2 from '@shared/assets/images/src/bee/2.png';
@@ -101,16 +104,20 @@ import bee4 from '@shared/assets/images/src/bee/4.png';
 import bee5 from '@shared/assets/images/src/bee/5.png';
 import bee6 from '@shared/assets/images/src/bee/6.png';
 import bee7 from '@shared/assets/images/src/bee/7.png';
+import bee8 from '@shared/assets/images/src/bee/8.png';
 import bee from '@shared/assets/images/src/bee/bee.png';
 // Form
 import form_header from '@shared/assets/images/src/form/header.png';
 import form_input from '@shared/assets/images/src/form/input.png';
+import form_footer from '@shared/assets/images/src/form/footer.png';
 // Text
 import text_name from '@shared/assets/images/src/text/name.png';
+import text_bee from '@shared/assets/images/src/text/nameBee.png';
 // btn
-import btn_play from '@shared/assets/images/src/button/btn_play.png';
-import btn_next from '@shared/assets/images/src/button/btn_next.png';
-import btn_playback from '@shared/assets/images/src/button/btn_playback.png';
+import btn_default from '@shared/assets/images/src/button/btn_default.png';
+import btn_hover from '@shared/assets/images/src/button/btn_hover.png';
+// More
+import more_box from '@shared/assets/images/src/more/more_box.png';
 
 // PROCESS => TO NEW IMAGE
 // BG
@@ -289,6 +296,8 @@ export default {
   majorGame,
   majorTravel,
   majorElectric,
+  majorBox,
+  majorSelected,
   charactor1_avatar,
   CHARACTOR1_DEFAULT,
   CHARACTOR1_UPPING,
@@ -368,6 +377,7 @@ export default {
   play_hp,
   play_process,
   play_coins,
+  play_bar,
   help_hp,
   HELP_HP,
   help_slow,
@@ -381,11 +391,14 @@ export default {
   bee5,
   bee6,
   bee7,
+  bee8,
   bee,
   form_header,
   form_input,
+  form_footer,
   text_name,
-  btn_play,
-  btn_next,
-  btn_playback,
+  text_bee,
+  btn_default,
+  btn_hover,
+  more_box,
 };

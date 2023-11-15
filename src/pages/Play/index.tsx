@@ -234,7 +234,7 @@ function Play() {
       bird.x += 5;
       if (bird.x > SCREEN_W + 10) {
         handleEndGame();
-        navigate(configs.routes.caculate);
+        navigate(configs.routes.ranking);
       }
     }
     // Đang chơi
@@ -258,7 +258,7 @@ function Play() {
         bird.y += verticalY;
         if (bird.y >= SCREEN_H) {
           handleEndGame();
-          navigate(configs.routes.caculate);
+          navigate(configs.routes.ranking);
         }
       }
     }
@@ -317,12 +317,10 @@ function Play() {
         }
       }
       if (damageRef.current) {
-        damageRef.current.style.width =
-          (((bird.hp - birdDamage) / bird.hp) * 100).toString() + '%';
+        damageRef.current.innerHTML = (bird.hp - birdDamage).toString();
       }
       if (goalRef.current) {
-        goalRef.current.style.width =
-          ((goal / GOAL_TARGET) * 100).toString() + '%';
+        goalRef.current.innerText = goal.toString();
       }
     }
   };
@@ -408,62 +406,36 @@ function Play() {
       {/* Header */}
       <div
         ref={headerRef}
-        className="absolute z-10 top-1 left-0 right-0 flex h-fit items-center justify-between"
+        className="absolute z-10 top-1 left-0 right-0 hidden h-fit items-center justify-end"
       >
-        <div className="flex-1">
-          <div className="my-2 flex items-center w-52">
-            <img
-              className="relative z-10 w-12 scale-125"
-              src={images.play_hp}
-              alt=""
-            />
-            <div className="translate-x-[-4%] flex-1 h-6">
-              <div className="relative z-0 flex items-center h-full w-full bg-black/60 border-[3.5px] border-[#AE6326] rounded-full overflow-hidden">
-                <div
-                  className="w-full h-full bg-hpColor transition-all duration-500"
-                  ref={damageRef}
-                />
-                <p className="absolute left-5 text-white text-sm">
-                  Máu còn lại
+        <img src={images.text_bee} className="w-28 mx-5" alt="" />
+        <div className="relative w-fit h-10">
+          <img src={images.play_bar} className="h-full" alt="" />
+          <div className="absolute inset-0 w-full h-full flex items-center justify-between px-5 gap-1">
+            <div className="flex items-center gap-2">
+              <img className="h-5" src={images.play_hp} alt="" />
+              <div className="flex items-end">
+                <p ref={damageRef} className="text-sm">
+                  0
                 </p>
+                <p className="text-xs">/{bird.hp}</p>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="w-10 h-10 animate-bounce" ref={helpRef}>
-          <img id="img-help" className="w-full object-contain" src="" alt="" />
-        </div>
-        <div className="flex-1 flex justify-end">
-          <div className="flex flex-col gap-3 items-center justify-end">
-            <div className="flex w-fit items-center">
-              <img
-                className="relative z-10 w-12 scale-125"
-                src={images.play_process}
-                alt=""
-              />
-              <div className="translate-x-[-4%] w-28 h-6">
-                <div className="relative z-0 flex items-center h-full w-full bg-black/60 border-[3.5px] border-[#AE6326] rounded-full overflow-hidden">
-                  <div
-                    className="w-0 h-full bg-processColor transition-all duration-500"
-                    ref={goalRef}
-                  />
-                  <p className="absolute left-5 text-white text-sm">32m</p>
-                </div>
+            <div className="flex items-center gap-2">
+              <img className="h-5" src={images.play_process} alt="" />
+              <div className="flex items-end">
+                <p ref={goalRef} className="text-sm">
+                  345
+                </p>
+                <p className="text-xs">/{GOAL_TARGET}</p>
               </div>
             </div>
-            <div className="flex w-fit items-center">
-              <img
-                className="relative z-10 w-6 scale-125"
-                src={images.play_coins}
-                alt=""
-              />
-              <div className="translate-x-[-4%] w-28 h-6">
-                <div className="relative z-0 flex items-center h-full w-full bg-black/60 border-[3.5px] border-[#AE6326] rounded-full overflow-hidden">
-                  <div className="w-full h-full bg-hpColor" />
-                  <p className="absolute left-5 text-white text-sm">
-                    Máu còn lại
-                  </p>
-                </div>
+            <div className="flex items-center gap-2">
+              <img className="h-5" src={images.play_coins} alt="" />
+              <div className="flex items-end">
+                <p ref={scoreRef} className="text-sm">
+                  345
+                </p>
               </div>
             </div>
           </div>
