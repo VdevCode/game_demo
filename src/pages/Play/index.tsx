@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const SCREEN_W = window.innerWidth;
-const SCREEN_H = window.innerHeight;
+const SCREEN_H = window.screen.availHeight;
 const GRAVITY = 0.2;
 
 function Play() {
