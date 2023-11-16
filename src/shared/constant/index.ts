@@ -313,6 +313,50 @@ export const GIFTS: any = [
       active: false,
     },
   ],
+  [
+    {
+      w: 20,
+      h: 35,
+      img: images.ITEM_ELECTRIC1,
+      mark: 1,
+      active: false,
+    },
+    {
+      w: 25,
+      h: 25,
+      img: images.ITEM_ELECTRIC2,
+      mark: 2,
+      active: false,
+    },
+    {
+      w: 55,
+      h: 55,
+      img: images.ITEM_ELECTRIC3,
+      mark: 3,
+      active: false,
+    },
+    {
+      w: 50,
+      h: 50,
+      img: images.ITEM_ELECTRIC4,
+      mark: 3,
+      active: false,
+    },
+    {
+      w: 60,
+      h: 50,
+      img: images.ITEM_ELECTRIC5,
+      mark: 3,
+      active: false,
+    },
+    {
+      w: 60,
+      h: 50,
+      img: images.ITEM_ELECTRIC6,
+      mark: 3,
+      active: false,
+    },
+  ],
 ];
 
 export const HELPS: IHelpDefalt[] = [

@@ -2,13 +2,15 @@ import configs from '@configs/index';
 import { gameChangeMajor } from '@redux/gameSlice';
 import images from '@shared/assets/images';
 import Button from '@shared/components/Button';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 interface Major {
   img: string;
   name: string;
+  saveName: string;
   description: string;
 }
 
@@ -17,39 +19,62 @@ function ChoiceJob() {
     {
       img: images.majorIt,
       name: 'CNTT',
+      saveName: 'Công nghệ thông tin',
       description: 'Bạn thích máy tính và có thể ngồi hằng giờ,...',
     },
     {
       img: images.majorGame,
       name: 'GAME',
+      saveName: 'Lập trình game',
       description: 'Bạn thích máy tính và có thể ngồi hằng giờ,...',
     },
     {
       img: images.majorGrafic,
       name: 'ĐỒ HỌA',
+      saveName: 'Thiết kế đồ họa',
       description: 'Bạn thích máy tính và có thể ngồi hằng giờ,...',
     },
     {
       img: images.majorTravel,
       name: 'DL NHKS',
+      saveName: 'Du lịch - Nhà hàng khách sạn',
       description: 'Bạn thích máy tính và có thể ngồi hằng giờ,...',
     },
     {
       img: images.majorElectric,
       name: 'ĐIỆN CK',
+      saveName: 'Điện cơ khí',
+      description: 'Bạn thích máy tính và có thể ngồi hằng giờ,...',
+    },
+    {
+      img: images.majorElectric,
+      name: 'KINH TẾ',
+      saveName: 'Kinh tế',
       description: 'Bạn thích máy tính và có thể ngồi hằng giờ,...',
     },
   ];
   const navigate = useNavigate();
   const dispath = useDispatch();
+  const userStore = useSelector((state: any) => state.user);
+  const [loader, setLoader] = useState<boolean>(false);
   const [selected, setSelected] = useState<number>(0);
   const handelChangeMajor = (idx: number) => {
     setSelected(idx);
     dispath(gameChangeMajor(idx));
   };
-  const handelNext = () => {
+  const handelNext = async () => {
+    setLoader(true);
+    const res = await axios.patch(configs.api.major + userStore.user.phone, {
+      major: majors[selected].saveName,
+    });
+    setLoader(false);
     navigate(configs.routes.choiceCharactor);
   };
+  useEffect(() => {
+    if (JSON.stringify(userStore.user) === '{}') {
+      navigate(configs.routes.home);
+    }
+  }, [userStore]);
   return (
     <div className="appearance pt-2 h-full w-full flex flex-col items-center justify-between">
       <div className="relative flex flex-col items-center justify-center portrait:h-full portrait:w-full landscape:w-full landscape:h-full">
@@ -120,8 +145,12 @@ function ChoiceJob() {
                       </div>
                     ))}
                   </div>
-                  <div className="flex items-center justify-center portrait:h-10">
-                    <Button onClick={handelNext}>Tiếp tục</Button>
+                  <div className="flex items-center justify-center portrait:h-10 portrait:translate-y-1/2">
+                    {loader ? (
+                      <Button>Đang tải</Button>
+                    ) : (
+                      <Button onClick={handelNext}>Tiếp tục</Button>
+                    )}
                   </div>
                 </div>
               </main>

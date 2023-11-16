@@ -10,6 +10,7 @@ export const gameSlice = createSlice({
     defaultHp: 0,
     barriesDefault: 0,
     coins: 0,
+    timer: 0,
   },
   reducers: {
     gameChangeMajor: (state, action) => {
@@ -24,6 +25,7 @@ export const gameSlice = createSlice({
       state.defaultHp = action.payload.defaultHp;
       state.barriesDefault = action.payload.defaultBarries;
       state.coins = action.payload.coins;
+      state.timer = action.payload.timer;
     },
   },
 });

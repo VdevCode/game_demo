@@ -3,16 +3,23 @@ import Button from '@shared/components/Button';
 import { CHARACTORS } from '@shared/constant';
 import { IBirdDefault } from '@shared/interfaces';
 import { gameChangeBee } from '@redux/gameSlice';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import configs from '@configs/index';
 
 function ChoiceCharactor() {
   const dispath = useDispatch();
   const navigate = useNavigate();
+  const userStore = useSelector((state: any) => state.user);
   const charactors: IBirdDefault[] = CHARACTORS;
   const [selected, setSelected] = useState<number>(0);
+
+  useEffect(() => {
+    if (JSON.stringify(userStore.user) === '{}') {
+      navigate(configs.routes.home);
+    }
+  }, [userStore]);
   const handelChangeBee = (idx: number) => {
     setSelected(idx);
     dispath(gameChangeBee(idx));

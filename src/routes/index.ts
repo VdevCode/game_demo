@@ -7,6 +7,8 @@ import Home from '@pages/Home';
 import Play from '@pages/Play';
 import Ranking from '@pages/Ranking';
 import Register from '@pages/Register';
+import RandomGift from '@pages/RandomGift';
+import UpdateGift from '@pages/UpdateGift';
 
 const publicRoutes: any[] = [
   {
@@ -32,6 +34,14 @@ const publicRoutes: any[] = [
   {
     path: configs.routes.ranking,
     component: Ranking,
+  },
+  {
+    path: configs.routes.randomGift,
+    component: RandomGift,
+  },
+  {
+    path: configs.routes.updateGift,
+    component: UpdateGift,
   },
 ];
 

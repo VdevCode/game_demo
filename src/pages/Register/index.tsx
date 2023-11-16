@@ -1,19 +1,16 @@
-import { useEffect, useState } from 'react';
-import Error from './components/Error';
+import { useState } from 'react';
 import Form from './components/Form';
+import OPT from './components/OPT';
 
 function Register() {
-  const [error, setError] = useState<boolean>(false);
-  const [errorMsg, setErrorMsg] = useState<string>('');
-  useEffect(() => {
-    console.log('Status', error);
-  }, [error]);
+  const [opt, setOpt] = useState<boolean>(false);
+  const [data, setData] = useState<{}>({});
   return (
     <>
-      {error ? (
-        <Error errorMsg={errorMsg} setError={setError} />
+      {opt ? (
+        <OPT setOPT={setOpt} data={data} />
       ) : (
-        <Form setErrorMsg={setErrorMsg} setError={setError} />
+        <Form setOPT={setOpt} setData={setData} />
       )}
     </>
   );

@@ -44,7 +44,9 @@ function Ranking() {
     console.log(res);
     setMyRank(res.data);
   };
-
+  const handelGift = () => {
+    navigate(configs.routes.randomGift);
+  };
   const handelPlayAgain = () => {
     if (userStore.status) navigate(configs.routes.choiceJob);
     else navigate(configs.routes.register);
@@ -115,7 +117,13 @@ function Ranking() {
                   </div>
                   <footer className="absolute bottom-0 right-0 left-0 portrait:translate-y-1/3 landscape:translate-y-1/2 h-fit w-full flex justify-between">
                     <Button onClick={handelExist}>Thoát</Button>
-                    <Button onClick={handelPlayAgain}>Chơi lại</Button>
+                    {gameStore.coins >= 50 &&
+                    gameStore.win &&
+                    userStore.user.gift === false ? (
+                      <Button onClick={handelGift}>Nhận quà</Button>
+                    ) : (
+                      <Button onClick={handelPlayAgain}>Chơi lại</Button>
+                    )}
                   </footer>
                 </main>
               </div>

@@ -51,8 +51,14 @@
       "@redux/*": [
         "src/redux/*"
       ],
-      "@AddData/*": [
-        "src/pages/AddData/*"
+      "@Gifts/*": [
+        "src/pages/Gifts/*"
+      ],
+      "@RandomGift/*": [
+        "src/pages/RandomGift/*"
+      ],
+      "@UpdateGift/*": [
+        "src/pages/UpdateGift/*"
       ]
     }
   },

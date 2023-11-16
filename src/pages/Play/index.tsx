@@ -241,6 +241,7 @@ function Play() {
         defaultHp: bird.hp,
         barriesDefault: totalBarries,
         coins: score,
+        timer: goal,
       }),
     );
   };
