@@ -10,6 +10,9 @@ function UpdateGift() {
   const [gifts, setGift] = useState<any[]>([]);
   const [loader, setLoader] = useState(true);
   const [updated, setUpdated] = useState(0);
+  const [rightPass, setRightPass] = useState(false);
+  const [pass, setPass] = useState<string>('');
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -33,6 +36,16 @@ function UpdateGift() {
     console.log(res);
     setUpdated((prev) => prev + 1);
   };
+
+  const handelCheckPass = () => {
+    setError(false);
+    if (pass.includes('poly123')) {
+      setRightPass(true);
+    } else {
+      setError(true);
+    }
+  };
+
   return (
     <div className="appearance pt-2 h-full w-full flex flex-col items-center justify-between">
       <div className="relative flex flex-col items-center justify-center portrait:h-full portrait:w-full landscape:w-full landscape:h-full">
@@ -61,33 +74,58 @@ function UpdateGift() {
                 CẬP NHẬT SỐ LƯỢNG QUÀ
               </header>
               <main className="mb-10 py-2 px-[10%] min-h-[40vh] flex-1 w-full">
-                <div className="w-full flex items-center gap-2 font-bold">
-                  <p className="flex-1">Tên phần thưởng</p>
-                  <p className="w-fit">Số lượng hiện tại</p>
-                </div>
-                {!loader ? (
-                  <div className="flex flex-col gap-3">
-                    {gifts.map((item, idx) => (
-                      <div key={idx} className="flex items-center">
-                        <p className="flex-1">{item.name}</p>
-                        <div className="w-32 flex justify-center">
-                          <input
-                            type="string"
-                            className="w-8 h-8 text-center bg-[#FFF694] rounded-lg"
-                            value={item.total}
-                            onChange={(e) => handelChange(idx, e.target.value)}
-                          />
-                        </div>
-                      </div>
-                    ))}
+                {!rightPass ? (
+                  <div>
+                    <h1 className="my-2 uppercase font-bold">
+                      Nhập mã bảo mật để cập nhật số lượng quà
+                    </h1>
+                    <p className="my-2">Mã bảo mật:</p>
+                    <input
+                      type="text"
+                      className="px-2 w-full h-10 bg-[#FFF694] rounded-lg"
+                      placeholder="Mật mã"
+                      onChange={(e) => setPass(e.target.value)}
+                    />
+                    <div className="my-2 flex items-center h-10">
+                      {error && <p className="text-red-500">Sai mã bảo mật</p>}
+                    </div>
+                    <div className="my-2">
+                      <Button onClick={handelCheckPass}>Xác nhận</Button>
+                    </div>
                   </div>
                 ) : (
-                  <div className="flex items-center justify-center">
-                    Đang tải
-                  </div>
+                  <>
+                    <div className="w-full flex items-center gap-2 font-bold">
+                      <p className="flex-1">Tên phần thưởng</p>
+                      <p className="w-fit">Số lượng hiện tại</p>
+                    </div>
+                    {!loader ? (
+                      <div className="flex flex-col gap-3">
+                        {gifts.map((item, idx) => (
+                          <div key={idx} className="flex items-center">
+                            <p className="flex-1">{item.name}</p>
+                            <div className="w-32 flex justify-center">
+                              <input
+                                type="string"
+                                className="w-8 h-8 text-center bg-[#FFF694] rounded-lg"
+                                value={item.total}
+                                onChange={(e) =>
+                                  handelChange(idx, e.target.value)
+                                }
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center">
+                        Đang tải
+                      </div>
+                    )}
+                  </>
                 )}
               </main>
-              {!loader && (
+              {!loader && rightPass && (
                 <footer className="absolute z-10 bottom-0 right-0 left-0 flex justify-between">
                   <Button onClick={() => navigate(configs.routes.home)}>
                     Thoát

@@ -6,7 +6,7 @@ const routes: { [key: string]: string } = {
   play: '/play',
   ranking: '/ranking',
   randomGift: '/gift',
-  updateGift: '/poly/giftupdate/52d03s7',
+  updateGift: '/poly/update',
 };
 
 export default routes;
