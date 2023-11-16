@@ -67,6 +67,7 @@ function ChoiceJob() {
     const res = await axios.patch(configs.api.major + userStore.user.phone, {
       major: majors[selected].saveName,
     });
+    console.log(res);
     setLoader(false);
     navigate(configs.routes.choiceCharactor);
   };

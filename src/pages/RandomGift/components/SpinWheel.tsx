@@ -5,8 +5,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Wheel } from 'react-custom-roulette';
 import { useDispatch, useSelector } from 'react-redux';
-import GiftNotion from './GiftNotion';
 import { useNavigate } from 'react-router-dom';
+import GiftNotion from './GiftNotion';
 
 interface WheelData {
   option?: string;
@@ -28,6 +28,7 @@ function SpinWheel() {
   const [loading, setLoading] = useState(true);
   const [isActived, setActived] = useState<boolean>(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
+  const [stopped, setStopped] = useState(false);
 
   useEffect(() => {
     if (JSON.stringify(userStore.user) === '{}') {
@@ -62,23 +63,24 @@ function SpinWheel() {
       const newPrizeNumber = Math.floor(Math.random() * gifts.length);
       setPrizeNumber(newPrizeNumber);
       setMustSpin(true);
+      setStopped(false);
     }
   };
 
   useEffect(() => {
     const saveGift = async () => {
       const res = await axios.patch(
-        configs.api.addOwnerGift + giftDefault[prizeNumber]._id,
+        configs.api.addOwnerGift + '/' + giftDefault[prizeNumber]._id,
         {
           phone: userStore.user.phone,
           name: userStore.user.name,
         },
       );
       console.log(res);
-      setActived(true);
       dispatch(userLoginSucess(res.data.data));
+      setActived(true);
     };
-    if (!isActived && mustSpin) {
+    if (!isActived && stopped) {
       saveGift();
     }
   }, [isActived, mustSpin]);
@@ -103,11 +105,12 @@ function SpinWheel() {
                   fontSize={25}
                   onStopSpinning={() => {
                     setMustSpin(false);
+                    setStopped(true);
                   }}
                 />
               </div>
               <div className="absolute bottom-0 right-0 left-0 flex items-center justify-center translate-y-1/2">
-                {!isActived && userStore.user.gift === false && (
+                {!isActived && (
                   <Button onClick={handleSpinClick}>Quay ngay</Button>
                 )}
               </div>

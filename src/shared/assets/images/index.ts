@@ -27,24 +27,6 @@ import charactor3_upping from '@shared/assets/images/src/charactor/charactor3/ch
 import charactor3_down from '@shared/assets/images/src/charactor/charactor3/charactor_down.png';
 import charactor3_die from '@shared/assets/images/src/charactor/charactor3/charactor_die.png';
 import charactor3_win from '@shared/assets/images/src/charactor/charactor3/charactor_win.png';
-import charactor4_avatar from '@shared/assets/images/src/charactor/charactor4/charactor_avt.png';
-import charactor4_default from '@shared/assets/images/src/charactor/charactor4/charactor_defaut.png';
-import charactor4_upping from '@shared/assets/images/src/charactor/charactor4/charactor_upping.png';
-import charactor4_down from '@shared/assets/images/src/charactor/charactor4/charactor_down.png';
-import charactor4_die from '@shared/assets/images/src/charactor/charactor4/charactor_die.png';
-import charactor4_win from '@shared/assets/images/src/charactor/charactor4/charactor_win.png';
-import charactor5_avatar from '@shared/assets/images/src/charactor/charactor5/charactor_avt.png';
-import charactor5_default from '@shared/assets/images/src/charactor/charactor5/charactor_defaut.png';
-import charactor5_upping from '@shared/assets/images/src/charactor/charactor5/charactor_upping.png';
-import charactor5_down from '@shared/assets/images/src/charactor/charactor5/charactor_down.png';
-import charactor5_die from '@shared/assets/images/src/charactor/charactor5/charactor_die.png';
-import charactor5_win from '@shared/assets/images/src/charactor/charactor5/charactor_win.png';
-import charactor6_avatar from '@shared/assets/images/src/charactor/charactor6/charactor_avt.png';
-import charactor6_default from '@shared/assets/images/src/charactor/charactor6/charactor_defaut.png';
-import charactor6_upping from '@shared/assets/images/src/charactor/charactor6/charactor_upping.png';
-import charactor6_down from '@shared/assets/images/src/charactor/charactor6/charactor_down.png';
-import charactor6_die from '@shared/assets/images/src/charactor/charactor6/charactor_die.png';
-import charactor6_win from '@shared/assets/images/src/charactor/charactor6/charactor_win.png';
 // Enemy
 import eneymy_explosion from '@shared/assets/images/src/enemy/explosion.png';
 import emeny1_default from '@shared/assets/images/src/enemy/barries1/barries_default.png';
@@ -157,39 +139,6 @@ const CHARACTOR3_DIE = new Image();
 CHARACTOR3_DIE.src = charactor3_die;
 const CHARACTOR3_WIN = new Image();
 CHARACTOR3_WIN.src = charactor3_win;
-// 4
-const CHARACTOR4_DEFAULT = new Image();
-CHARACTOR4_DEFAULT.src = charactor4_default;
-const CHARACTOR4_UPPING = new Image();
-CHARACTOR4_UPPING.src = charactor4_upping;
-const CHARACTOR4_DOWN = new Image();
-CHARACTOR4_DOWN.src = charactor4_down;
-const CHARACTOR4_DIE = new Image();
-CHARACTOR4_DIE.src = charactor4_die;
-const CHARACTOR4_WIN = new Image();
-CHARACTOR4_WIN.src = charactor4_win;
-// 5
-const CHARACTOR5_DEFAULT = new Image();
-CHARACTOR5_DEFAULT.src = charactor5_default;
-const CHARACTOR5_UPPING = new Image();
-CHARACTOR5_UPPING.src = charactor5_upping;
-const CHARACTOR5_DOWN = new Image();
-CHARACTOR5_DOWN.src = charactor5_down;
-const CHARACTOR5_DIE = new Image();
-CHARACTOR5_DIE.src = charactor5_die;
-const CHARACTOR5_WIN = new Image();
-CHARACTOR5_WIN.src = charactor5_win;
-// 6
-const CHARACTOR6_DEFAULT = new Image();
-CHARACTOR6_DEFAULT.src = charactor6_default;
-const CHARACTOR6_UPPING = new Image();
-CHARACTOR6_UPPING.src = charactor6_upping;
-const CHARACTOR6_DOWN = new Image();
-CHARACTOR6_DOWN.src = charactor6_down;
-const CHARACTOR6_DIE = new Image();
-CHARACTOR6_DIE.src = charactor6_die;
-const CHARACTOR6_WIN = new Image();
-CHARACTOR6_WIN.src = charactor6_win;
 
 // ENEMY
 const ENEMY_EXPLOSION = new Image();
@@ -316,24 +265,6 @@ export default {
   CHARACTOR3_DOWN,
   CHARACTOR3_DIE,
   CHARACTOR3_WIN,
-  charactor4_avatar,
-  CHARACTOR4_DEFAULT,
-  CHARACTOR4_UPPING,
-  CHARACTOR4_DOWN,
-  CHARACTOR4_DIE,
-  CHARACTOR4_WIN,
-  charactor5_avatar,
-  CHARACTOR5_DEFAULT,
-  CHARACTOR5_UPPING,
-  CHARACTOR5_DOWN,
-  CHARACTOR5_DIE,
-  CHARACTOR5_WIN,
-  charactor6_avatar,
-  CHARACTOR6_DEFAULT,
-  CHARACTOR6_UPPING,
-  CHARACTOR6_DOWN,
-  CHARACTOR6_DIE,
-  CHARACTOR6_WIN,
   ENEMY_EXPLOSION,
   ENEMY1_DEFAULT,
   ENEMY1_DOWN,

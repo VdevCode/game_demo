@@ -94,6 +94,7 @@ function Form({ setOPT, setData }: { setOPT: any; setData: any }) {
         {
           size: 'invisible',
           callback: (response: any) => {
+            console.log(response);
             onSignup();
           },
           'expired-callback': () => {},

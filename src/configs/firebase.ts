@@ -2,12 +2,12 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDJljQHPQbYQLLret4P5sHhKdqXKm6az9g',
-  authDomain: 'game-bc0ea.firebaseapp.com',
-  projectId: 'game-bc0ea',
-  storageBucket: 'game-bc0ea.appspot.com',
-  messagingSenderId: '668885098812',
-  appId: '1:668885098812:web:456e61ca9161143baa7e39',
+  apiKey: 'AIzaSyBXOXFT8JwxJEJgICa38Hy_pvm5TLxYcnQ',
+  authDomain: 'gamer-73c8d.firebaseapp.com',
+  projectId: 'gamer-73c8d',
+  storageBucket: 'gamer-73c8d.appspot.com',
+  messagingSenderId: '1067050796180',
+  appId: '1:1067050796180:web:4a4be7b4819188bac56081',
 };
 
 // Initialize Firebase

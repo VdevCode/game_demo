@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import images from '@shared/assets/images';
-import axios from 'axios';
 import configs from '@configs/index';
+import images from '@shared/assets/images';
 import Button from '@shared/components/Button';
-import { log } from 'console';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function UpdateGift() {
