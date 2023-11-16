@@ -25,14 +25,6 @@ function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
       },
     },
     {
-      placeholder: 'Địa chỉ email',
-      img: images.form_input,
-      handelChange: (e: any) => {
-        const value = checkInput(e);
-        setEmail(value);
-      },
-    },
-    {
       placeholder: 'Tên của bạn',
       img: images.form_input,
       handelChange: (e: any) => {
@@ -40,6 +32,15 @@ function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
         setName(value);
       },
     },
+    {
+      placeholder: 'Địa chỉ email',
+      img: images.form_input,
+      handelChange: (e: any) => {
+        const value = checkInput(e);
+        setEmail(value);
+      },
+    },
+
     {
       placeholder: 'Trường THPT',
       img: images.form_input,
@@ -105,7 +106,7 @@ function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
       </header>
       <main className="landscape:grid landscape:grid-cols-2">
         {forms.map((item, idx) => (
-          <div key={idx} className="relative landscape:h-full portrait:h-16">
+          <div key={idx} className={`relative landscape:h-full portrait:h-16`}>
             <img src={images.form_input} alt="" />
             <div className="absolute z-10 inset-0 w-full h-full flex items-center justify-center">
               <input
