@@ -97,7 +97,7 @@ function Ranking() {
                       </div>
                     ))}
                   </div>
-                  <div className="w-full my-2 portrait:h-fit landscape:h-fit">
+                  <div className="w-full my-5 portrait:h-fit landscape:h-fit">
                     {myRank && (
                       <div className="w-full h-fit">
                         <p className="font-bold uppercase">Xếp hạng của bạn</p>
