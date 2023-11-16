@@ -92,22 +92,22 @@ function Form({ setError, setErrorMsg }: { setError: any; setErrorMsg: any }) {
   }
 
   return (
-    <div className="relative w-1/2 h-[90%] lg:w-1/3 lg:h-fit">
-      <div className="relative z-10 w-full h-20">
+    <div className="relative landscape:w-1/2 landscape:h-[90%] portrait:h-fit portrait:w-3/4">
+      <div className="relative z-10 landscape:w-full landscape:h-20 portrait:h-24 portrait:scale-125">
         <img className="w-full" src={images.text_name} alt="" />
       </div>
       <header className="relative w-full">
         <img
-          className="w-full h-20 lg:h-full"
+          className="w-full landscape:h-20 portrait:h-16"
           src={images.form_header}
           alt=""
         />
       </header>
-      <main className="grid grid-cols-2">
+      <main className="landscape:grid landscape:grid-cols-2">
         {forms.map((item, idx) => (
-          <div key={idx} className="relative h-12 lg:h-full">
+          <div key={idx} className="relative landscape:h-full portrait:h-16">
             <img src={images.form_input} alt="" />
-            <div className="absolute z-10 inset-0 flex items-center justify-center">
+            <div className="absolute z-10 inset-0 w-full h-full flex items-center justify-center">
               <input
                 type="text"
                 className="px-3 text-sm bg-transparent w-3/4 text-white"

@@ -21,78 +21,74 @@ function ChoiceCharactor() {
     navigate(configs.routes.play);
   };
   return (
-    <div className="h-full w-full flex flex-col items-center justify-between">
-      <div className="flex flex-col items-center justify-center w-full h-full relative">
+    <div className="appearance pt-2 h-full w-full flex flex-col items-center justify-between">
+      <div className="relative flex flex-col items-center justify-center portrait:h-full portrait:w-full landscape:w-full landscape:h-full">
         <img
-          className="absolute z-10 w-1/5 bottom-5 left-5 translate-x-10"
+          className="absolute z-10 portrait:hidden landscape:w-1/5 landscape:bottom-5 landscape:left-5 landscape:translate-x-10"
           src={images.bee8}
           alt=""
         />
-        <div className="aprrearance relative h-[98%] lg:h-[80%] w-[55%] flex flex-col items-center justify-center">
-          <header className="relative z-10 w-[65%] h-1/5 -translate-y-1/4">
+        <img
+          className="absolute z-10 portrait:w-1/3 portrait:bottom-0 portrait:right-0 portrait:-translate-y-1/3 landscape:hidden"
+          src={images.bee7}
+          alt=""
+        />
+        <div className="aprrearance relative portrait:h-fit portrait:w-full landscape:h-[90%] landscape:w-[55%] flex flex-col items-center justify-center">
+          <header className="relative z-10 portrait:w-[90%] portrait:h-1/6 landscape:w-1/2 landscape:h-1/5 landscape:scale-125">
             <img
               className="w-full object-contain"
-              src={images.text_name}
-              alt=""
-            />
-            <img
-              className="absolute bottom-0 left-0 w-12 translate-y-3/4 -translate-x-1/4"
-              src={images.bee3}
-              alt=""
-            />
-            <img
-              className="absolute bottom-1 right-0 w-14 translate-y-full translate-x-1/3"
-              src={images.bee1}
+              src={images.text_bee}
               alt=""
             />
           </header>
-          <main className="relative flex-1 w-[100%] translate-y-[-5%] scale-90">
+          <main className="relative flex-1 portrait:w-[90%] landscape:w-[100%] landscape:translate-y-[-5%] landscape:scale-90 landscape:p-2 ">
             <img
               className="absolute z-0 w-full h-full"
               src={images.more_box}
               alt=""
             />
-            <div className="relative z-10 p-1 flex flex-col w-full h-full items-center justify-center">
-              <header className="h-[18%] flex items-center justify-center">
+            <div className="relative z-10 landscape:my-2 p-1 flex flex-col w-full h-full items-center justify-center">
+              <header className="portrait:h-[20%] landscape:h-[10%] landscape:mb-5 flex items-center justify-center font-bold text-lg">
                 CHỌN NHÂN VẬT
               </header>
-              <main className="py-[2%] px-[5%] flex-1 w-full flex">
-                <div className="p-2 w-2/5 h-fit ">
-                  <div className="flex flex-col gap-5">
-                    {charactors.map((item, idx) => (
-                      <div
-                        className="flex items-center gap-2 cursor-pointer"
-                        key={idx}
-                        onClick={() => handelChangeBee(idx)}
-                      >
+              <main className="py-2 px-[10%] min-h-[40vh] flex-1 w-full landscape:flex">
+                <div className="landscape:flex-1 flex landscape:flex-col portrait:justify-between landscape:gap-4">
+                  {charactors.map((item, idx) => (
+                    <div
+                      onClick={() => handelChangeBee(idx)}
+                      className={`flex items-center gap-3 portrait:flex-col ${
+                        idx === selected ? 'font-bold' : ''
+                      }`}
+                      key={idx}
+                    >
+                      <div className="w-14 h-14 overflow-hidden">
                         <img
-                          className="w-12 lg:w-20"
+                          className={idx === 0 ? 'h-14 scale-150' : 'h-14'}
                           src={item.imgAvatar}
                           alt=""
                         />
-                        <p className="line-clamp-2 lg:text-lg">{item.name}</p>
                       </div>
-                    ))}
-                  </div>
+                      <p>{item.name}</p>
+                    </div>
+                  ))}
                 </div>
-                <div className="relative flex-1 p-5">
-                  <div className="">
-                    <h1 className="font-bold text-xl lg:text-2xl">
-                      <span className="font-normal text-base">Nhân vật: </span>
-                      {charactors[selected].name}
-                    </h1>
-                    <p>{charactors[selected].introl}</p>
-                    <div className="my-1 flex items-center gap-2 text-lg">
-                      <p>Máu tối đa:</p>
-                      <p className="font-bold">{charactors[selected].hp}</p>
-                    </div>
-                    <div className="my-1 flex items-center gap-2 text-lg">
-                      <p>Tốc độ bay:</p>
-                      <p className="font-bold">{charactors[selected].speed}</p>
-                    </div>
+                <div className="relative landscape:flex-1 portrait:my-2">
+                  <p className="uppercase font-bold">Thông tin nhân vật</p>
+                  <p className="my-1">{charactors[selected].introl}</p>
+                  <div className="mb-1 flex gap-2">
+                    <p className="font-semibold">Tên nhân vật:</p>
+                    <p>{charactors[selected].name}</p>
                   </div>
-                  <div className="absolute bottom-0 right-0 left-0  w-full flex items-center justify-center">
-                    <Button onClick={handelNext}>Tiếp tục</Button>
+                  <div className="mb-1 flex gap-2">
+                    <p className="font-semibold">Máu tối đa:</p>
+                    <p>{charactors[selected].hp}</p>
+                  </div>
+                  <div className="mb-1 flex gap-2">
+                    <p className="font-semibold">Tốc độ bay:</p>
+                    <p>{charactors[selected].speed}</p>
+                  </div>
+                  <div className="absolute portrait:my-5 landscape:bottom-0 landscape:right-0 last:translate-x-1/2 landscape:translate-y-1/2">
+                    <Button onClick={handelNext}>Xác nhận</Button>
                   </div>
                 </div>
               </main>

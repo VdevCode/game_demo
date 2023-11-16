@@ -15,12 +15,14 @@ function Ranking() {
   const userStore = useSelector((state: any) => state.user);
   const [loading, setLoading] = useState<boolean>(true);
   const [ranking, setRanking] = useState<IUser[]>([]);
+  const [myRank, setMyRank] = useState<any>(null);
 
   useEffect(() => {
-    if (userStore.status) {
-      saveResult();
-    }
     setLoading(true);
+    if (JSON.stringify(userStore.user) != '{}') {
+      saveResult();
+      getMyRank();
+    }
     getData();
     setLoading(false);
   }, []);
@@ -37,82 +39,90 @@ function Ranking() {
     const res = await axios.get(configs.api.ranking);
     setRanking(res.data.data);
   };
+  const getMyRank = async () => {
+    const res = await axios.get(configs.api.myRanking + userStore.user.phone);
+    console.log(res);
+    setMyRank(res.data);
+  };
 
   const handelPlayAgain = () => {
     if (userStore.status) navigate(configs.routes.choiceJob);
     else navigate(configs.routes.register);
   };
+  const handelExist = () => {
+    navigate(configs.routes.home);
+  };
 
   return (
     <div className="appearance pt-2 h-full w-full flex flex-col items-center justify-between">
-      <div className="flex flex-col items-center justify-center w-full h-full relative">
-        <img
-          className="absolute z-10 w-1/5 bottom-5 left-5 translate-x-10"
-          src={images.bee8}
-          alt=""
-        />
-        <div className="aprrearance relative h-[98%] w-[55%] flex flex-col items-center justify-center">
-          <header className="relative z-10 w-[65%] h-1/5 -translate-y-1/4">
-            <img
-              className="w-full object-contain"
-              src={images.text_name}
-              alt=""
-            />
-            <img
-              className="absolute bottom-0 left-0 w-12 translate-y-3/4 -translate-x-1/4"
-              src={images.bee3}
-              alt=""
-            />
-            <img
-              className="absolute bottom-1 right-0 w-14 translate-y-full translate-x-1/3"
-              src={images.bee1}
-              alt=""
-            />
-          </header>
-          <main className="relative flex-1 w-[100%] translate-y-[-5%] scale-90">
-            <img
-              className="absolute z-0 w-full h-full"
-              src={images.more_box}
-              alt=""
-            />
-            <div className="relative z-10 p-1 flex flex-col w-full h-full items-center justify-center">
-              <header className="h-[18%] flex items-center justify-center">
-                BẢNG XẾP HẠNG
-              </header>
-              <main className="relative py-[2%] px-[10%] flex-1 w-full flex flex-col">
-                {loading ? (
-                  'Đang tải'
-                ) : (
-                  <>
-                    <div className="h-fit grid grid-cols-2 gap-5 max-h-[45vh] overflow-y-auto">
-                      {ranking.map((item, idx) => (
-                        <div
-                          className="flex gap-4 lg:gap-10 h-fit lg:text-xl "
-                          key={idx}
-                        >
-                          <p>
-                            <i className="fa-sharp fa-solid fa-circle"></i>
+      {loading ? (
+        'Đang tải'
+      ) : (
+        <div className="relative flex flex-col items-center justify-center portrait:h-full portrait:w-full landscape:w-full landscape:h-full">
+          <img
+            className="absolute z-10 portrait:hidden landscape:w-1/5 landscape:bottom-5 landscape:left-5 landscape:translate-x-10"
+            src={images.bee8}
+            alt=""
+          />
+          <div className="aprrearance relative portrait:h-fit portrait:w-full landscape:h-[100%] landscape:w-[55%] flex flex-col items-center justify-center">
+            <header className="relative z-10 portrait:w-[90%] portrait:h-1/6 landscape:w-1/2 landscape:h-1/5 landscape:scale-125">
+              <img
+                className="w-full object-contain"
+                src={images.text_bee}
+                alt=""
+              />
+            </header>
+            <main className="relative flex-1 portrait:w-[90%] landscape:w-[100%] landscape:translate-y-[-5%] landscape:scale-90 landscape:p-2 ">
+              <img
+                className="absolute z-0 w-full h-full"
+                src={images.more_box}
+                alt=""
+              />
+              <div className="relative z-10 landscape:my-2 p-1 flex flex-col w-full h-full items-center justify-center">
+                <header className="portrait:h-[20%] landscape:h-[10%] landscape:mb-5 flex items-center justify-center font-bold text-lg">
+                  BẢNG XẾP HẠNG
+                </header>
+                <main className="relative pb-5 px-[10%] min-h-[40vh] flex-1 w-full flex flex-col items-center justify-center">
+                  <div className="w-full flex-1 landscape:max-h-[40vh] overflow-y-auto">
+                    {ranking.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-between gap-10"
+                      >
+                        <p className="text-2xl">#{idx + 1}</p>
+                        <p className="flex-1 line-clamp-1 font-bold text-lg">
+                          {item.name}
+                        </p>
+                        <p className="text-2xl">{item.highestScore}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="w-full my-2 portrait:h-fit landscape:h-fit">
+                    {myRank && (
+                      <div className="w-full h-fit">
+                        <p className="font-bold uppercase">Xếp hạng của bạn</p>
+                        <div className="w-full flex items-center justify-between gap-10">
+                          <p className="text-2xl">{myRank.userRank}</p>
+                          <p className="flex-1 line-clamp-1 font-bold text-lg">
+                            {myRank.userData.name}
                           </p>
-                          <p className="flex-1 line-clamp-1">{item.name}</p>
-                          <p>{item.highestScore}</p>
+                          <p className="text-2xl">
+                            {myRank.userData.highestScore}
+                          </p>
                         </div>
-                      ))}
-                    </div>
-                    <footer className="absolute z-10 bottom-0 right-0 left-0 flex w-full items-center justify-between">
-                      <Button onClick={() => navigate(configs.routes.home)}>
-                        Thoát
-                      </Button>
-                      {userStore && (
-                        <Button onClick={handelPlayAgain}>Chơi lại</Button>
-                      )}
-                    </footer>
-                  </>
-                )}
-              </main>
-            </div>
-          </main>
+                      </div>
+                    )}
+                  </div>
+                  <footer className="absolute bottom-0 right-0 left-0 portrait:translate-y-1/3 landscape:translate-y-1/2 h-fit w-full flex justify-between">
+                    <Button onClick={handelExist}>Thoát</Button>
+                    <Button onClick={handelPlayAgain}>Chơi lại</Button>
+                  </footer>
+                </main>
+              </div>
+            </main>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

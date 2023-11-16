@@ -5,4 +5,5 @@ export default {
   ranking: endpoint + '/user/ranking',
   download: endpoint + '/user/download',
   saveGame: endpoint + '/user/saveHistory/',
+  myRanking: endpoint + '/user/myRanking/',
 };

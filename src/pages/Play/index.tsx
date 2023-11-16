@@ -3,6 +3,7 @@ import { gameChangeOver } from '@redux/gameSlice';
 import images from '@shared/assets/images';
 import { BARRIES, CHARACTORS, GIFTS } from '@shared/constant';
 import getRamdom from '@shared/utils/getRamdom';
+import Button from '@shared/components/Button';
 import {
   IBarries,
   IBarryDefalt,
@@ -43,7 +44,7 @@ function Play() {
 
   // BIRD
   const birdSelected: IBirdDefault = CHARACTORS[gameStore.bee];
-  const GOAL_TARGET: number = 180;
+  const GOAL_TARGET: number = 10;
   let birdDamage: number = 0;
   let verticalX = -3;
   let verticalY = 0;
@@ -56,15 +57,6 @@ function Play() {
     birdSelected,
   );
   const spaceBottomWithBird = SCREEN_H - bird.h;
-
-  // BACKGROUND
-  // const bgDefauls: IBackGround[] = [
-  //   { x: 0, y: 0, img: images.BG_MAIN, using: false },
-  //   { x: SCREEN_W, y: 0, img: images.BG_MAIN, using: false },
-  //   { x: SCREEN_W * 2, y: 0, img: images.BG_MAIN, using: false },
-  // ];
-  // const backgrounds: IBackGround[] = [...bgDefauls.slice(0, 3)];
-  // let indexNowBg: number = backgrounds.length - 1;
 
   // BARRIER
   let totalBarries: number = 0;
@@ -79,24 +71,7 @@ function Play() {
   // Draw Canvas
   const draw = (context: CanvasRenderingContext2D) => {
     context.clearRect(0, 0, SCREEN_W, SCREEN_H);
-    // Vẽ background
-    // for (let i = 0; i < backgrounds.length; i++) {
-    //   const bg: IBackGround = backgrounds[i];
-    //   bg.x -= 2;
-    //   if (bg.x < SCREEN_W) {
-    //     context.drawImage(bg.img, bg.x, bg.y, SCREEN_W, SCREEN_H);
-    //   }
-    //   if (bg.x < 0 && !bg.using) {
-    //     backgrounds[i].using = true;
-    //     backgrounds.push({
-    //       x: SCREEN_W * 2,
-    //       y: 0,
-    //       img: bgDefauls[indexNowBg].img,
-    //       using: false,
-    //     });
-    //     backgrounds.unshift();
-    //   }
-    // }
+
     // Vẽ barries
     for (let i = 0; i < barries.length; i++) {
       let barry: IBarries = barries[i];
@@ -385,13 +360,18 @@ function Play() {
         style={{
           visibility: started ? 'hidden' : 'visible',
         }}
-        onClick={handleStart}
       >
         <p
           id="logger"
-          className="mt-2 text-[#F1541F] text-lg lg:text-4xl font-bold animate-bounce"
+          className="mt-2 text-lg lg:text-4xl flex flex-col items-center font-bold"
         >
-          READY...GO
+          <h1 className="text-[#F1541F] font-bold text-2xl">HÃY SẴN SÀNG</h1>
+          <h1 className="portrait:w-3/4 portrait:text-center text-black">
+            Thu thập các dụng cụ học tập và tránh các chướng ngại vật nhé
+          </h1>
+          <div className="my-4 text-black animate-bounce">
+            <Button onClick={handleStart}>Xuất phát</Button>
+          </div>
         </p>
       </div>
       {/* Screen */}

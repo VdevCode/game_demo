@@ -15,7 +15,8 @@ export const CHARACTORS: IBirdDefault[] = [
     imgDie: images.CHARACTOR1_DIE,
     imgWin: images.CHARACTOR1_WIN,
     name: 'Ong vui vẻ',
-    introl: 'Cô ấy rất lười',
+    introl:
+      'Sống vui vẻ, cười mỗi ngày. Ong vui vẻ luôn mang lại năng lượng tích cực cho mọi người xung quanh.',
     role: 0,
   },
   {
@@ -30,7 +31,8 @@ export const CHARACTORS: IBirdDefault[] = [
     imgDie: images.CHARACTOR2_DIE,
     imgWin: images.CHARACTOR2_WIN,
     name: 'Ong chăm chỉ',
-    introl: 'Cô ấy rất lười',
+    introl:
+      'Cô ấy rất chăm chỉ trong công việc của mình, tuy nhiên, cũng có lúc cô ấy cần nghỉ ngơi và giải trí.',
     role: 0,
   },
   {
@@ -45,7 +47,8 @@ export const CHARACTORS: IBirdDefault[] = [
     imgDie: images.CHARACTOR3_DIE,
     imgWin: images.CHARACTOR3_WIN,
     name: 'Ong tích cực',
-    introl: '',
+    introl:
+      'Ong tích cực luôn hướng đến mục tiêu và không ngừng nỗ lực để đạt được điều đó.',
     role: 0,
   },
 ];
