@@ -65,7 +65,7 @@ function Register() {
   function validateData(data: any) {
     setError(true);
     const phoneRegex = /^(0[1-9])+([0-9]{8})\b/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(vn|com\.vn|com)$/;
     if (!phoneRegex.test(data.phone)) {
       setErrorMsg('Số điện thoại của bạn không hợp lệ');
       return;
