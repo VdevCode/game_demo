@@ -13,6 +13,7 @@ function UpdateGift() {
   const [rightPass, setRightPass] = useState(false);
   const [pass, setPass] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -32,9 +33,11 @@ function UpdateGift() {
 
   const handleSave = async () => {
     setLoader(true);
+    setSuccess(false);
     const res = await axios.patch(configs.api.updateGift, { gifts });
     console.log(res);
     setUpdated((prev) => prev + 1);
+    setSuccess(true);
   };
 
   const handelCheckPass = () => {
@@ -100,23 +103,26 @@ function UpdateGift() {
                       <p className="w-fit">Số lượng hiện tại</p>
                     </div>
                     {!loader ? (
-                      <div className="flex flex-col gap-3">
-                        {gifts.map((item, idx) => (
-                          <div key={idx} className="flex items-center">
-                            <p className="flex-1">{item.name}</p>
-                            <div className="w-32 flex justify-center">
-                              <input
-                                type="string"
-                                className="w-8 h-8 text-center bg-[#FFF694] rounded-lg"
-                                value={item.total}
-                                onChange={(e) =>
-                                  handelChange(idx, e.target.value)
-                                }
-                              />
+                      <>
+                        <div className="flex flex-col gap-3">
+                          {gifts.map((item, idx) => (
+                            <div key={idx} className="flex items-center">
+                              <p className="flex-1">{item.name}</p>
+                              <div className="w-32 flex justify-center">
+                                <input
+                                  type="string"
+                                  className="w-8 h-8 text-center bg-[#FFF694] rounded-lg"
+                                  value={item.total}
+                                  onChange={(e) =>
+                                    handelChange(idx, e.target.value)
+                                  }
+                                />
+                              </div>
                             </div>
-                          </div>
-                        ))}
-                      </div>
+                          ))}
+                        </div>
+                        {success && <p>Cập nhật số lượng thành công</p>}
+                      </>
                     ) : (
                       <div className="flex items-center justify-center">
                         Đang tải

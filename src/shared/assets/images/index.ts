@@ -69,6 +69,12 @@ import item_Electric3 from '@shared/assets/images/src/item/electric/3.png';
 import item_Electric4 from '@shared/assets/images/src/item/electric/4.png';
 import item_Electric5 from '@shared/assets/images/src/item/electric/5.png';
 import item_Electric6 from '@shared/assets/images/src/item/electric/6.png';
+import item_Economi1 from '@shared/assets/images/src/item/economi/1.png';
+import item_Economi2 from '@shared/assets/images/src/item/economi/2.png';
+import item_Economi3 from '@shared/assets/images/src/item/economi/3.png';
+import item_Economi4 from '@shared/assets/images/src/item/economi/4.png';
+import item_Economi5 from '@shared/assets/images/src/item/economi/5.png';
+import item_Economi6 from '@shared/assets/images/src/item/economi/6.png';
 // Help
 import help_hp from '@shared/assets/images/src/help/help1.png';
 import help_speed from '@shared/assets/images/src/help/help2.png';
@@ -229,6 +235,20 @@ ITEM_ELECTRIC5.src = item_Electric5;
 const ITEM_ELECTRIC6 = new Image();
 ITEM_ELECTRIC6.src = item_Electric6;
 
+// ECONOMIC
+const ITEM_ECONOMI1 = new Image();
+ITEM_ECONOMI1.src = item_Economi1;
+const ITEM_ECONOMI2 = new Image();
+ITEM_ECONOMI2.src = item_Economi2;
+const ITEM_ECONOMI3 = new Image();
+ITEM_ECONOMI3.src = item_Economi3;
+const ITEM_ECONOMI4 = new Image();
+ITEM_ECONOMI4.src = item_Economi4;
+const ITEM_ECONOMI5 = new Image();
+ITEM_ECONOMI5.src = item_Economi5;
+const ITEM_ECONOMI6 = new Image();
+ITEM_ECONOMI6.src = item_Economi6;
+
 // HELP
 const HELP_HP = new Image();
 HELP_HP.src = help_hp;
@@ -305,6 +325,12 @@ export default {
   ITEM_ELECTRIC4,
   ITEM_ELECTRIC5,
   ITEM_ELECTRIC6,
+  ITEM_ECONOMI1,
+  ITEM_ECONOMI2,
+  ITEM_ECONOMI3,
+  ITEM_ECONOMI4,
+  ITEM_ECONOMI5,
+  ITEM_ECONOMI6,
   play_hp,
   play_process,
   play_coins,
