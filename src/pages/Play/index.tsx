@@ -44,7 +44,7 @@ function Play() {
 
   // BIRD
   const birdSelected: IBirdDefault = CHARACTORS[gameStore.bee];
-  const GOAL_TARGET: number = 120;
+  const GOAL_TARGET: number = 80;
   let birdDamage: number = 0;
   let verticalX = -3;
   let verticalY = 0;

@@ -75,6 +75,12 @@ import item_Economi3 from '@shared/assets/images/src/item/economi/3.png';
 import item_Economi4 from '@shared/assets/images/src/item/economi/4.png';
 import item_Economi5 from '@shared/assets/images/src/item/economi/5.png';
 import item_Economi6 from '@shared/assets/images/src/item/economi/6.png';
+import item_Beauty1 from '@shared/assets/images/src/item/beauty/1.png';
+import item_Beauty2 from '@shared/assets/images/src/item/beauty/2.png';
+import item_Beauty3 from '@shared/assets/images/src/item/beauty/3.png';
+import item_Beauty4 from '@shared/assets/images/src/item/beauty/4.png';
+import item_Beauty5 from '@shared/assets/images/src/item/beauty/5.png';
+import item_Beauty6 from '@shared/assets/images/src/item/beauty/6.png';
 // Help
 import help_hp from '@shared/assets/images/src/help/help1.png';
 import help_speed from '@shared/assets/images/src/help/help2.png';
@@ -249,6 +255,20 @@ ITEM_ECONOMI5.src = item_Economi5;
 const ITEM_ECONOMI6 = new Image();
 ITEM_ECONOMI6.src = item_Economi6;
 
+//BEAUTY
+const ITEM_BEAUTY1 = new Image();
+ITEM_BEAUTY1.src = item_Beauty1;
+const ITEM_BEAUTY2 = new Image();
+ITEM_BEAUTY2.src = item_Beauty2;
+const ITEM_BEAUTY3 = new Image();
+ITEM_BEAUTY3.src = item_Beauty3;
+const ITEM_BEAUTY4 = new Image();
+ITEM_BEAUTY4.src = item_Beauty4;
+const ITEM_BEAUTY5 = new Image();
+ITEM_BEAUTY5.src = item_Beauty5;
+const ITEM_BEAUTY6 = new Image();
+ITEM_BEAUTY6.src = item_Beauty6;
+
 // HELP
 const HELP_HP = new Image();
 HELP_HP.src = help_hp;
@@ -331,6 +351,12 @@ export default {
   ITEM_ECONOMI4,
   ITEM_ECONOMI5,
   ITEM_ECONOMI6,
+  ITEM_BEAUTY1,
+  ITEM_BEAUTY2,
+  ITEM_BEAUTY3,
+  ITEM_BEAUTY4,
+  ITEM_BEAUTY5,
+  ITEM_BEAUTY6,
   play_hp,
   play_process,
   play_coins,

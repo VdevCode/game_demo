@@ -11,7 +11,6 @@ interface Major {
   img: string;
   name: string;
   saveName: string;
-  description: string;
 }
 
 function ChoiceJob() {
@@ -20,37 +19,36 @@ function ChoiceJob() {
       img: images.majorIt,
       name: 'CNTT',
       saveName: 'Công nghệ thông tin',
-      description: 'Bạn thích máy tính và có thể ngồi hằng giờ,...',
     },
     {
       img: images.majorGame,
-      name: 'GAME',
+      name: 'LT GAME',
       saveName: 'Lập trình game',
-      description: 'Bạn thích máy tính và có thể ngồi hằng giờ,...',
     },
     {
       img: images.majorGrafic,
       name: 'ĐỒ HỌA',
       saveName: 'Thiết kế đồ họa',
-      description: 'Bạn thích máy tính và có thể ngồi hằng giờ,...',
     },
     {
       img: images.majorTravel,
       name: 'DL NHKS',
       saveName: 'Du lịch - Nhà hàng khách sạn',
-      description: 'Bạn thích máy tính và có thể ngồi hằng giờ,...',
     },
     {
       img: images.majorElectric,
-      name: 'ĐIỆN CK',
+      name: 'HiTech',
       saveName: 'Điện cơ khí',
-      description: 'Bạn thích máy tính và có thể ngồi hằng giờ,...',
     },
     {
       img: images.majorElectric,
       name: 'KINH TẾ',
       saveName: 'Kinh tế',
-      description: 'Bạn thích máy tính và có thể ngồi hằng giờ,...',
+    },
+    {
+      img: images.majorElectric,
+      name: 'LÀM ĐẸP',
+      saveName: 'Kinh tế',
     },
   ];
   const navigate = useNavigate();
@@ -115,12 +113,10 @@ function ChoiceJob() {
                     alt=""
                   />
                   <main className="landscape:my-2 landscape:text-center">
+                    <p>Chuyên ngành:</p>
                     <h1 className="text-xl font-semibold">
                       {majors[selected].name}
                     </h1>
-                    <p className="line-clamp-3 text-sm">
-                      {majors[selected].description}
-                    </p>
                   </main>
                 </div>
                 <div className="flex-1 p-2">
