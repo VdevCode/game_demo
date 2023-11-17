@@ -65,7 +65,8 @@ function Register() {
   function validateData(data: any) {
     setError(true);
     const phoneRegex = /^(0[1-9])+([0-9]{8})\b/;
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(vn|com\.vn|com)$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|vn)$/;
+
     if (!phoneRegex.test(data.phone)) {
       setErrorMsg('Số điện thoại của bạn không hợp lệ');
       return;
@@ -78,8 +79,18 @@ function Register() {
       setErrorMsg('Địa chỉ email không hợp lệ');
       return;
     }
+    let checkEmail = data.email.split('@')[1];
+    let allPart: string[] = checkEmail.split('.');
+    if (hasDuplicate(allPart)) {
+      setErrorMsg('Địa chỉ email không đúng định dạng.');
+      return;
+    }
     setErrorMsg('');
     setError(false);
+  }
+  function hasDuplicate(arr: string[]): boolean {
+    const uniqueSet = new Set(arr);
+    return uniqueSet.size !== arr.length;
   }
   function handleSummit() {
     const data = {
