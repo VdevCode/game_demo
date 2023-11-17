@@ -117,11 +117,6 @@ function Register() {
           src={images.bee8}
           alt=""
         />
-        <img
-          className="absolute z-10 portrait:w-1/3 portrait:bottom-0 portrait:right-0 portrait:-translate-y-1/3 landscape:hidden"
-          src={images.bee7}
-          alt=""
-        />
         <div className="aprrearance relative portrait:h-fit portrait:w-full landscape:h-[90%] landscape:w-[55%] flex flex-col items-center justify-center">
           <header className="relative z-10 portrait:w-[90%] portrait:h-1/6 landscape:w-1/2 landscape:h-1/5 landscape:scale-125">
             <img
@@ -157,7 +152,7 @@ function Register() {
                 <p className="my-1 h-8 flex items-center text-red-500 font-bold">
                   {error && errorMsg.length > 0 && <>Lỗi: {errorMsg}</>}
                 </p>
-                <div className="absolute bottom-0 right-0 left-0 px-[5%] landscape:flex landscape:justify-between landscape:translate-y-1/2">
+                <div className="absolute bottom-0 right-0 left-0 portrait:w-full portrait:flex portrait:justify-between landscape:flex landscape:justify-between landscape:translate-y-1/2">
                   <Button>Quay lại</Button>
                   {loading ? (
                     <Button>Đang tải</Button>

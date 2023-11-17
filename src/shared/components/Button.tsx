@@ -43,14 +43,14 @@ function Button({
   }
 
   return (
-    <Comp {...props} className="relative landscape:h-14 portrait:h-16">
+    <Comp {...props} className="relative landscape:h-16 portrait:h-14">
       <img
         className="w-full h-full object-contain"
         src={images.btn_default}
         alt=""
       />
       <div className="absolute z-10 inset-0 flex items-center justify-start text-xs lg:text-base">
-        <p className="portrait:ml-[40%] portrait:font-bold portrait:text-lg landscape:ml-[40%] landscape:font-semibold landscape:text-sm uppercase">{children}</p>
+        <p className="portrait:ml-[40%] portrait:font-bold portrait:text-sm landscape:ml-[40%] landscape:font-semibold landscape:text-sm uppercase">{children}</p>
       </div>
     </Comp>
   );
