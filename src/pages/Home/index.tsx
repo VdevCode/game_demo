@@ -27,8 +27,6 @@ function Home() {
   };
 
   const handelNext = () => {
-    console.log(userStore.user);
-
     if (JSON.stringify(userStore.user) === '{}') {
       navigate(configs.routes.register);
     } else {
