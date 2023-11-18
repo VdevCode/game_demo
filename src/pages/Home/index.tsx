@@ -3,10 +3,15 @@ import Button from '@shared/components/Button';
 import configs from '@configs/index';
 import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { userLoginSucess } from '@redux/userSlice';
 
 function Home() {
+  const dispath = useDispatch();
   const navigate = useNavigate();
+  const userStore = useSelector((state: any) => state.user);
   const screenRef = useRef<any>();
+
   const handelExistFullScreen = () => {
     if (screenRef.current) {
       if (document.fullscreenEnabled) {
@@ -17,6 +22,17 @@ function Home() {
       } else {
         console.error('Fullscreen API is not supported in this browser.');
       }
+    }
+    dispath(userLoginSucess({}));
+  };
+
+  const handelNext = () => {
+    console.log(userStore.user);
+
+    if (JSON.stringify(userStore.user) === '{}') {
+      navigate(configs.routes.register);
+    } else {
+      navigate(configs.routes.choiceJob);
     }
   };
   return (
@@ -31,9 +47,7 @@ function Home() {
       />
       <div className="flex-1 portrait:w-full landscape:w-full flex items-center justify-center gap-5 translate-y-[-5%]">
         <div className="w-fit flex flex-col justify-center items-center">
-          <Button onClick={() => navigate(configs.routes.register)}>
-            Đăng nhập
-          </Button>
+          <Button onClick={handelNext}>Đăng nhập</Button>
           <Button onClick={() => navigate(configs.routes.ranking)}>
             Xếp hạng
           </Button>
