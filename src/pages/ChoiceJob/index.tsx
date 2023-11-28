@@ -120,7 +120,7 @@ function ChoiceJob() {
                   </main>
                 </div>
                 <div className="flex-1 p-2">
-                  <div className="w-full landscape:grid landscape:grid-cols-3 landscape:gap-3 portrait:flex portrait:flex-wrap portrait:gap-3">
+                  <div className="w-full landscape:grid landscape:grid-cols-4 landscape:gap-3 portrait:flex portrait:flex-wrap portrait:gap-3">
                     {majors.map((item, idx) => (
                       <div
                         key={idx}

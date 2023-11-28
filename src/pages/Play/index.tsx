@@ -44,7 +44,7 @@ function Play() {
 
   // BIRD
   const birdSelected: IBirdDefault = CHARACTORS[gameStore.bee];
-  const GOAL_TARGET: number = 35;
+  const GOAL_TARGET: number = 85;
   let birdDamage: number = 0;
   let verticalX = -3;
   let verticalY = 0;
@@ -178,10 +178,10 @@ function Play() {
   const createBarries = () => {
     if (gameOver || gameWin) return;
     const target: IBarryDefalt =
-      barryDefaults[getRamdom(barryDefaults.length - 1)];
+      barryDefaults[getRamdom(1, barryDefaults.length - 1)];
     const barry: IBarries = {
       ...target,
-      x: SCREEN_W + getRamdom(100),
+      x: SCREEN_W + getRamdom(1, 100),
       y: Math.random() * (SCREEN_H - target.h),
     };
     barries.push(barry);
@@ -193,7 +193,7 @@ function Play() {
   const createGifts = () => {
     if (gameOver || gameWin) return;
     const target: IGiftDefalt =
-      giftDefaults[getRamdom(giftDefaults.length - 1)];
+      giftDefaults[getRamdom(1, giftDefaults.length - 1)];
     const gift: IGift = {
       ...target,
       x: SCREEN_W,

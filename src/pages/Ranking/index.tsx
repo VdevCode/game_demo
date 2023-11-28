@@ -18,13 +18,16 @@ function Ranking() {
   const [myRank, setMyRank] = useState<any>(null);
 
   useEffect(() => {
-    setLoading(true);
+    const getData = async () => {
+      setLoading(true);
+      await saveResult();
+      await getMyRank();
+      await getTop5();
+      setLoading(false);
+    };
     if (JSON.stringify(userStore.user) != '{}') {
-      saveResult();
-      getMyRank();
+      getData();
     }
-    getData();
-    setLoading(false);
   }, []);
   const saveResult = async () => {
     const response = await axios.post(
@@ -35,13 +38,13 @@ function Ranking() {
     );
     dispath(userLoginSucess(response.data.data));
   };
-  const getData = async () => {
+  const getTop5 = async () => {
     const res = await axios.get(configs.api.ranking);
     setRanking(res.data.data);
   };
   const getMyRank = async () => {
     const res = await axios.get(configs.api.myRanking + userStore.user.phone);
-    console.log(res);
+    console.log('This is my rank:', res);
     setMyRank(res.data);
   };
   const handelGift = () => {
@@ -92,7 +95,7 @@ function Ranking() {
                         className="flex items-center justify-between gap-10"
                       >
                         <p className="text-2xl">#{idx + 1}</p>
-                        <p className="flex-1 line-clamp-1 font-bold text-lg">
+                        <p className="flex-1 line-clamp-1 font-bold text-lg uppercase">
                           {item.name}
                         </p>
                         <p className="text-2xl">{item.highestScore}</p>
@@ -104,8 +107,8 @@ function Ranking() {
                       <div className="w-full h-fit">
                         <p className="font-bold uppercase">Xếp hạng của bạn</p>
                         <div className="w-full flex items-center justify-between gap-10">
-                          <p className="text-2xl">{myRank.userRank}</p>
-                          <p className="flex-1 line-clamp-1 font-bold text-lg">
+                          <p className="text-2xl">#{myRank.userRank}</p>
+                          <p className="flex-1 line-clamp-1 font-bold text-lg uppercase">
                             {myRank.userData.name}
                           </p>
                           <p className="text-2xl">
@@ -117,7 +120,7 @@ function Ranking() {
                   </div>
                   <footer className="absolute bottom-0 right-0 left-0 portrait:translate-y-1/3 landscape:translate-y-1/2 h-fit w-full flex justify-between">
                     <Button onClick={handelExist}>Thoát</Button>
-                    {gameStore.coins >= 10 &&
+                    {gameStore.coins >= 50 &&
                     gameStore.win &&
                     userStore.user.gift === false ? (
                       <Button onClick={handelGift}>Nhận quà</Button>

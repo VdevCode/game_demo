@@ -13,4 +13,10 @@ export default defineConfig({
       root: process.cwd(),
     }),
   ],
+  server: {
+    port: 8080,
+  },
+  preview: {
+    port: 8080,
+  },
 });

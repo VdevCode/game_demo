@@ -1,6 +1,7 @@
-const endpoint = 'https://game-demo-be.vercel.app/api';
-// const endpoint = 'http://localhost:8080/api';
+const endpoint = 'http://167.71.196.197/api';
+
 export default {
+  sendOTP: endpoint + '/user/sendOTP',
   register: endpoint + '/user/register',
   ranking: endpoint + '/user/ranking',
   download: endpoint + '/user/download',
