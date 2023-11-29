@@ -20,7 +20,7 @@ function SpinWheel() {
     { option: 'Quà 2', style: { backgroundColor: 'white' } },
     { option: 'Quà 3' },
   ]);
-  const colors = ['#ED463E', '#F6AA32', '#4CA450', '#3DA6E0'];
+  const colors = ['#ED463E', '#F6AA32', '#4CA450', '#3DA6E0', '#F1EC31'];
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userStore = useSelector((state: any) => state.user);

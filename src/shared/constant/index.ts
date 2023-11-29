@@ -6,8 +6,8 @@ export const CHARACTORS: IBirdDefault[] = [
   {
     h: 50,
     w: 70,
-    hp: 100,
-    speed: 0.35,
+    hp: 200,
+    speed: 0.3,
     imgAvatar: images.charactor1_avatar,
     imgDefault: images.CHARACTOR1_DEFAULT,
     imgUpping: images.CHARACTOR1_UPPING,
@@ -22,8 +22,8 @@ export const CHARACTORS: IBirdDefault[] = [
   {
     h: 40,
     w: 60,
-    hp: 100,
-    speed: 0.35,
+    hp: 150,
+    speed: 0.4,
     imgAvatar: images.charactor2_avatar,
     imgDefault: images.CHARACTOR2_DEFAULT,
     imgUpping: images.CHARACTOR2_UPPING,

@@ -1,4 +1,5 @@
-const endpoint = ' http://localhost:8083/api';
+// const endpoint = 'http://localhost:8083/api';
+const endpoint = 'http://192.168.80.103:8083/api';
 
 export default {
   sendOTP: endpoint + '/user/sendOTP',

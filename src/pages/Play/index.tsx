@@ -44,7 +44,7 @@ function Play() {
 
   // BIRD
   const birdSelected: IBirdDefault = CHARACTORS[gameStore.bee];
-  const GOAL_TARGET: number = 85;
+  const GOAL_TARGET: number = 100;
   let birdDamage: number = 0;
   let verticalX = -3;
   let verticalY = 0;
@@ -56,7 +56,7 @@ function Play() {
     },
     birdSelected,
   );
-  const spaceBottomWithBird = SCREEN_H - bird.h;
+  const spaceBottomWithBird = SCREEN_H - bird.h * 2;
 
   // BARRIER
   let totalBarries: number = 0;
@@ -284,7 +284,6 @@ function Play() {
   function handleInteraction() {
     // Cập nhật thời gian tương tác
     let lastInteractionTime = performance.now();
-    console.log(lastInteractionTime);
 
     // Phát ra một âm thanh ngắn (có thể là âm thanh không nghe thấy)
     var oscillator = audioContext.createOscillator();

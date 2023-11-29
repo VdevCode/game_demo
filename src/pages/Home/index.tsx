@@ -49,16 +49,10 @@ function Home() {
           <Button onClick={() => navigate(configs.routes.ranking)}>
             Xếp hạng
           </Button>
-          <Button onClick={() => navigate(configs.routes.updateGift)}>
-            Quà tặng
-          </Button>
           <Button onClick={handelExistFullScreen}>Thoát</Button>
         </div>
         <img className="w-1/3 lg:w-1/4 scale-110" src={images.bee7} alt="" />
       </div>
-      <p className="portrait:text-black landscape:text-transparent">
-        Xoay ngang màn hình để có trải nghiệm tốt nhất
-      </p>
     </div>
   );
 }

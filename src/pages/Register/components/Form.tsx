@@ -1,7 +1,9 @@
 import images from '@shared/assets/images';
 import Button from '@shared/components/Button';
 import getRamdom from '@shared/utils/getRamdom';
+import configs from '@configs/index';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Form({
   setOTP,
@@ -12,13 +14,6 @@ function Form({
   setData: any;
   handelSendCode: any;
 }) {
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
-  const [school, setSchool] = useState<string>('');
-  const [errorMsg, setErrorMsg] = useState<string>('');
-  const [error, setError] = useState<boolean>(true);
-  const [loading, setLoading] = useState<boolean>(false);
   const forms = [
     {
       title: 'Số điện thoại',
@@ -58,6 +53,81 @@ function Form({
       },
     },
   ];
+  const provines = [
+    'Tỉnh thành',
+    'TP. Hồ Chí Minh',
+    'Hà Nội',
+    'Đà Nẵng',
+    'Hải Phòng',
+    'Cần Thơ',
+    'An Giang',
+    'Bà Rịa - Vũng Tàu',
+    'Bạc Liêu',
+    'Bắc Giang',
+    'Bắc Kạn',
+    'Bắc Ninh',
+    'Bến Tre',
+    'Bình Định',
+    'Bình Dương',
+    'Bình Phước',
+    'Bình Thuận',
+    'Cà Mau',
+    'Cao Bằng',
+    'Đắk Lắk',
+    'Đắk Nông',
+    'Điện Biên',
+    'Đồng Nai',
+    'Đồng Tháp',
+    'Gia Lai',
+    'Hà Giang',
+    'Hà Nam',
+    'Hà Tĩnh',
+    'Hải Dương',
+    'Hậu Giang',
+    'Hòa Bình',
+    'Hưng Yên',
+    'Khánh Hòa',
+    'Kiên Giang',
+    'Kon Tum',
+    'Lai Châu',
+    'Lâm Đồng',
+    'Lạng Sơn',
+    'Lào Cai',
+    'Long An',
+    'Nam Định',
+    'Nghệ An',
+    'Ninh Bình',
+    'Ninh Thuận',
+    'Phú Thọ',
+    'Quảng Bình',
+    'Quảng Nam',
+    'Quảng Ngãi',
+    'Quảng Ninh',
+    'Quảng Trị',
+    'Sóc Trăng',
+    'Sơn La',
+    'Tây Ninh',
+    'Thái Bình',
+    'Thái Nguyên',
+    'Thanh Hóa',
+    'Thừa Thiên Huế',
+    'Tiền Giang',
+    'Trà Vinh',
+    'Tuyên Quang',
+    'Vĩnh Long',
+    'Vĩnh Phúc',
+    'Yên Bái',
+  ];
+  const navigate = useNavigate();
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
+  const [school, setSchool] = useState<string>('');
+  const [address, setAddress] = useState<string>(provines[0]);
+  const [errorMsg, setErrorMsg] = useState<string>('');
+  const [error, setError] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const checkInput = (e: any) => {
     let value: string = e.target.value;
     if (value.startsWith(' ')) value = '';
@@ -92,6 +162,10 @@ function Form({
     };
     validateData(data);
   }
+  function handelChangeAddress(e: any) {
+    let value: string = e.target.value;
+    setAddress(value.includes('Tỉnh thành') ? 'Không xác định' : value);
+  }
   async function handelSendOPT() {
     setLoading(true);
     const code = await getRamdom(100000, 999999);
@@ -102,7 +176,14 @@ function Form({
     };
     await handelSendCode(data);
     setOTP(true);
-    setData({ name, email, phone, school, code });
+    setData({
+      name,
+      email,
+      phone,
+      school,
+      code,
+      address,
+    });
   }
   useEffect(() => {
     if (!error && errorMsg.length === 0) {
@@ -149,17 +230,34 @@ function Form({
                       />
                     </div>
                   ))}
+                  <div className="h-fit">
+                    <p className="mb-1">Tỉnh thành</p>
+                    <select
+                      className="px-2 w-full h-8 bg-[#FFF694] rounded-lg"
+                      onChange={(e) => handelChangeAddress(e)}
+                    >
+                      {provines.map((item, idx) => (
+                        <option key={idx}>{item}</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
                 <p className="my-1 h-8 flex items-center text-red-500 font-bold">
                   {error && errorMsg.length > 0 && <>Lỗi: {errorMsg}</>}
                 </p>
-                <div className="absolute bottom-0 right-0 left-0 px-[5%] landscape:flex landscape:justify-between landscape:translate-y-1/2">
-                  <Button>Quay lại</Button>
-                  {loading ? (
-                    <Button>Đang tải</Button>
-                  ) : (
-                    <Button onClick={handleSummit}>Xác thực</Button>
-                  )}
+                <div className="absolute bottom-0 right-0 left-0 w-full px-[5%] flex justify-between landscape:translate-y-1/2 portrait:translate-y-1/3">
+                  <div>
+                    <Button onClick={() => navigate(configs.routes.home)}>
+                      Quay lại
+                    </Button>
+                  </div>
+                  <div>
+                    {loading ? (
+                      <Button>Đang tải</Button>
+                    ) : (
+                      <Button onClick={handleSummit}>Xác thực</Button>
+                    )}
+                  </div>
                 </div>
               </main>
             </div>

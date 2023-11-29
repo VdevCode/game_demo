@@ -93,27 +93,28 @@ function OPT({
                     <span className="mx-1 font-bold">+{data.phone}</span>. Hãy
                     nhập chúng ở đây nhé!
                   </h1>
-                  <p className="my-1 font-bold uppercase">Mã xác thực:</p>
-                  <OtpInput
-                    inputStyle={{
-                      width: '40px',
-                      height: '40px',
-                      borderRadius: '10px',
-                    }}
-                    containerStyle={'flex-wrap w-fit gap-2'}
-                    value={otp}
-                    onChange={setOtp}
-                    numInputs={6}
-                    shouldAutoFocus={true}
-                    renderInput={(props) => <input {...props} />}
-                  />
+                  <p className="my-1 font-bold uppercase ">Mã xác thực:</p>
+                  <div className="flex flex-col items-center justify-center">
+                    <OtpInput
+                      inputStyle={{
+                        width: '38px',
+                        height: '38px',
+                        borderRadius: '10px',
+                      }}
+                      containerStyle={'flex w-fit gap-2'}
+                      value={otp}
+                      onChange={setOtp}
+                      numInputs={6}
+                      renderInput={(props) => <input {...props} />}
+                    />
+                  </div>
                   {error && (
                     <p className="my-3 text-red-500 font-bold">
                       Lỗi: Sai mã xác nhận
                     </p>
                   )}
                 </div>
-                <div className="absolute bottom-0 right-0 left-0 px-[5%] landscape:flex landscape:justify-between landscape:translate-y-1/2">
+                <div className="absolute bottom-0 right-0 left-0 w-full px-[5%] flex justify-between landscape:translate-y-1/2 portrait:translate-y-1/3">
                   <Button onClick={() => setOTP(false)}>Trở lại</Button>
                   {loading ? (
                     <Button>Đang tải</Button>
