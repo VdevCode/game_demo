@@ -105,7 +105,9 @@ function Ranking() {
                   <div className="w-full my-5 portrait:h-fit landscape:h-fit">
                     {myRank && (
                       <div className="w-full h-fit">
-                        <p className="font-bold uppercase text-xl">KẾT QUẢ MÀN CHƠI</p>
+                        <p className="font-bold uppercase text-xl">
+                          KẾT QUẢ MÀN CHƠI
+                        </p>
                         <div className="w-full flex items-center justify-between gap-10">
                           <p className="text-2xl">#{myRank.userRank}</p>
                           <p className="flex-1 line-clamp-1 font-bold text-lg uppercase">
