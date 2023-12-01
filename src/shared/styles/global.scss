@@ -16,6 +16,9 @@
     }
 }
 
+*{
+    user-select: none;
+}
 
 .sc-eCssSg{
     width: 80px;
@@ -50,7 +53,7 @@
     to{
         transform: scale(1) translateX(0) rotate(-10deg);
     }
-    
+
 }
 @keyframes apperanceAnimated {
     from {
