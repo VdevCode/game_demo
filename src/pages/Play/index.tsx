@@ -44,7 +44,7 @@ function Play() {
 
   // BIRD
   const birdSelected: IBirdDefault = CHARACTORS[gameStore.bee];
-  const GOAL_TARGET: number = 100;
+  const GOAL_TARGET: number = 120;
   let birdDamage: number = 0;
   let verticalX = -3;
   let verticalY = 0;
@@ -368,7 +368,7 @@ function Play() {
           <h1 className="text-[#F1541F] font-bold text-2xl">HƯỚNG DẪN</h1>
           <div className="mx-auto w-3/4 text-black">
             <span className="uppercase text-[#F1541F]">Điều kiện: </span> để
-            chiến thắng trò chơi, bạn cần thu thập 100 điểm
+            chiến thắng trò chơi, bạn cần thu thập 120 điểm
             <img
               className="mx-1 w-6 inline-block align-middle"
               src={images.play_process}
