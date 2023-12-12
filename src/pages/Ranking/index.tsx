@@ -122,7 +122,7 @@ function Ranking() {
                   </div>
                   <footer className="absolute bottom-0 right-0 left-0 portrait:translate-y-1/3 landscape:translate-y-1/2 h-fit w-full flex justify-between">
                     <Button onClick={handelExist}>Thoát</Button>
-                    {gameStore.coins >= 100 &&
+                    {gameStore.coins >= 120 &&
                     gameStore.win &&
                     userStore.user.gift === false ? (
                       <Button onClick={handelGift}>Nhận quà</Button>

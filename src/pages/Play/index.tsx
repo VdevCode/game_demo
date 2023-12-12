@@ -365,15 +365,27 @@ function Play() {
           id="logger"
           className="mt-2 text-lg lg:text-4xl flex flex-col items-center font-bold gap-2"
         >
-          <h1 className="text-[#F1541F] font-bold text-2xl">THỂ LỆ</h1>
-          <h1 className="portrait:w-3/4 portrait:text-center text-black">
-            Hãy tránh nén các chướng ngại vật và thu thập các vật dụng học tập
-            xuất hiện.
-          </h1>
-          <h1 className="portrait:w-3/4 portrait:text-center text-black">
-            Chiến thắng trò chơi và thu thập 50 điểm dụng cụ học tập để nhận
-            phần bí ẩn
-          </h1>
+          <h1 className="text-[#F1541F] font-bold text-2xl">HƯỚNG DẪN</h1>
+          <div className="mx-auto w-3/4 text-black">
+            <span className="uppercase text-[#F1541F]">Điều kiện: </span> để
+            chiến thắng trò chơi, bạn cần thu thập 100 điểm
+            <img
+              className="mx-1 w-6 inline-block align-middle"
+              src={images.play_process}
+              alt=""
+            />
+            và 120 điểm
+            <img
+              className="mx-1 w-6 inline-block align-middle"
+              src={images.play_coins}
+              alt=""
+            />
+            để nhận được các phần quà may mắn từ FPT Polytechnic
+          </div>
+          <div className="mx-auto w-3/4 text-black">
+            <span className="uppercase text-[#F1541F]">Thể lệ:</span> Điểu khiển
+            chú Ong để né tránh các chướng ngại vật và thu thập các học cụ
+          </div>
           <div className="my-4 text-black animate-bounce">
             <Button onClick={handleStart}>Xuất phát</Button>
           </div>
