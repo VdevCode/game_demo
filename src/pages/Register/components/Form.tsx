@@ -1,16 +1,15 @@
 import images from '@shared/assets/images';
 import Button from '@shared/components/Button';
 import getRamdom from '@shared/utils/getRamdom';
-import configs from '@configs/index';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Form({
-  setOTP,
+  setStep,
   setData,
   handelSendCode,
 }: {
-  setOTP: any;
+  setStep: any;
   setData: any;
   handelSendCode: any;
 }) {
@@ -175,7 +174,7 @@ function Form({
       code,
     };
     await handelSendCode(data);
-    setOTP(true);
+    setStep(2);
     setData({
       name,
       email,
@@ -247,9 +246,7 @@ function Form({
                 </p>
                 <div className="absolute bottom-0 right-0 left-0 w-full px-[5%] flex justify-between landscape:translate-y-1/2 portrait:translate-y-1/3">
                   <div>
-                    <Button onClick={() => navigate(configs.routes.home)}>
-                      Quay lại
-                    </Button>
+                    <Button onClick={() => setStep(0)}>Quay lại</Button>
                   </div>
                   <div>
                     {loading ? (

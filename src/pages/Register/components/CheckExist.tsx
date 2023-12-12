@@ -1,65 +1,58 @@
-import configs from '@configs/index';
-import { userLoginSucess } from '@redux/userSlice';
 import images from '@shared/assets/images';
+import configs from '@configs/index';
 import Button from '@shared/components/Button';
-import getRamdom from '@shared/utils/getRamdom';
 import axios from 'axios';
 import { useState } from 'react';
-import OtpInput from 'react-otp-input';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { userLoginSucess } from '@redux/userSlice';
 
-interface IDataUser {
-  name: string;
-  phone: string;
-  email: string;
-  school: string;
-  code: string;
+interface Props {
+  setStep: Function;
+  setData: Function;
 }
-
-function OPT({
-  data,
-  handelSendCode,
-  setStep,
-}: {
-  data: IDataUser;
-  handelSendCode: any;
-  setStep: any;
-}) {
-  const dispath = useDispatch();
-  const navigate = useNavigate();
-  const [otp, setOtp] = useState('');
-  const [code, setCode] = useState<string>(data.code);
-  const [error, setError] = useState<boolean>(false);
+function CheckExist({ setStep, setData }: Props) {
+  const [error, setError] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const dispath = useDispatch();
 
-  const handelSignUp = async () => {
+  const handelChangeInput = (e: any) => {
+    let value: string = e.target.value.trim();
+    if (value.startsWith(' ')) value = '';
+    setPhone(value);
+  };
+
+  const handelChecking = async () => {
+    setError('');
     setLoading(true);
-    if (code == otp) {
-      const { code, ...passProps } = data;
-      const res = await axios.post(configs.api.register, passProps);
+    // Validate
+    if (phone.length === 0) {
+      setError('Vui lòng nhập số điện thoại');
+      setLoading(false);
+      return;
+    }
+    const phoneRegex = /^(0[1-9])+([0-9]{8})\b/;
+    if (!phoneRegex.test(phone)) {
+      setError('Số điện thoại của bạn không hợp lệ');
+      setLoading(false);
+      return;
+    }
+    // Send
+    try {
+      const res = await axios.get(configs.api.checkExist + '/' + phone);
       dispath(userLoginSucess(res.data.data));
       navigate(configs.routes.choiceJob);
-    } else {
-      setError(true);
-      setOtp('');
+    } catch (error) {
+      setStep(1);
+      setData({
+        phone,
+      });
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
-  const handelReSendCode = async () => {
-    setError(false);
-    setLoading(true);
-    const resendCode = getRamdom(100000, 999999).toString();
-    const dataSend = {
-      name: data.name,
-      phone: data.phone,
-      code: resendCode,
-    };
-    setCode(resendCode);
-    handelSendCode(dataSend);
-    setLoading(false);
-  };
-
   return (
     <div className="appearance pt-2 h-full w-full flex flex-col items-center justify-between">
       <div className="relative flex flex-col items-center justify-center portrait:h-full portrait:w-full landscape:w-full landscape:h-full">
@@ -84,48 +77,36 @@ function OPT({
             />
             <div className="relative z-10 landscape:my-2 p-1 flex flex-col w-full h-full items-center justify-center">
               <header className="portrait:h-[20%] landscape:h-[10%] landscape:mb-5 flex items-center justify-center font-bold text-lg">
-                XÁC THỰC TÀI KHOẢN
+                ĐĂNG NHẬP TÀI KHOẢN
               </header>
               <main className="relative py-2 px-[10%] min-h-[40vh] flex-1 w-full landscape:flex landscape:flex-col">
                 <div className="flex-1">
-                  <h1>
-                    Chúng mình đã gửi mã xác thực qua số điện thoại
-                    <span className="mx-1 font-bold">+{data.phone}</span>. Hãy
-                    nhập chúng ở đây nhé!
-                  </h1>
                   <p className="my-1 font-bold uppercase ">Mã xác thực:</p>
                   <div className="flex flex-col items-center justify-center">
-                    <OtpInput
-                      inputStyle={{
-                        width: '38px',
-                        height: '38px',
-                        borderRadius: '10px',
-                      }}
-                      containerStyle={'flex w-fit gap-2'}
-                      value={otp}
-                      onChange={setOtp}
-                      numInputs={6}
-                      renderInput={(props) => <input {...props} />}
+                    <input
+                      type="text"
+                      className="px-2 w-full h-8 bg-[#FFF694] rounded-lg"
+                      placeholder="Số điện thoại"
+                      onChange={(e) => handelChangeInput(e)}
                     />
                   </div>
-                  {error && (
-                    <p className="my-3 text-red-500 font-bold">
-                      Lỗi: Sai mã xác nhận
-                    </p>
+                  {error.length > 0 && (
+                    <p className="my-3 text-red-500 font-bold">Lỗi: {error}</p>
                   )}
+                  <p className="my-2">
+                    Lưu ý: Bằng cách nhập vào số điện thoại đã đăng kí. Chúng
+                    mình có thể giúp bạn đăng nhập vào tài khoản cũ nhanh chóng
+                    hơn.
+                  </p>
                 </div>
                 <div className="absolute bottom-0 right-0 left-0 w-full px-[5%] flex justify-between landscape:translate-y-1/2 portrait:translate-y-1/3">
-                  <Button onClick={() => setStep(1)}>Trở lại</Button>
+                  <Button onClick={() => navigate(configs.routes.home)}>
+                    Trở lại
+                  </Button>
                   {loading ? (
                     <Button>Đang tải</Button>
                   ) : (
-                    <>
-                      {error ? (
-                        <Button onClick={handelReSendCode}>Gửi lại mã</Button>
-                      ) : (
-                        <Button onClick={handelSignUp}>Xác thực</Button>
-                      )}
-                    </>
+                    <Button onClick={handelChecking}>Xác thực</Button>
                   )}
                 </div>
               </main>
@@ -137,4 +118,4 @@ function OPT({
   );
 }
 
-export default OPT;
+export default CheckExist;

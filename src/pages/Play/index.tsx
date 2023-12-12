@@ -361,18 +361,23 @@ function Play() {
           visibility: started ? 'hidden' : 'visible',
         }}
       >
-        <p
+        <div
           id="logger"
-          className="mt-2 text-lg lg:text-4xl flex flex-col items-center font-bold"
+          className="mt-2 text-lg lg:text-4xl flex flex-col items-center font-bold gap-2"
         >
-          <h1 className="text-[#F1541F] font-bold text-2xl">HÃY SẴN SÀNG</h1>
+          <h1 className="text-[#F1541F] font-bold text-2xl">THỂ LỆ</h1>
           <h1 className="portrait:w-3/4 portrait:text-center text-black">
-            Thu thập các dụng cụ học tập và tránh các chướng ngại vật nhé
+            Hãy tránh nén các chướng ngại vật và thu thập các vật dụng học tập
+            xuất hiện.
+          </h1>
+          <h1 className="portrait:w-3/4 portrait:text-center text-black">
+            Chiến thắng trò chơi và thu thập 50 điểm dụng cụ học tập để nhận
+            phần bí ẩn
           </h1>
           <div className="my-4 text-black animate-bounce">
             <Button onClick={handleStart}>Xuất phát</Button>
           </div>
-        </p>
+        </div>
       </div>
       {/* Screen */}
       <div
