@@ -20,7 +20,7 @@ function SpinWheel() {
     { option: 'Quà 2', style: { backgroundColor: 'white' } },
     { option: 'Quà 3' },
   ]);
-  const colors = ['#ED463E', '#F6AA32', '#4CA450', '#3DA6E0', '#F1EC31'];
+  const colors = ['#fed84c', '#41A25C'];
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userStore = useSelector((state: any) => state.user);
@@ -41,14 +41,28 @@ function SpinWheel() {
       setLoading(true);
       const res = await axios.get(configs.api.gift);
       const updateGifts: WheelData[] = [];
-      res.data.data.map((item: any, idx: number) => {
+      let isCardExist = false;
+      const later: WheelData = {
+        option: 'May mắn lần sau',
+        style: {
+          backgroundColor: '#ED463E',
+          textColor: 'white',
+        },
+      };
+      const idxLaters = [6];
+
+      [...res.data.data, ...res.data.data].map((item: any, idx: number) => {
         const data: WheelData = {
           option: item.name,
           style: {
-            backgroundColor: colors[idx] ? colors[idx] : colors[0],
+            backgroundColor: idx % 2 === 0 ? colors[0] : colors[1],
             textColor: 'white',
+            textSize: '13px',
           },
         };
+        if (item.name === 'Thẻ điện thoại 50K' && isCardExist) return;
+        if (item.name === 'Thẻ điện thoại 50K') isCardExist = true;
+        if (idxLaters.includes(idx)) updateGifts.push(later);
         updateGifts.push(data);
       });
       setGifts(updateGifts);
@@ -69,15 +83,21 @@ function SpinWheel() {
 
   useEffect(() => {
     const saveGift = async () => {
-      const res = await axios.patch(
-        configs.api.addOwnerGift + '/' + giftDefault[prizeNumber]._id,
-        {
-          phone: userStore.user.phone,
-          name: userStore.user.name,
-        },
+      const target = giftDefault.find(
+        (item) => item.name === gifts[prizeNumber].option,
       );
-      console.log(res);
-      dispatch(userLoginSucess(res.data.data));
+
+      if (target) {
+        const res = await axios.patch(
+          configs.api.addOwnerGift + '/' + target._id,
+          {
+            phone: userStore.user.phone,
+            name: userStore.user.name,
+          },
+        );
+        console.log(res);
+        dispatch(userLoginSucess(res.data.data));
+      }
       setActived(true);
     };
     if (!isActived && stopped) {
@@ -88,7 +108,7 @@ function SpinWheel() {
   return (
     <>
       {isActived ? (
-        <GiftNotion name={giftDefault[prizeNumber].name} />
+        <GiftNotion name={gifts[prizeNumber].option || ''} />
       ) : (
         <>
           {loading === false && (
@@ -96,13 +116,13 @@ function SpinWheel() {
               <p className="landscape:absolute landscape:top-[17%]">
                 Chúc mừng bạn nhận được một lượt quay
               </p>
-              <div className="portrait:scale-75 landscape:h-[50px] landscape:scale-[35%] landscape:-translate-y-[150%]">
+              <div className="wheel portrait:scale-90 landscape:h-[50px] landscape:scale-[35%] landscape:-translate-y-[150%] text-sm">
                 <Wheel
                   radiusLineWidth={1}
                   mustStartSpinning={mustSpin}
                   prizeNumber={prizeNumber}
                   data={gifts}
-                  fontSize={25}
+                  fontSize={17}
                   onStopSpinning={() => {
                     setMustSpin(false);
                     setStopped(true);
