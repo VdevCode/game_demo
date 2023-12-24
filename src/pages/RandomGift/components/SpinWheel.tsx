@@ -49,7 +49,7 @@ function SpinWheel() {
           textColor: 'white',
         },
       };
-      const idxLaters = [6];
+      const idxLaters = [3, 6];
 
       [...res.data.data, ...res.data.data].map((item: any, idx: number) => {
         const data: WheelData = {
