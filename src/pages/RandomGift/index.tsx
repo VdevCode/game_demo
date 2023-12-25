@@ -11,7 +11,7 @@ function RandomGift() {
           alt=""
         />
         <img
-          className="absolute z-10 portrait:w-1/3 portrait:bottom-0 portrait:right-0 portrait:-translate-y-1/3 landscape:hidden"
+          className="absolute z-10 portrait:w-1/4 portrait:bottom-0 portrait:right-0 portrait:-translate-y-1/3 landscape:hidden"
           src={images.bee7}
           alt=""
         />

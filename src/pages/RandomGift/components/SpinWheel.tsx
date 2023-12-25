@@ -42,6 +42,7 @@ function SpinWheel() {
       const res = await axios.get(configs.api.gift);
       const updateGifts: WheelData[] = [];
       let isCardExist = false;
+      let isSpeakerExist = false;
       const later: WheelData = {
         option: 'May mắn lần sau',
         style: {
@@ -49,7 +50,7 @@ function SpinWheel() {
           textColor: 'white',
         },
       };
-      const idxLaters = [3, 6];
+      const idxLaters = [0, 6];
 
       [...res.data.data, ...res.data.data].map((item: any, idx: number) => {
         const data: WheelData = {
@@ -62,6 +63,10 @@ function SpinWheel() {
         };
         if (item.name === 'Thẻ điện thoại 50K' && isCardExist) return;
         if (item.name === 'Thẻ điện thoại 50K') isCardExist = true;
+
+        if (item.name === 'Loa Mini Fpoly' && isSpeakerExist) return;
+        if (item.name === 'Loa Mini Fpoly') isSpeakerExist = true;
+
         if (idxLaters.includes(idx)) updateGifts.push(later);
         updateGifts.push(data);
       });
