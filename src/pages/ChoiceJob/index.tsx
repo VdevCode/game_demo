@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import configs from '@configs/index';
 import { gameChangeMajor } from '@redux/gameSlice';
 import images from '@shared/assets/images';

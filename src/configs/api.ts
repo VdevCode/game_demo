@@ -1,5 +1,6 @@
-const endpoint = 'http://167.71.196.197/api';
+// const endpoint = 'http://167.71.196.197/api';
 // const endpoint = 'http://localhost:8083/api';
+const endpoint = 'https://dashboard-server-bee.vercel.app/api';
 
 export default {
   checkExist: endpoint + '/user/checkExist',
